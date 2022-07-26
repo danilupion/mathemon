@@ -1,0 +1,46 @@
+@import "~nes.css/css/nes";
+
+.panel {
+  @extend .nes-container;
+
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  top: 80px;
+  bottom: 0;
+  max-width: 100%;
+  width: 450px;
+  background-color: white;
+  z-index: 10;
+
+  &.left {
+    left: 0;
+    margin-left: - calc(100%);
+  }
+
+  &.right {
+    right: 0;
+    margin-right: - calc(100%);
+  }
+
+  &.open {
+    &.left {
+      margin-left: 0;
+    }
+
+    &.right {
+      margin-right: 0;
+    }
+  }
+}
+
+.overlay {
+  position: absolute;
+  background-color: #00000077;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 80px;
+  z-index: 5;
+}

@@ -1,0 +1,13 @@
+.container {
+  display: flex;
+
+  i {
+    align-self: flex-end;
+    top: 85px;
+  }
+
+  div {
+    max-width: 500px;
+    text-align: left;
+  }
+}

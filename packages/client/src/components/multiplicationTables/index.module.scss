@@ -1,0 +1,14 @@
+@import "~nes.css/css/nes";
+
+.container {
+  @extend .nes-container;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+
+  & > a {
+    @extend .nes-btn;
+    margin: 10px;
+  }
+}

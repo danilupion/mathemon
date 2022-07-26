@@ -1,0 +1,8 @@
+@import "~nes.css/css/nes";
+
+.container {
+  button {
+    @extend .nes-btn;
+    @extend .is-primary;
+  }
+}

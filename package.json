@@ -1,0 +1,19 @@
+{
+  "name": "mathemon",
+  "private": true,
+  "author": {
+    "name": "Dani Lupión",
+    "email": "danilupion@gmail.com"
+  },
+  "license": "MIT",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "./scripts/build.sh",
+    "clean:install": "./scripts/clean-install.sh"
+  },
+  "devDependencies": {
+    "husky": "^8.0.1"
+  }
+}

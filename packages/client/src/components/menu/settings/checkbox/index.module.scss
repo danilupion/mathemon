@@ -1,0 +1,10 @@
+@import "~nes.css/css/nes";
+
+.field {
+  text-align: left;
+  margin-bottom: 10px;
+
+  input {
+    @extend .nes-checkbox;
+  }
+}

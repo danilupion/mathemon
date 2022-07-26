@@ -1,0 +1,14 @@
+@import "~nes.css/css/nes";
+
+.menuLink {
+  @extend .nes-btn;
+  margin: 10px;
+
+  &.current {
+    @extend .is-success;
+  }
+
+  img {
+    width: 64px;
+  }
+}
