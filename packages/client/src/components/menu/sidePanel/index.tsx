@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, useEffect } from 'react';
 
 import styles from './index.module.scss';
 
@@ -15,6 +15,15 @@ type SidePanelProps = PropsWithChildren<{
 }>;
 
 const SidePanel = ({ open, onClose, children, side = Side.Left }: SidePanelProps) => {
+  useEffect(() => {
+    const body = document.querySelector('body')!;
+    if (open) {
+      body.classList.add('noscroll');
+    } else {
+      body.classList.remove('noscroll');
+    }
+  }, [open]);
+
   return (
     <>
       {open && <div className={styles.overlay} onClick={onClose} />}

@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import { ChangeEvent, useCallback } from 'react';
 
-import ArithmeticOperation from '../../models/ArithmeticOperation';
-import { QuizResult, Review } from '../../stores/quizStore';
+import ArithmeticOperation from '../../../models/ArithmeticOperation';
+import { QuizResult, Review } from '../../../stores/quizStore';
 
-import styles from './arithmeticQuizItem.module.scss';
+import styles from './index.module.scss';
 
 interface ArithmeticQuizItemProps {
   operation: ArithmeticOperation;
@@ -13,12 +13,7 @@ interface ArithmeticQuizItemProps {
   isCorrect?: Review;
 }
 
-const ArithmeticQuizItem = ({
-  operation,
-  value,
-  onSetValue,
-  isCorrect,
-}: ArithmeticQuizItemProps) => {
+const Index = ({ operation, value, onSetValue, isCorrect }: ArithmeticQuizItemProps) => {
   const handleOnChange = useCallback(
     (ev: ChangeEvent<HTMLInputElement>) => {
       const inputValue = ev.target.value.trim();
@@ -58,10 +53,12 @@ const ArithmeticQuizItem = ({
           size={1}
           onChange={handleOnChange}
           maxLength={operation.maxDigits() + 1}
+          type="text"
+          inputMode="numeric"
         />
       </div>
     </div>
   );
 };
 
-export default ArithmeticQuizItem;
+export default Index;
