@@ -16,7 +16,7 @@ type SidePanelProps = PropsWithChildren<{
 
 const SidePanel = ({ open, onClose, children, side = Side.Left }: SidePanelProps) => {
   useEffect(() => {
-    const body = document.querySelector('body')!;
+    const body = document.querySelector('body') as HTMLBodyElement;
     if (open) {
       body.classList.add('noscroll');
     } else {

@@ -1,13 +1,13 @@
 import { ChangeEvent, useCallback } from 'react';
 
+import styles from './index.module.scss';
+
 interface FieldProps {
   label?: string;
   value: number;
   options: number[];
   onChange?: (value: number) => void;
 }
-
-import styles from './index.module.scss';
 
 const Select = ({ label, value, options, onChange }: FieldProps) => {
   const handleOnChange = useCallback(
