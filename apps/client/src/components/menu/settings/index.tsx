@@ -3,7 +3,12 @@ import { useLocation } from 'react-router-dom';
 
 import { Operator } from '../../../models/ArithmeticOperation';
 import { quizStore } from '../../../stores/quizStore';
-import { loadCurrentSettings, saveSettings } from '../../../utils/settingsManager';
+import {
+  InputDirection,
+  loadCommonSettings,
+  loadSectionSettings,
+  saveSettings,
+} from '../../../utils/settingsManager';
 
 import Checkbox from './checkbox';
 import styles from './index.module.scss';
@@ -21,10 +26,14 @@ interface SettingsProps {
 
 const Settings = ({ onSave }: SettingsProps) => {
   const { pathname } = useLocation();
-  const currentSettings = loadCurrentSettings(pathToOperator[pathname]);
+  const currentSectionSettings = loadSectionSettings(pathToOperator[pathname]);
+  const currentCommonSettings = loadCommonSettings();
 
-  const [digits, setDigits] = useState<number>(currentSettings.digits);
-  const [carrying, setCarrying] = useState<boolean | undefined>(currentSettings.carrying);
+  const [digits, setDigits] = useState<number>(currentSectionSettings.digits);
+  const [carrying, setCarrying] = useState<boolean | undefined>(currentSectionSettings.carrying);
+  const [inputDirection, setInputDirection] = useState<InputDirection>(
+    currentCommonSettings.inputDirection,
+  );
 
   const handleDigitsChange = useCallback(
     (value: number) => {
@@ -40,29 +49,54 @@ const Settings = ({ onSave }: SettingsProps) => {
     [setCarrying],
   );
 
+  const handleInputDirectionChange = useCallback(
+    (value: InputDirection) => {
+      setInputDirection(value);
+    },
+    [setInputDirection],
+  );
+
   const handleSave = useCallback(() => {
     const operator = pathToOperator[pathname];
     saveSettings(operator, {
-      digits,
-      carrying,
+      common: {
+        inputDirection,
+      },
+      section: {
+        digits,
+        carrying,
+      },
     });
     quizStore.generateQuiz(operator);
     onSave && onSave();
-  }, [onSave, carrying, digits, pathname]);
+  }, [onSave, carrying, digits, inputDirection, pathname]);
 
   useEffect(() => {
-    const currentSettings = loadCurrentSettings(pathToOperator[pathname]);
+    const currentSettings = loadSectionSettings(pathToOperator[pathname]);
+    const currentCommonSettings = loadCommonSettings();
+
     setDigits(currentSettings.digits);
     setCarrying(currentSettings.carrying);
+    setInputDirection(currentCommonSettings.inputDirection);
   }, [pathname]);
 
   return (
     <div className={styles.container}>
       <Select
+        label="Dirección de entrada"
+        value={inputDirection}
+        options={[
+          ['Derecha a Izquierda', InputDirection.RTL],
+          ['Izquierda a Derecha', InputDirection.LFR],
+        ]}
+        onChange={handleInputDirectionChange}
+      />
+      <Select
         label="Dígitos"
         value={digits}
         options={[1, 2, 3, 4, 5]}
         onChange={handleDigitsChange}
+        parser={(val: string) => Number.parseInt(val)}
       />
       {carrying !== undefined && (
         <Checkbox label="Llevando" checked={carrying} onChange={handleCarryingChange} />

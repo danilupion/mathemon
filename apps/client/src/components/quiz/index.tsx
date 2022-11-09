@@ -3,6 +3,7 @@ import { useCallback, useEffect } from 'react';
 
 import { Operator } from '../../models/ArithmeticOperation';
 import { QuizResult, quizStore } from '../../stores/quizStore';
+import { loadCommonSettings } from '../../utils/settingsManager';
 
 import ArithmeticQuizItem from './arithmeticQuizItem';
 import styles from './index.module.scss';
@@ -12,6 +13,8 @@ interface QuizProps {
 }
 
 const Quiz = observer(({ operator }: QuizProps) => {
+  const { inputDirection } = loadCommonSettings();
+
   useEffect(() => {
     quizStore.generateQuiz(operator);
   }, [operator]);
@@ -29,6 +32,7 @@ const Quiz = observer(({ operator }: QuizProps) => {
         {quizStore.quizItems.map((operation, index) => (
           <ArithmeticQuizItem
             operation={operation}
+            inputDirection={inputDirection}
             key={`${index} ${operation.operands[0]}${operation.operator}${operation.operands[1]}`}
             onSetValue={handleOnSetValue(index)}
             value={quizStore.getResult(index)}

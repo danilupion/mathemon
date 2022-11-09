@@ -7,13 +7,22 @@
   },
   "license": "MIT",
   "workspaces": [
+    "apps/*",
     "packages/*"
   ],
   "scripts": {
+    "client:start:dev": "yarn workspace @mathemon/client start:dev",
+    "server:start:dev": "yarn workspace @mathemon/server start:dev",
+    "start:dev": "./scripts/parallelRun.sh 'yarn client:start:dev' 'yarn server:start:dev'",
+    "server:start:prod": "yarn workspace @mathemon/server start:prod",
+    "client:test:watch": "yarn workspace @mathemon/client test:watch",
+    "server:test:watch": "yarn workspace @mathemon/server test:watch",
+    "client:build": "yarn workspace @mathemon/client build",
+    "server:build": "yarn workspace @mathemon/server build",
     "build": "./scripts/build.sh",
     "clean:install": "./scripts/clean-install.sh"
   },
   "devDependencies": {
-    "husky": "^8.0.1"
+    "husky": "^8.0.2"
   }
 }

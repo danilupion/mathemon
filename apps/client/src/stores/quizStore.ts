@@ -2,7 +2,7 @@ import { makeAutoObservable } from 'mobx';
 
 import ArithmeticOperation, { Operator } from '../models/ArithmeticOperation';
 import { randomInt } from '../utils/math';
-import { loadCurrentSettings } from '../utils/settingsManager';
+import { loadSectionSettings } from '../utils/settingsManager';
 
 export type QuizResult = number | undefined;
 
@@ -50,7 +50,7 @@ export class QuizStore {
   }
 
   public generateQuiz(operator: Operator) {
-    const { digits, carrying } = loadCurrentSettings(operator);
+    const { digits, carrying } = loadSectionSettings(operator);
     this.quizList.splice(0, this.quizList.length);
     this.resultList.splice(0, this.resultList.length);
     this.reviewsList.splice(0, this.reviewsList.length);

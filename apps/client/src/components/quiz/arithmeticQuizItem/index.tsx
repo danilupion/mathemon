@@ -3,20 +3,38 @@ import { ChangeEvent, useCallback } from 'react';
 
 import ArithmeticOperation from '../../../models/ArithmeticOperation';
 import { QuizResult, Review } from '../../../stores/quizStore';
+import { InputDirection } from '../../../utils/settingsManager';
 
 import styles from './index.module.scss';
 
 interface ArithmeticQuizItemProps {
   operation: ArithmeticOperation;
+  inputDirection: InputDirection;
   value: QuizResult;
   onSetValue: (result: QuizResult) => void;
   isCorrect?: Review;
 }
 
-const Index = ({ operation, value, onSetValue, isCorrect }: ArithmeticQuizItemProps) => {
+const Index = ({
+  operation,
+  inputDirection,
+  value,
+  onSetValue,
+  isCorrect,
+}: ArithmeticQuizItemProps) => {
   const handleOnChange = useCallback(
     (ev: ChangeEvent<HTMLInputElement>) => {
       const inputValue = ev.target.value.trim();
+      if (inputDirection === InputDirection.RTL) {
+        ev.currentTarget.selectionStart = Math.max(
+          ev.currentTarget.selectionStart !== null ? ev.currentTarget.selectionStart - 1 : 0,
+          0,
+        );
+        ev.currentTarget.selectionEnd = Math.max(
+          ev.currentTarget.selectionEnd !== null ? ev.currentTarget.selectionEnd - 1 : 0,
+          0,
+        );
+      }
       if (inputValue === '') {
         onSetValue(undefined);
       } else {
@@ -27,7 +45,7 @@ const Index = ({ operation, value, onSetValue, isCorrect }: ArithmeticQuizItemPr
         }
       }
     },
-    [onSetValue],
+    [inputDirection, onSetValue],
   );
 
   return (
