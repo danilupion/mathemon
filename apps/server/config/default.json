@@ -1,7 +1,9 @@
 {
   "environment": "development",
   "server": {
-    "port": 3200,
-    "debug": true
+    "bodyParserLimits": {
+      "json": "5mb"
+    },
+    "port": 3200
   }
 }

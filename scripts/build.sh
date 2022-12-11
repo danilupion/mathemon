@@ -2,6 +2,9 @@
 
 yarn --ignore-engines;
 
+yarn poke-api:build;
+yarn common:build;
+yarn server-utils:build;
 yarn client:build;
 yarn server:build;
 

@@ -2,3 +2,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 yarn workspace @mathemon/client lint-staged
+yarn workspace @mathemon/server lint-staged
+yarn workspace @mathemon/common lint-staged
+yarn workspace @mathemon/poke-api lint-staged

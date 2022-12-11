@@ -1,6 +1,7 @@
 {
   "env": {
-    "node": true
+    "node": true,
+    "es6": true
   },
   "extends": [
     "eslint:recommended",
@@ -16,7 +17,6 @@
     "prettier"
   ],
   "globals": {
-    "module": true,
     "Atomics": "readonly",
     "SharedArrayBuffer": "readonly"
   },
@@ -35,19 +35,11 @@
     "ecmaVersion": 2020,
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "jest"],
+  "plugins": ["@typescript-eslint"],
   "rules": {
     "node/no-missing-import": "off",
     "@typescript-eslint/no-unused-vars": ["error", { "ignoreRestSiblings": true }],
-    "import/no-unresolved": ["error", {}],
-    "import/order": [
-      "error",
-      {
-        "newlines-between": "always",
-        "alphabetize": { "order": "asc" },
-        "warnOnUnassignedImports": true
-      }
-    ],
+    "import/order": ["error", { "newlines-between": "always", "alphabetize": { "order": "asc" } }],
     "sort-imports": [
       "error",
       {
@@ -57,15 +49,5 @@
         "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
       }
     ]
-  },
-  "overrides": [
-    {
-      "files": ["**/*.spec.ts", "src/__utils__/**/*"],
-      "rules": {
-        "node/no-unpublished-import": 0,
-        "node/no-unpublished-require": 0,
-        "node/no-missing-require": 0
-      }
-    }
-  ]
+  }
 }
