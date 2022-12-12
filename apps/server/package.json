@@ -16,18 +16,21 @@
     "test:watch": "jest --watch",
     "lint:fix": "eslint -c .eslintrc.json 'src/**/*.ts' --fix",
     "lint": "eslint -c .eslintrc.json 'src/**/*.ts'",
-    "prettify": "prettier --write  \"./src/**/*.{ts,tsx,json}\""
+    "prettify": "prettier --write  \"./src/**/*.{ts,tsx,json}\"",
+    "command": "ts-node --esm --project tsconfig.json ./src/commands/index.ts"
   },
   "dependencies": {
     "@mathemon/common": "1.0.0",
     "@mathemon/poke-api": "1.0.0",
     "@mathemon/server-utils": "1.0.0",
+    "chalk": "^5.2.0",
     "config": "^3.3.8",
     "express": "^4.18.2",
     "helmet": "^6.0.1",
     "mongoose": "^6.8.0",
     "morgan": "^1.10.0",
-    "ts-node": "^10.9.1"
+    "ts-node": "^10.9.1",
+    "yargs": "^17.6.2"
   },
   "devDependencies": {
     "@types/config": "^3.3.0",
@@ -35,6 +38,7 @@
     "@types/jest": "^29.2.4",
     "@types/morgan": "^1.9.3",
     "@types/node": "^18.11.13",
+    "@types/yargs": "^17.0.17",
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-import-resolver-typescript": "^3.5.2",
