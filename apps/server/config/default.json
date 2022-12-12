@@ -5,5 +5,10 @@
       "json": "5mb"
     },
     "port": 3200
+  },
+  "mongodb": {
+    "host": "127.0.0.1",
+    "port": 27017,
+    "database": "mathemon"
   }
 }

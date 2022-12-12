@@ -25,7 +25,8 @@
     "client:build": "yarn workspace @mathemon/client build",
     "server:build": "yarn workspace @mathemon/server build",
     "build": "./scripts/build.sh",
-    "clean:install": "./scripts/clean-install.sh"
+    "clean:install": "./scripts/clean-install.sh",
+    "prepare": "husky install"
   },
   "devDependencies": {
     "husky": "^8.0.2"
