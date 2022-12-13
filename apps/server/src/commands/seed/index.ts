@@ -33,7 +33,7 @@ export const createOrUpdate = async <T extends Document>(
 };
 
 export default instance
-  .command(
+  .command<{ clear: boolean; verbose: boolean }>(
     '*',
     'Seed Models',
     (commandYarg) => {
@@ -41,17 +41,21 @@ export default instance
         .default('clear', false)
         .alias('c', 'clear')
         .describe('c', 'Should the collections be cleared?')
-        .boolean('c');
+        .boolean('c')
+        .default('verbose', false)
+        .alias('v', 'verbose')
+        .describe('v', 'Should verbose logging be enabled?')
+        .boolean('v');
     },
     async (argv) => {
-      const { clear } = argv;
+      const { clear, verbose } = argv;
       try {
         await connectMongoose();
         if (clear) {
           await clearPokemon();
         }
 
-        await seedPokemon();
+        await seedPokemon({ verbose });
       } catch (e) {
         if (e instanceof Error) {
           console.log(chalk.red(`[SEED:FAILED] ${e.message}`));

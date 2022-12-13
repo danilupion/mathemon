@@ -14,6 +14,36 @@ const PokemonSchema = new Schema(
       trim: true,
       index: true,
     },
+    order: {
+      type: Number,
+      required: true,
+      unique: true,
+      index: true,
+    },
+    habitat: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
+    types: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+    abilities: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
+    moves: [
+      {
+        type: String,
+        trim: true,
+      },
+    ],
   },
   { collection: 'pokemons' },
 )
