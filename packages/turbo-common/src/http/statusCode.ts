@@ -1,4 +1,4 @@
-export enum StatusCode {
+const enum StatusCode {
   SuccessOK = 200,
   SuccessCreated = 201,
   SuccessNoContent = 204,
@@ -15,12 +15,4 @@ export enum StatusCode {
   ServerErrorNotImplemented = 501,
 }
 
-export enum Method {
-  GET = 'get',
-  POST = 'post',
-  PUT = 'put',
-  DELETE = 'delete',
-  PATCH = 'patch',
-  OPTIONS = 'options',
-  HEAD = 'head',
-}
+export default StatusCode;

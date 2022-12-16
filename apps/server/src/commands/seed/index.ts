@@ -1,7 +1,7 @@
 import {
   connectMongoose,
   disconnectMongoose,
-} from '@mathemon/server-utils/helpers/mongoose/connection.js';
+} from '@mathemon/turbo-server/helpers/mongoose/connection.js';
 import chalk from 'chalk';
 import { Document, FilterQuery, Model } from 'mongoose';
 import yargs from 'yargs';

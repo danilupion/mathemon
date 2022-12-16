@@ -1,12 +1,12 @@
 #!/bin/bash
 
-yarn --ignore-engines;
 
-yarn poke-api:build;
-yarn common:build;
-yarn server-utils:build;
-yarn client:build;
-yarn server:build;
+yarn;
+yarn build:clean;
+
+yarn libs:build;
+yarn turbo:build;
+yarn apps:build;
 
 SERVER_PUBLIC="./apps/server/dist/public";
 CLIENT_BUILD="../../client/build";

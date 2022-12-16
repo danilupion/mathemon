@@ -1,5 +1,5 @@
-import { ValidationError as MappedValidationError } from '@mathemon/common/rest/error.js';
-import { Method } from '@mathemon/common/rest/http.js';
+import Method from '@mathemon/turbo-common/http/method.js';
+import { ValidationError as MappedValidationError } from '@mathemon/turbo-common/rest/error.js';
 import { Handler, NextFunction, Request, Response, Router } from 'express';
 import { ValidationChain, validationResult } from 'express-validator';
 import { Middleware, ValidationError } from 'express-validator/src/base.js';

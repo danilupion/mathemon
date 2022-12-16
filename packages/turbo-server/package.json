@@ -1,5 +1,5 @@
 {
-  "name": "@mathemon/server-utils",
+  "name": "@mathemon/turbo-server",
   "version": "1.0.0",
   "private": true,
   "author": {
@@ -28,7 +28,7 @@
     "prettify": "prettier --write  \"./src/**/*.{ts,json}\""
   },
   "dependencies": {
-    "@mathemon/common": "1.0.0",
+    "@mathemon/turbo-common": "1.0.0",
     "bcrypt": "^5.1.0",
     "config": "^3.3.8",
     "express": "^4.18.2",

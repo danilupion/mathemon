@@ -1,4 +1,4 @@
-import { StatusCode } from '@mathemon/common/rest/http.js';
+import StatusCode from '@mathemon/turbo-common/http/statusCode.js';
 
 type MappedValidationError = { [key: string]: string[] };
 

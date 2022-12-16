@@ -1,6 +1,6 @@
-import { Pokemon } from '@mathemon/common/models/Pokemon.js';
-import normalizeJson from '@mathemon/server-utils/middleware/mongoose/normalizeJson.js';
-import timestamps from '@mathemon/server-utils/middleware/mongoose/timestamps.js';
+import { Pokemon } from '@mathemon/common/models/pokemon.js';
+import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
+import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
 import { Document, Schema, model } from 'mongoose';
 
 export interface PokemonDocument extends Document, Pokemon {}
