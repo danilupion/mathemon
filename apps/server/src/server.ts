@@ -2,6 +2,7 @@ import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 import { isDev } from '@mathemon/turbo-server/helpers/env.js';
+import { connectMongoose } from '@mathemon/turbo-server/helpers/mongoose/connection.js';
 import errorHandler from '@mathemon/turbo-server/middleware/express/errorHandler.js';
 import notFoundHandler from '@mathemon/turbo-server/middleware/express/notFoundHandler.js';
 import config from 'config';
@@ -48,7 +49,7 @@ const startServer = async () => {
   // Register custom error handler (should registered the last)
   app.use(errorHandler);
 
-  // await connectMongoose();
+  await connectMongoose();
   app.listen(port);
   console.error(`Listening in port ${port}`, isDev);
 };
