@@ -6,10 +6,10 @@
     "email": "danilupion@gmail.com"
   },
   "license": "MIT",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
+  "workspaces": {
+    "packages":["apps/*", "packages/*"],
+    "nohoist": ["**/pokemon-sprites"]
+  },
   "scripts": {
     "start:dev:client": "yarn workspace @mathemon/client start:dev",
     "start:dev:server": "yarn workspace @mathemon/server start:dev",
