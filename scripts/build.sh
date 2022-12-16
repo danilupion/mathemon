@@ -2,11 +2,11 @@
 
 
 yarn;
-yarn build:clean;
+yarn clean:build;
 
-yarn libs:build;
-yarn turbo:build;
-yarn apps:build;
+yarn build:libs;
+yarn build:turbo;
+yarn build:apps;
 
 SERVER_PUBLIC="./apps/server/dist/public";
 CLIENT_BUILD="../../client/build";
