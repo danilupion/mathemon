@@ -7,6 +7,9 @@ import { promiseStore } from './utils.js';
 interface PokeApiSpecies {
   id: number;
   name: string;
+  generation: {
+    name: string;
+  };
   habitat: {
     name: string;
   };
@@ -50,6 +53,7 @@ interface PokeApiPokemon {
 export interface Pokemon {
   id: number;
   name: string;
+  generation: string;
   habitat: string;
   types: string[];
   abilities: Ability[];
@@ -68,6 +72,7 @@ export const getPokemon = promiseStore(async (id: number) => {
   return {
     id: pokemon.id,
     name: pokemon.name,
+    generation: species.generation.name,
     habitat: species.habitat.name,
     types: pokemon.types.map((type) => type.type.name),
     abilities: await Promise.all(

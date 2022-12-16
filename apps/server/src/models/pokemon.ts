@@ -20,6 +20,12 @@ const PokemonSchema = new Schema(
       unique: true,
       index: true,
     },
+    generation: {
+      type: String,
+      required: true,
+      trim: true,
+      index: true,
+    },
     habitat: {
       type: String,
       required: true,
