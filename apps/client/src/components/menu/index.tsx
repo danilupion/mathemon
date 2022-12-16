@@ -18,7 +18,7 @@ import squirtle from './squirtle.png';
 interface HeaderRoute {
   to: string;
   label: string;
-  img: string;
+  img?: string;
 }
 
 const routes: HeaderRoute[] = [

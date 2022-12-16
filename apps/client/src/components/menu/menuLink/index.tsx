@@ -6,7 +6,7 @@ import styles from './index.module.scss';
 interface MenuLinkProps {
   to: string;
   label: string;
-  img: string;
+  img?: string;
   onClick?: () => void;
 }
 
@@ -19,7 +19,7 @@ const MenuLink = ({ to, label, img, onClick }: MenuLinkProps) => {
       className={classNames(styles.menuLink, { [styles.current]: pathname === to })}
       onClick={onClick}
     >
-      <img src={img} alt={label} /> {label}
+      {img && <img src={img} alt={label} />} {label}
     </NavLink>
   );
 };
