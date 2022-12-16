@@ -1,13 +1,12 @@
 import { Route, Routes } from 'react-router-dom';
 
-import { Operator } from '../models/ArithmeticOperation';
-import MultiplicationTable from '../pages/multiplicationTable';
-import MultiplicationTables from '../pages/multiplicationTables';
-import Quiz from '../pages/quiz';
-
 import './App.css';
-import Home from './home';
-import Layout from './layout';
+import Home from './components/home';
+import Layout from './components/layout';
+import { Operator } from './models/ArithmeticOperation';
+import MultiplicationTable from './pages/multiplicationTable';
+import MultiplicationTables from './pages/multiplicationTables';
+import Quiz from './pages/quiz';
 
 const App = () => {
   return (
