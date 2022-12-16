@@ -1,0 +1,16 @@
+.pokemon-stats {
+  td:nth-child(1) {
+    text-align: right;
+    font-weight: bolder;
+  }
+  td:nth-child(2) {
+    text-align: left;
+    font-weight: lighter;
+  }
+}
+
+.images {
+  img {
+    width: 200px;
+  }
+}

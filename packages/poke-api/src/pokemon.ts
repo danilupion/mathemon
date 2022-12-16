@@ -73,7 +73,7 @@ export const getPokemon = promiseStore(async (id: number) => {
     id: pokemon.id,
     name: pokemon.name,
     generation: species.generation.name,
-    habitat: species.habitat.name,
+    habitat: species.habitat?.name || 'unknown',
     types: pokemon.types.map((type) => type.type.name),
     abilities: await Promise.all(
       pokemon.abilities.map(async (ability) => {

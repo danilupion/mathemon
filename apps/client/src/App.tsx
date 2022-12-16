@@ -6,6 +6,7 @@ import Layout from './components/layout';
 import { Operator } from './models/ArithmeticOperation';
 import MultiplicationTable from './pages/multiplicationTable';
 import MultiplicationTables from './pages/multiplicationTables';
+import Pokedex from './pages/pokedex';
 import Quiz from './pages/quiz';
 
 const App = () => {
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="multiplication" element={<Quiz operator={Operator.multiplication} />} />
           <Route path="multiplicationTables" element={<MultiplicationTables />} />
           <Route path="multiplicationTables/:table" element={<MultiplicationTable />} />
+          <Route path="pokedex" element={<Pokedex />} />
         </Route>
       </Routes>
     </div>

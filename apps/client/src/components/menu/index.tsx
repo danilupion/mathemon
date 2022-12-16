@@ -26,6 +26,7 @@ const routes: HeaderRoute[] = [
   { to: '/subtraction', label: 'Resta', img: squirtle },
   { to: '/multiplicationTables', label: 'Tablas', img: charmander },
   { to: '/multiplication', label: 'Multiplicación', img: pikachu },
+  { to: '/pokedex', label: 'Pokedex' },
 ];
 
 const pathsWithSettings = ['/addition', '/subtraction', '/multiplication'];

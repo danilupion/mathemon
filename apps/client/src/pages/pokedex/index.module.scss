@@ -1,0 +1,13 @@
+@import "~nes.css/css/nes";
+
+.container {
+  width: 100%;
+  max-width: 1024px;
+
+
+  .grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+}
