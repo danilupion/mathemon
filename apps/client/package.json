@@ -10,10 +10,11 @@
   "scripts": {
     "start:dev": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll=false --passWithNoTests",
+    "test:watch": "react-scripts test",
     "lint:fix": "eslint -c .eslintrc.json 'src/**/*.ts' --fix",
     "lint": "eslint -c .eslintrc.json 'src/**/*.ts'",
-    "prettify": "prettier --write  \"./src/**/*.{ts,tsx,json}\""
+    "prettify": "prettier --write  \"./src/**/*.{js,ts,tsx,json}\""
   },
   "dependencies": {
     "@mathemon/common": "1.0.0",
@@ -56,6 +57,9 @@
     ]
   },
   "lint-staged": {
+    "src/**/*.{js}": [
+      "yarn prettify"
+    ],
     "src/**/*.{ts,tsx}": [
       "yarn prettify",
       "yarn lint:fix",
