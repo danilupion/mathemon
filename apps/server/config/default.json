@@ -6,6 +6,10 @@
     },
     "port": 3200
   },
+  "authentication": {
+    "jwtSecret": "RANDOM STRING, CHANGE ME",
+    "jwtExpiration": "7d"
+  },
   "mongodb": {
     "host": "127.0.0.1",
     "port": 27017,
