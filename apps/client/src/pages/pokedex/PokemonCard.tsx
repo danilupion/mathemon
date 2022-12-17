@@ -1,5 +1,6 @@
 import { Pokemon } from '../../api/pokemons';
 import Card from '../../components/card';
+import PokemonImage, { PokemonImageType } from '../../components/pokemonImage';
 
 import styles from './PokemonCard.module.scss';
 
@@ -39,10 +40,9 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
         </tbody>
       </table>
       <div className={styles.images}>
-        <img
-          src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.order}.png`}
-          alt={pokemon.name}
-        />
+        <PokemonImage pokemon={pokemon} />
+        <PokemonImage pokemon={pokemon} type={PokemonImageType.Back} />
+        <PokemonImage pokemon={pokemon} type={PokemonImageType.Icon} />
       </div>
     </Card>
   );
