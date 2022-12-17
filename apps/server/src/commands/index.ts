@@ -1,5 +1,5 @@
 import { lstatSync, readdirSync } from 'fs';
-import { basename, dirname, extname } from 'path';
+import { dirname, join } from 'path';
 import { fileURLToPath } from 'url';
 
 import yargs from 'yargs';
@@ -8,39 +8,23 @@ import { hideBin } from 'yargs/helpers';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const thisFile = basename(__filename, extname(__filename));
+const commandLibraryFolder = join(__dirname, 'library');
+
+const fullExtension = (f: string) => f.split('.').slice(1).join('.');
 
 const instance = yargs(hideBin(process.argv));
 
-const commands = readdirSync(__dirname)
-  .map((f) => {
-    const stats = lstatSync(`${__dirname}/${f}`);
-    return {
-      name: basename(f, extname(f)),
-      path: stats.isDirectory() ? `${f}/index` : basename(f, extname(f)),
-    };
-  })
-  .filter((f) => f.path !== thisFile);
+const commands = readdirSync(commandLibraryFolder).filter(
+  (f) =>
+    lstatSync(join(commandLibraryFolder, f)).isFile() && ['js', 'ts'].includes(fullExtension(f)),
+);
 
 for (const command of commands) {
-  instance.command(`${command.name}`, `use ${command} --help for more info`, () => {
-    import(`./${command.path}.js`);
-  });
+  const commandModule = await import(join(commandLibraryFolder, command));
+  instance.command(commandModule);
 }
 
-instance
-  .command(
-    '*',
-    'default command',
-    () => {
-      // do nothing
-    },
-    () => {
-      console.log('Command not found');
-    },
-  )
-  .demandCommand()
-  .parse();
+instance.help().alias('h', 'help').demandCommand().parse();
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);

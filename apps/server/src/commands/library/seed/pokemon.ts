@@ -2,9 +2,9 @@ import { getGenerations } from '@mathemon/poke-api/generation.js';
 import { Pokemon } from '@mathemon/poke-api/pokemon.js';
 import chalk from 'chalk';
 
-import PokemonModel, { PokemonDocument } from '../../models/pokemon.js';
+import PokemonModel, { PokemonDocument } from '../../../models/pokemon.js';
 
-import { createOrUpdate } from './index.js';
+import { createOrUpdate } from './util.js';
 
 interface SeedPokemonOptions {
   verbose?: boolean;
