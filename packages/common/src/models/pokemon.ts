@@ -1,9 +1,9 @@
 import { WithTimestamps } from './common/timestamps.js';
 
 export interface Pokemon extends WithTimestamps {
-  order: number;
+  number: number;
   name: string;
-  generation: string;
+  generation: number;
   habitat: string;
   types: string[];
   abilities: string[];

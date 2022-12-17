@@ -24,8 +24,8 @@ export const seedPokemon = async ({ verbose = false }: SeedPokemonOptions = {}) 
             PokemonModel,
             { name: pokemon.name },
             {
+              number: pokemon.number,
               name: pokemon.name,
-              order: pokemon.id,
               generation: pokemon.generation,
               habitat: pokemon.habitat,
               types: pokemon.types,

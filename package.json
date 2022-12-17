@@ -40,6 +40,7 @@
     "build:libs": "yarn run:parallel 'yarn build:common' 'yarn build:poke-api'",
     "build:apps": "yarn run:parallel 'yarn build:client' 'yarn build:server'",
     "build": "./scripts/build.sh",
+    "command": "yarn workspace @mathemon/server command",
     "run:parallel": "./scripts/run-parallel.sh",
     "clean:install": "./scripts/clean-install.sh",
     "clean:build": "./scripts/clean-build.sh",

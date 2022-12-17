@@ -14,9 +14,9 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
       <table className={styles['pokemon-stats']}>
         <tbody>
           <tr>
-            <td>Id: </td>
+            <td>#: </td>
             <td>
-              <b>{pokemon.order}</b>
+              <b>{pokemon.number}</b>
             </td>
           </tr>
           <tr>

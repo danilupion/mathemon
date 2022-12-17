@@ -9,6 +9,7 @@ interface PokeApiSpecies {
   name: string;
   generation: {
     name: string;
+    url: string;
   };
   habitat: {
     name: string;
@@ -51,14 +52,16 @@ interface PokeApiPokemon {
 }
 
 export interface Pokemon {
-  id: number;
+  number: number;
   name: string;
-  generation: string;
+  generation: number;
   habitat: string;
   types: string[];
   abilities: Ability[];
   moves: Move[];
 }
+
+const getUrlId = (url: string) => Number.parseInt(url.split('/').reverse()[1]);
 
 export const getPokemon = promiseStore(async (id: number) => {
   const species = await got
@@ -70,28 +73,20 @@ export const getPokemon = promiseStore(async (id: number) => {
     .json<PokeApiPokemon>();
 
   return {
-    id: pokemon.id,
+    number: pokemon.id,
     name: pokemon.name,
-    generation: species.generation.name,
+    generation: getUrlId(species.generation.url),
     habitat: species.habitat?.name || 'unknown',
     types: pokemon.types.map((type) => type.type.name),
     abilities: await Promise.all(
-      pokemon.abilities.map(async (ability) => {
-        const id = Number.parseInt(ability.ability.url.split('/').reverse()[1]);
-
-        return getAbility(id);
-      }),
+      pokemon.abilities.map(async (ability) => getAbility(getUrlId(ability.ability.url))),
     ),
     moves: await Promise.all(
       pokemon.moves
         .filter((move) =>
           move.version_group_details.some((d) => d.move_learn_method.name === 'level-up'),
         )
-        .map(async (move) => {
-          const id = Number.parseInt(move.move.url.split('/').reverse()[1]);
-
-          return getMove(id);
-        }),
+        .map(async (move) => getMove(getUrlId(move.move.url))),
     ),
   } as Pokemon;
 });

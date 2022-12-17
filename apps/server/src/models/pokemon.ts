@@ -7,6 +7,12 @@ export interface PokemonDocument extends Document, Pokemon {}
 
 const PokemonSchema = new Schema(
   {
+    number: {
+      type: Number,
+      required: true,
+      unique: true,
+      index: true,
+    },
     name: {
       type: String,
       required: true,
@@ -14,16 +20,9 @@ const PokemonSchema = new Schema(
       trim: true,
       index: true,
     },
-    order: {
+    generation: {
       type: Number,
       required: true,
-      unique: true,
-      index: true,
-    },
-    generation: {
-      type: String,
-      required: true,
-      trim: true,
       index: true,
     },
     habitat: {

@@ -16,7 +16,7 @@ const basePath = '/pokemons';
 const PokemonImage = ({ pokemon, type = PokemonImageType.Front }: PokemonImageProps) => {
   return (
     <img
-      src={`${basePath}/${type}/${typeof pokemon === 'number' ? pokemon : pokemon.order}.png`}
+      src={`${basePath}/${type}/${typeof pokemon === 'number' ? pokemon : pokemon.number}.png`}
       alt={typeof pokemon === 'number' ? pokemon.toString() : pokemon.name}
     />
   );
