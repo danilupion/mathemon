@@ -1,4 +1,4 @@
-const enum Method {
+enum Method {
   GET = 'get',
   POST = 'post',
   PUT = 'put',

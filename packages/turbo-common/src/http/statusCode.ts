@@ -1,4 +1,4 @@
-const enum StatusCode {
+enum StatusCode {
   SuccessOK = 200,
   SuccessCreated = 201,
   SuccessNoContent = 204,
