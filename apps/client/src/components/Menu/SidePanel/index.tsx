@@ -24,9 +24,13 @@ const SidePanel = ({ open, onClose, children, side = Side.Left }: SidePanelProps
     }
   }, [open]);
 
+  if (!open) {
+    return null;
+  }
+
   return (
     <>
-      {open && <div className={styles.overlay} onClick={onClose} />}
+      <div className={styles.overlay} onClick={onClose} />
       <div
         className={classNames(styles.panel, {
           [styles.open]: open,

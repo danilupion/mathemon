@@ -2,6 +2,9 @@ import classNames from 'classnames';
 import { useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import MenuLink from './MenuLink';
+import Settings from './Settings';
+import SidePanel, { Side } from './SidePanel';
 import bulbasaur from './bulbasaur.png';
 import charmander from './charmander.png';
 import close from './close.svg';
@@ -9,10 +12,7 @@ import gear from './gear.svg';
 import icon from './icon.png';
 import styles from './index.module.scss';
 import menu from './menu.svg';
-import MenuLink from './menuLink';
 import pikachu from './pikachu.png';
-import Settings from './settings';
-import SidePanel, { Side } from './sidePanel';
 import squirtle from './squirtle.png';
 
 interface HeaderRoute {

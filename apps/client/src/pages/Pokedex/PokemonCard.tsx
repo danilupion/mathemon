@@ -1,6 +1,6 @@
 import { Pokemon } from '../../api/pokemons';
-import Card from '../../components/card';
-import PokemonImage, { PokemonImageType } from '../../components/pokemonImage';
+import Card from '../../components/Card';
+import PokemonImage, { PokemonImageType } from '../../components/PokemonImage';
 
 import styles from './PokemonCard.module.scss';
 

@@ -10,9 +10,9 @@ import {
   saveSettings,
 } from '../../../utils/settingsManager';
 
-import Checkbox from './checkbox';
+import Checkbox from './Checkbox';
+import Select from './Select';
 import styles from './index.module.scss';
-import Select from './select';
 
 const pathToOperator: { [key: string]: Operator } = {
   '/addition': Operator.addition,

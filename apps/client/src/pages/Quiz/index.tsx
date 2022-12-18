@@ -5,7 +5,7 @@ import { Operator } from '../../models/ArithmeticOperation';
 import { QuizResult, quizStore } from '../../stores/quizStore';
 import { loadCommonSettings } from '../../utils/settingsManager';
 
-import ArithmeticQuizItem from './arithmeticQuizItem';
+import ArithmeticQuizItem from './ArithmeticQuizItem';
 import styles from './index.module.scss';
 
 interface QuizProps {

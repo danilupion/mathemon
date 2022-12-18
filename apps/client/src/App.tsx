@@ -1,13 +1,13 @@
 import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
-import Home from './components/home';
 import Layout from './layouts/Layout';
 import { Operator } from './models/ArithmeticOperation';
-import MultiplicationTable from './pages/multiplicationTable';
-import MultiplicationTables from './pages/multiplicationTables';
-import Pokedex from './pages/pokedex';
-import Quiz from './pages/quiz';
+import Home from './pages/Home';
+import MultiplicationTable from './pages/MultiplicationTable';
+import MultiplicationTables from './pages/MultiplicationTables';
+import Pokedex from './pages/Pokedex';
+import Quiz from './pages/Quiz';
 
 const App = () => {
   return (
