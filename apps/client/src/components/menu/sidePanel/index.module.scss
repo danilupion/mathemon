@@ -1,4 +1,4 @@
-@import "~nes.css/css/nes";
+@import '~nes.css/css/nes';
 
 .panel {
   @extend .nes-container;
@@ -16,12 +16,12 @@
 
   &.left {
     left: 0;
-    margin-left: - calc(100%);
+    margin-left: -calc(100%);
   }
 
   &.right {
     right: 0;
-    margin-right: - calc(100%);
+    margin-right: -calc(100%);
   }
 
   &.open {

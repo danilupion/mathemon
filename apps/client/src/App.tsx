@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
 import Home from './components/home';
-import Layout from './components/layout';
+import Layout from './layouts/Layout';
 import { Operator } from './models/ArithmeticOperation';
 import MultiplicationTable from './pages/multiplicationTable';
 import MultiplicationTables from './pages/multiplicationTables';

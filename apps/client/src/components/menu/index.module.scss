@@ -1,12 +1,12 @@
-@import "~nes.css/css/nes";
+@import '~nes.css/css/nes';
 
 .container {
   margin-bottom: 100px;
 
   .header {
     position: fixed;
-    left:0;
-    right:0;
+    left: 0;
+    right: 0;
     top: 0;
     background-color: white;
     border-bottom: 5px solid black;
@@ -30,11 +30,11 @@
 
     a {
       text-decoration: none;
-      color: #F03030;
+      color: #f03030;
 
       &:hover {
         text-decoration: none;
-        color: #F03030;
+        color: #f03030;
       }
     }
 

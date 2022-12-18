@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
 
-import Menu from '../menu';
+import Menu from '../components/menu';
 
-import styles from './index.module.scss';
+import styles from './Layout.module.scss';
 
 const Layout = () => {
   return (
