@@ -96,5 +96,3 @@ export class QuizStore {
     return this.reviewsList[index];
   }
 }
-
-export const quizStore = new QuizStore();

@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
+import { useQuizStore } from '../../../hooks/useStore';
 import { Operator } from '../../../models/ArithmeticOperation';
-import { quizStore } from '../../../stores/quizStore';
 import {
   InputDirection,
   loadCommonSettings,
@@ -25,6 +25,7 @@ interface SettingsProps {
 }
 
 const Settings = ({ onSave }: SettingsProps) => {
+  const quizStore = useQuizStore();
   const { pathname } = useLocation();
   const currentSectionSettings = loadSectionSettings(pathToOperator[pathname]);
   const currentCommonSettings = loadCommonSettings();

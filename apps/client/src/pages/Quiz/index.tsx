@@ -1,8 +1,9 @@
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect } from 'react';
 
+import { useQuizStore } from '../../hooks/useStore';
 import { Operator } from '../../models/ArithmeticOperation';
-import { QuizResult, quizStore } from '../../stores/quizStore';
+import { QuizResult } from '../../stores/quizStore';
 import { loadCommonSettings } from '../../utils/settingsManager';
 
 import ArithmeticQuizItem from './ArithmeticQuizItem';
@@ -13,6 +14,7 @@ interface QuizProps {
 }
 
 const Quiz = observer(({ operator }: QuizProps) => {
+  const quizStore = useQuizStore();
   const { inputDirection } = loadCommonSettings();
 
   useEffect(() => {
