@@ -7,14 +7,26 @@
   },
   "license": "MIT",
   "workspaces": {
-    "packages":["apps/*", "packages/*"],
-    "nohoist": ["**/pokemon-sprites"]
+    "packages": [
+      "apps/*",
+      "packages/*"
+    ],
+    "nohoist": [
+      "**/pokemon-sprites"
+    ]
   },
   "scripts": {
     "start:dev:client": "yarn workspace @mathemon/client start:dev",
     "start:dev:server": "yarn workspace @mathemon/server start:dev",
     "start:dev": "yarn run:parallel 'yarn start:dev:client' 'yarn start:dev:server'",
     "start:prod:server": "yarn workspace @mathemon/server start:prod",
+    "test:turbo-common": "yarn workspace @mathemon/turbo-common test",
+    "test::turbo-client": "yarn workspace @mathemon/turbo-client test",
+    "test:turbo-server": "yarn workspace @mathemon/turbo-server test",
+    "test:poke-api": "yarn workspace @mathemon/common test",
+    "test:common": "yarn workspace @mathemon/common test:",
+    "test:client": "yarn workspace @mathemon/client test",
+    "test:server": "yarn workspace @mathemon/server test",
     "test:watch:turbo-common": "yarn workspace @mathemon/turbo-common test:watch",
     "test:watch:turbo-client": "yarn workspace @mathemon/turbo-client test:watch",
     "test:watch:turbo-server": "yarn workspace @mathemon/turbo-server test:watch",
