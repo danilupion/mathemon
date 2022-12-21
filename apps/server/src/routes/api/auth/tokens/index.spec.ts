@@ -25,10 +25,11 @@ describe('/api/auth/tokens', () => {
     await connectMongoose();
   });
   afterAll(async () => {
+    await UserModel.deleteMany({}).exec();
     await disconnectMongoose();
   });
   beforeEach(async () => {
-    await UserModel.deleteMany().exec();
+    await UserModel.deleteMany({}).exec();
   });
 
   describe('post', () => {
