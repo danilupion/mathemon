@@ -21,6 +21,7 @@
     "@mathemon/common": "1.0.0",
     "@mathemon/turbo-client": "1.0.0",
     "classnames": "^2.3.1",
+    "formik": "^2.2.9",
     "mobx": "^6.7.0",
     "mobx-react-lite": "^3.4.0",
     "nes.css": "^2.3.0",

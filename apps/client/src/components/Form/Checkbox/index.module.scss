@@ -1,0 +1,5 @@
+@import '~nes.css/css/nes';
+
+.checkbox {
+  @extend .nes-checkbox;
+}
