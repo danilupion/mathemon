@@ -1,6 +1,11 @@
-.quiz {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: center;
+.container {
+  text-align: center;
+
+  .quiz {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
 }

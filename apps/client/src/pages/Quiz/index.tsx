@@ -19,17 +19,17 @@ const Quiz = observer(({ operator }: QuizProps) => {
 
   useEffect(() => {
     quizStore.generateQuiz(operator);
-  }, [operator]);
+  }, [operator, quizStore]);
 
   const handleOnSetValue = useCallback(
     (index: number) => (value: QuizResult) => {
       quizStore.setResult(index, value);
     },
-    [],
+    [quizStore],
   );
 
   return (
-    <div>
+    <div className={styles.container}>
       <div className={styles.quiz}>
         {quizStore.quizItems.map((operation, index) => (
           <ArithmeticQuizItem
