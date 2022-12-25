@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useState } from 'react';
+import { Form, Formik } from 'formik';
+import { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useQuizStore } from '../../../hooks/useStore';
@@ -9,9 +10,9 @@ import {
   loadSectionSettings,
   saveSettings,
 } from '../../../utils/settingsManager';
+import { FormCheckboxField } from '../../Form/Checkbox';
+import { FormSelectField } from '../../Form/Select';
 
-import Checkbox from './Checkbox';
-import Select from './Select';
 import styles from './index.module.scss';
 
 const pathToOperator: { [key: string]: Operator } = {
@@ -24,86 +25,67 @@ interface SettingsProps {
   onSave?: () => void;
 }
 
+interface SettingsValues {
+  inputDirection: InputDirection;
+  digits: number;
+  carrying: boolean | undefined;
+}
+
 const Settings = ({ onSave }: SettingsProps) => {
   const quizStore = useQuizStore();
   const { pathname } = useLocation();
   const currentSectionSettings = loadSectionSettings(pathToOperator[pathname]);
   const currentCommonSettings = loadCommonSettings();
 
-  const [digits, setDigits] = useState<number>(currentSectionSettings.digits);
-  const [carrying, setCarrying] = useState<boolean | undefined>(currentSectionSettings.carrying);
-  const [inputDirection, setInputDirection] = useState<InputDirection>(
-    currentCommonSettings.inputDirection,
-  );
+  const handleSave = useCallback(
+    (settings: SettingsValues) => {
+      const operator = pathToOperator[pathname];
+      saveSettings(operator, {
+        common: {
+          inputDirection: settings.inputDirection,
+        },
+        section: {
+          digits: settings.digits,
+          carrying: settings.carrying,
+        },
+      });
+      quizStore.generateQuiz(operator);
 
-  const handleDigitsChange = useCallback(
-    (value: number) => {
-      setDigits(value);
+      onSave && onSave();
     },
-    [setDigits],
+    [quizStore, onSave, pathname],
   );
-
-  const handleCarryingChange = useCallback(
-    (value: boolean) => {
-      setCarrying(value);
-    },
-    [setCarrying],
-  );
-
-  const handleInputDirectionChange = useCallback(
-    (value: InputDirection) => {
-      setInputDirection(value);
-    },
-    [setInputDirection],
-  );
-
-  const handleSave = useCallback(() => {
-    const operator = pathToOperator[pathname];
-    saveSettings(operator, {
-      common: {
-        inputDirection,
-      },
-      section: {
-        digits,
-        carrying,
-      },
-    });
-    quizStore.generateQuiz(operator);
-    onSave && onSave();
-  }, [onSave, carrying, digits, inputDirection, pathname]);
-
-  useEffect(() => {
-    const currentSettings = loadSectionSettings(pathToOperator[pathname]);
-    const currentCommonSettings = loadCommonSettings();
-
-    setDigits(currentSettings.digits);
-    setCarrying(currentSettings.carrying);
-    setInputDirection(currentCommonSettings.inputDirection);
-  }, [pathname]);
 
   return (
     <div className={styles.container}>
-      <Select
-        label="Dirección de entrada"
-        value={inputDirection}
-        options={[
-          ['Derecha a Izquierda', InputDirection.RTL],
-          ['Izquierda a Derecha', InputDirection.LFR],
-        ]}
-        onChange={handleInputDirectionChange}
-      />
-      <Select
-        label="Dígitos"
-        value={digits}
-        options={[1, 2, 3, 4, 5]}
-        onChange={handleDigitsChange}
-        parser={(val: string) => Number.parseInt(val)}
-      />
-      {carrying !== undefined && (
-        <Checkbox label="Llevando" checked={carrying} onChange={handleCarryingChange} />
-      )}
-
-      <button onClick={handleSave}>Salvar</button>
+      <Formik
+        initialValues={{
+          inputDirection: currentCommonSettings.inputDirection,
+          digits: currentSectionSettings.digits,
+          carrying: currentSectionSettings.carrying,
+        }}
+        onSubmit={handleSave}
+      >
+        <Form>
+          <FormSelectField<InputDirection>
+            label="Dirección de entrada"
+            name="inputDirection"
+            options={[
+              ['Derecha a Izquierda', InputDirection.RTL],
+              ['Izquierda a Derecha', InputDirection.LFR],
+            ]}
+          />
+          <FormSelectField<number>
+            label="Dígitos"
+            name="digits"
+            encode={(e) => e.toString()}
+            decode={Number.parseInt}
+            options={[1, 2, 3, 4, 5]}
+          />
+          <FormCheckboxField name="carrying" text="Llevando" />
+          <button type="submit">Salvar</button>
+        </Form>
+      </Formik>
     </div>
   );
 };
