@@ -50,4 +50,9 @@
       }
     }
   }
+
+  .pokemon-image {
+    object-fit: cover;
+    object-view-box: inset(53% 0% 0% 0%);
+  }
 }

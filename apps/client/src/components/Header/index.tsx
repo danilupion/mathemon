@@ -2,36 +2,53 @@ import classNames from 'classnames';
 import { useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import MenuLink from './MenuLink';
+import { useAuthStore } from '../../hooks/useStore';
+import PokemonImage, { PokemonImageType } from '../PokemonImage';
+
+import MenuButton, { MenuButtonProps } from './MenuButton';
 import Settings from './Settings';
 import SidePanel, { Side } from './SidePanel';
-import bulbasaur from './bulbasaur.png';
-import charmander from './charmander.png';
 import close from './close.svg';
 import gear from './gear.svg';
-import icon from './icon.png';
 import styles from './index.module.scss';
 import menu from './menu.svg';
-import pikachu from './pikachu.png';
-import squirtle from './squirtle.png';
 
-interface HeaderRoute {
-  to: string;
-  label: string;
-  img?: string;
-}
-
-const routes: HeaderRoute[] = [
-  { to: '/addition', label: 'Suma', img: bulbasaur },
-  { to: '/subtraction', label: 'Resta', img: squirtle },
-  { to: '/multiplicationTables', label: 'Tablas', img: charmander },
-  { to: '/multiplication', label: 'Multiplicación', img: pikachu },
-  { to: '/pokedex', label: 'Pokedex' },
+const routes: MenuButtonProps[] = [
+  {
+    to: '/addition',
+    label: 'Suma',
+    img: (
+      <PokemonImage pokemon={1} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
+    ),
+  },
+  {
+    to: '/subtraction',
+    label: 'Resta',
+    img: (
+      <PokemonImage pokemon={7} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
+    ),
+  },
+  {
+    to: '/multiplicationTables',
+    label: 'Tablas',
+    img: (
+      <PokemonImage pokemon={4} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
+    ),
+  },
+  {
+    to: '/multiplication',
+    label: 'Multiplicación',
+    img: (
+      <PokemonImage pokemon={25} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
+    ),
+  },
+  { to: '/pokedex', label: 'Pokedex', img: '/icons/poke-ball.png' },
 ];
 
 const pathsWithSettings = ['/addition', '/subtraction', '/multiplication'];
 
 const Header = () => {
+  const authStore = useAuthStore();
   const { pathname } = useLocation();
 
   const [leftPanelOpen, setLeftPanelOpen] = useState(false);
@@ -61,6 +78,10 @@ const Header = () => {
 
   const pathHasSettings = pathsWithSettings.includes(pathname);
 
+  const firstEntry: MenuButtonProps = authStore.signedIn
+    ? { label: 'Salir', onClick: authStore.signOut }
+    : { to: '/signIn', label: 'Ingresar', img: '/icons/basement-key.png' };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -69,8 +90,8 @@ const Header = () => {
         </button>
         <h1>
           <a href="/">
-            <img src={icon} alt="Icon" />
-            <span> Mathemon</span>
+            <img src="/icons/poke-ball.png" alt="Mathemon" />
+            <span>Mathemon</span>
           </a>
         </h1>
         <button
@@ -84,8 +105,15 @@ const Header = () => {
         </button>
       </div>
       <SidePanel open={leftPanelOpen} onClose={closeLeftPanel} side={Side.Left}>
-        {routes.map(({ to, label, img }) => (
-          <MenuLink key={to} to={to} label={label} img={img} onClick={closeLeftPanel} />
+        {[firstEntry, ...routes].map(({ onClick, ...props }, index) => (
+          <MenuButton
+            key={index}
+            {...props}
+            onClick={() => {
+              onClick?.();
+              closeLeftPanel();
+            }}
+          />
         ))}
       </SidePanel>
       <SidePanel open={rightPanelOpen} onClose={closeRightPanel} side={Side.Right}>

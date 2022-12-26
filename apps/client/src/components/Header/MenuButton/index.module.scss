@@ -1,6 +1,6 @@
 @import '~nes.css/css/nes';
 
-.menuLink {
+.menu-button {
   @extend .nes-btn;
   margin: 10px;
 
@@ -10,5 +10,6 @@
 
   img {
     width: 46px;
+    height: 46px;
   }
 }
