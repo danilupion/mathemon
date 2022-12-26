@@ -1,9 +1,10 @@
+import { observer } from 'mobx-react-lite';
 import { useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useAuthStore } from '../hooks/useStore';
 
-const NotSignedInGuard = () => {
+const NotSignedInGuard = observer(() => {
   const { user } = useAuthStore();
   const navigate = useNavigate();
 
@@ -16,6 +17,6 @@ const NotSignedInGuard = () => {
   });
 
   return !signedIn ? <Outlet /> : null;
-};
+});
 
 export default NotSignedInGuard;

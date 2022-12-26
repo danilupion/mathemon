@@ -1,7 +1,7 @@
 import { UserRole } from '@mathemon/common/models/user';
 import store from '@mathemon/turbo-client/store/index';
 import jwtDecode from 'jwt-decode';
-import { action, computed } from 'mobx';
+import { action, computed, makeAutoObservable } from 'mobx';
 
 import { generateToken, renewToken } from '../api/auth';
 
@@ -22,6 +22,7 @@ export class AuthStore {
 
   constructor() {
     try {
+      makeAutoObservable(this);
       let token = store(true).getItem(TOKEN_STORAGE_KEY);
       if (token) {
         this.rememberMe = true;
