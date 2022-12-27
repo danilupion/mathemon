@@ -76,7 +76,7 @@ export class AuthStore {
   };
 
   @action
-  private setToken(token?: string) {
+  private setToken = (token?: string) => {
     setToken(token);
     if (token) {
       const { id, username, role } = jwtDecode<LoggedUser>(token);
@@ -96,12 +96,12 @@ export class AuthStore {
       store(this.rememberMe).removeItem(TOKEN_STORAGE_KEY);
       this.stopRenewal();
     }
-  }
+  };
 
   @action
-  public setRememberMe(rememberMe: boolean) {
+  public setRememberMe = (rememberMe: boolean) => {
     this.rememberMe = rememberMe;
-  }
+  };
 
   @computed
   public get user() {
