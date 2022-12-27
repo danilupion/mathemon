@@ -2,7 +2,6 @@ import { Form, Formik } from 'formik';
 import { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { useQuizStore } from '../../../hooks/useStore';
 import { Operator } from '../../../models/ArithmeticOperation';
 import {
   InputDirection,
@@ -33,7 +32,6 @@ interface SettingsValues {
 }
 
 const Settings = ({ onSave }: SettingsProps) => {
-  const quizStore = useQuizStore();
   const { pathname } = useLocation();
   const currentSectionSettings = loadSectionSettings(pathToOperator[pathname]);
   const currentCommonSettings = loadCommonSettings();
@@ -50,11 +48,10 @@ const Settings = ({ onSave }: SettingsProps) => {
           carrying: settings.carrying,
         },
       });
-      quizStore.generateQuiz(operator);
 
       onSave && onSave();
     },
-    [quizStore, onSave, pathname],
+    [onSave, pathname],
   );
 
   return (

@@ -1,8 +1,8 @@
+import { ArithmeticOperation } from '@mathemon/common/models/arithmeticOperation';
 import classNames from 'classnames';
 import { ChangeEvent, useCallback } from 'react';
 
-import ArithmeticOperation from '../../../models/ArithmeticOperation';
-import { QuizResult, Review } from '../../../stores/quizStore';
+import { maxDigits } from '../../../utils/math';
 import { InputDirection } from '../../../utils/settingsManager';
 
 import styles from './index.module.scss';
@@ -10,9 +10,9 @@ import styles from './index.module.scss';
 interface ArithmeticQuizItemProps {
   operation: ArithmeticOperation;
   inputDirection: InputDirection;
-  value: QuizResult;
-  onSetValue: (result: QuizResult) => void;
-  isCorrect?: Review;
+  value: number | undefined;
+  onSetValue: (result: number | undefined) => void;
+  isCorrect?: boolean;
 }
 
 const Index = ({
@@ -70,7 +70,7 @@ const Index = ({
           value={value === undefined ? '' : value}
           size={1}
           onChange={handleOnChange}
-          maxLength={operation.maxDigits() + 1}
+          maxLength={maxDigits(operation.operands) + 1}
           type="text"
           inputMode="numeric"
         />

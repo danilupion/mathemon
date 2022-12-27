@@ -1,3 +1,5 @@
+@import '~nes.css/css/nes';
+
 .container {
   text-align: center;
 
@@ -7,5 +9,10 @@
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
+  }
+
+  .asses {
+    @extend .nes-btn;
+    @extend .is-primary;
   }
 }
