@@ -8,10 +8,6 @@ import {
   createInitForPut,
 } from './init.js';
 
-interface Dictionary {
-  [key: string]: unknown;
-}
-
 const statusMiddleware = async (res: Response) => {
   if (res.status === 400) {
     const validationErrors = await res.json();
@@ -24,20 +20,20 @@ const statusMiddleware = async (res: Response) => {
   return res;
 };
 
-const jsonHandler = <T>(res: Response) => res.json() as Promise<T>;
+const jsonHandler = <Res>(res: Response) => res.json() as Promise<Res>;
 
-const jsonFetch = async <T, NoResponse extends boolean = false>(
+const jsonFetch = async <Res, NoResponse extends boolean = false>(
   url: string,
   init: RequestInit,
   noResponse: NoResponse = false as NoResponse,
-): Promise<NoResponse extends true ? void : T> => {
+): Promise<NoResponse extends true ? void : Res> => {
   const result = await fetch(url, init).then(statusMiddleware);
 
   if (noResponse) {
     return undefined as never;
   }
 
-  return (await jsonHandler<T>(result)) as never;
+  return (await jsonHandler<Res>(result)) as never;
 };
 
 interface RequestOptions<NoResponse extends boolean> {
@@ -47,14 +43,14 @@ interface RequestOptions<NoResponse extends boolean> {
 
 const bodylessRequest =
   (initFactory: () => RequestInit, responselessRequest = false) =>
-  <T, NoResponse extends boolean = false>(
+  <Res, NoResponse extends boolean = false>(
     url: string,
     {
       init = initFactory(),
       noResponse = responselessRequest as NoResponse,
     }: RequestOptions<NoResponse> = {},
   ) => {
-    return jsonFetch<T, NoResponse>(
+    return jsonFetch<Res, NoResponse>(
       url,
       {
         ...init,
@@ -65,31 +61,28 @@ const bodylessRequest =
 
 const bodyRequest =
   (initFactory: () => RequestInit, responselessRequest = false) =>
-  <T, NoResponse extends boolean = false>(
+  <Body, Res, NoResponse extends boolean = false>(
     url: string,
-    data?: Dictionary | FormData,
+    data: Body,
     {
       init = initFactory(),
       noResponse = responselessRequest as NoResponse,
     }: RequestOptions<NoResponse> = {},
-  ) => {
-    if (data instanceof FormData && init.headers) {
-      const headers = init.headers as Dictionary;
-      delete headers['content-type'];
-    }
-
-    return jsonFetch<T, NoResponse>(
+  ) =>
+    jsonFetch<Res, NoResponse>(
       url,
       {
         ...init,
-        body: data instanceof FormData ? data : JSON.stringify(data),
+        body: JSON.stringify(data),
       },
       noResponse,
     );
-  };
 
 export const getRequest = bodylessRequest(createInitForGet);
 export const postRequest = bodyRequest(createInitForPost);
+export const bodylessPostRequest = bodylessRequest(createInitForPost);
 export const patchRequest = bodyRequest(createInitForPatch);
+export const bodylessPatchRequest = bodylessRequest(createInitForPatch);
 export const putRequest = bodyRequest(createInitForPut);
+export const bodylessPutRequest = bodylessRequest(createInitForPut);
 export const deleteRequest = bodylessRequest(createInitForDelete, true);

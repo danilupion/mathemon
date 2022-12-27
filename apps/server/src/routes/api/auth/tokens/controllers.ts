@@ -1,8 +1,10 @@
+import { CreateTokenBody } from '@mathemon/common/models/api/auth.js';
+import { RequestWithBody } from '@mathemon/turbo-server/helpers/express/route.js';
 import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
 import { generateToken } from '@mathemon/turbo-server/helpers/token.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import { RequestWithJwtData } from '@mathemon/turbo-server/middleware/express/auth.js';
-import { Request, Response } from 'express';
+import { Response } from 'express';
 
 import UserModel, { UserDocument } from '../../../../models/user.js';
 
@@ -13,7 +15,7 @@ export const getTokenPayload = (user: UserDocument) => ({
   role: user.role,
 });
 
-export const createToken = async (req: Request, res: Response) => {
+export const createToken = async (req: RequestWithBody<CreateTokenBody>, res: Response) => {
   const user = await UserModel.findOne({
     $or: [{ email: req.body.usernameOrEmail }, { username: req.body.usernameOrEmail }],
   });

@@ -1,7 +1,7 @@
 import { getRoute } from '@mathemon/turbo-server/helpers/express/route.js';
 import { Router } from 'express';
 
-import { getAllPokemons } from './handlers.js';
+import { getAllPokemons } from './controllers.js';
 
 const router = Router();
 

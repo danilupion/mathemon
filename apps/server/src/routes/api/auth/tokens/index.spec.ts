@@ -11,7 +11,7 @@ import jwtDecode from 'jwt-decode';
 
 import UserModel from '../../../../models/user.js';
 
-import { getTokenPayload } from './handlers.js';
+import { getTokenPayload } from './controllers.js';
 
 import router from './index.js';
 
