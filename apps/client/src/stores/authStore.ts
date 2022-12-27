@@ -1,4 +1,5 @@
 import { UserRole } from '@mathemon/common/models/user';
+import { setToken } from '@mathemon/turbo-client/rest/init';
 import store from '@mathemon/turbo-client/store/index';
 import jwtDecode from 'jwt-decode';
 import { action, computed, makeAutoObservable } from 'mobx';
@@ -76,7 +77,7 @@ export class AuthStore {
 
   @action
   private setToken(token?: string) {
-    // setToken(token);
+    setToken(token);
     if (token) {
       const { id, username, role } = jwtDecode<LoggedUser>(token);
 
