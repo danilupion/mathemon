@@ -19,21 +19,24 @@ export default (
 
     const registeredRouters: RegExp[] = router.stack.filter((s) => !s.route).map((s) => s.regexp);
 
-    routes.forEach((route) => {
-      if (typeof route === 'string') {
-        it(`Should register router at ${route}`, () => {
-          expect(registeredRouters.some((regExp) => regExp.exec(route))).toBe(true);
-        });
-      } else {
-        const [method, path] = route;
-        it(`Should register ${method} route at ${path}`, () => {
-          expect(
-            registeredRoutes.some((registeredRoute) => {
-              return registeredRoute.path === path && registeredRoute.methods[method as Method];
-            }),
-          ).toBe(true);
-        });
-      }
+    const routersInRoutes = routes.filter((r) => typeof r === 'string') as string[];
+    const routesInRoutes = routes.filter((r) => typeof r !== 'string') as [Method, string][];
+
+    routersInRoutes.forEach((route, index) => {
+      it(`Should register router at ${route}`, () => {
+        expect(registeredRouters[index].test(route)).toBe(true);
+      });
+    });
+
+    routesInRoutes.forEach((route) => {
+      const [method, path] = route;
+      it(`Should register ${method} route at ${path}`, () => {
+        expect(
+          registeredRoutes.some((registeredRoute) => {
+            return registeredRoute.path === path && registeredRoute.methods[method as Method];
+          }),
+        ).toBe(true);
+      });
     });
 
     it(`Should have exactly ${routes.length} routes`, () => {
