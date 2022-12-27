@@ -12,9 +12,11 @@ import {
   ServerErrorInternalServerError,
 } from '../httpError.js';
 
-export type RequestWith<T, F extends string> = Request & {
-  [key in F]: T;
+export type RequestWith<Value, Field extends string> = Request & {
+  [key in Field]: Value;
 };
+
+export type RequestWithBody<Value> = RequestWith<Value, 'body'>;
 
 type CustomHandler<Req extends Request = Request, Res extends Response = Response> = (
   req: Req,
