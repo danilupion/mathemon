@@ -1,6 +1,8 @@
 import classNames from 'classnames';
 import { NavLink, useLocation } from 'react-router-dom';
 
+import Button from '../../Button';
+
 import styles from './index.module.scss';
 
 interface CommonProps {
@@ -37,9 +39,9 @@ const MenuButton = ({ label, img, onClick, ...rest }: MenuButtonProps) => {
       {content}
     </NavLink>
   ) : (
-    <button className={styles['menu-button']} onClick={onClick}>
+    <Button className={styles['menu-button']} onClick={onClick}>
       {content}
-    </button>
+    </Button>
   );
 };
 

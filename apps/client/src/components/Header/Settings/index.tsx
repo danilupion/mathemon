@@ -10,6 +10,7 @@ import {
   loadSectionSettings,
   saveSettings,
 } from '../../../utils/settingsManager';
+import Button from '../../Button';
 import { FormCheckboxField } from '../../Form/Checkbox';
 import { FormSelectField } from '../../Form/Select';
 
@@ -83,7 +84,9 @@ const Settings = ({ onSave }: SettingsProps) => {
             options={[1, 2, 3, 4, 5]}
           />
           <FormCheckboxField name="carrying" text="Llevando" />
-          <button type="submit">Salvar</button>
+          <Button className={styles.save} type="submit">
+            Salvar
+          </Button>
         </Form>
       </Formik>
     </div>

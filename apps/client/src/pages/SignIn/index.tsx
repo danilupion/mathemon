@@ -2,6 +2,7 @@ import { UserRole } from '@mathemon/common/models/user';
 import { Form, Formik } from 'formik';
 import { useCallback, useState } from 'react';
 
+import Button from '../../components/Button';
 import { FormCheckboxField } from '../../components/Form/Checkbox';
 import { FormInputField } from '../../components/Form/Input';
 import { useAuthStore } from '../../hooks/useStore';
@@ -45,9 +46,9 @@ const SignIn = () => {
                 <FormInputField<string> label="Email" type="email" name="email" />
                 <FormInputField<string> label="Password" type="password" name="password" />
                 <FormCheckboxField name="rememberMe" text="Recuérdame" />
-                <button type="submit" disabled={isSubmitting}>
+                <Button type="submit" disabled={isSubmitting} className={styles.send}>
                   Entrar
-                </button>
+                </Button>
               </Form>
             )}
           </Formik>

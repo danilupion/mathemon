@@ -16,15 +16,9 @@
     align-items: center;
     z-index: 3;
 
-    button {
-      @extend .nes-btn;
-
+    .side-panel-toggle {
       img {
         width: 32px;
-      }
-
-      &:disabled {
-        @extend .is-disabled;
       }
     }
 

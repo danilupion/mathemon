@@ -1,8 +1,8 @@
-import classNames from 'classnames';
 import { useCallback, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 import { useAuthStore } from '../../hooks/useStore';
+import Button from '../Button';
 import PokemonImage, { PokemonImageType } from '../PokemonImage';
 
 import MenuButton, { MenuButtonProps } from './MenuButton';
@@ -85,24 +85,22 @@ const Header = () => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <button onClick={toggleLeftPanel}>
+        <Button onClick={toggleLeftPanel} className={styles['side-panel-toggle']}>
           <img src={leftPanelOpen ? close : menu} alt="Open Menu" />
-        </button>
+        </Button>
         <h1>
           <a href="/">
             <img src="/icons/poke-ball.png" alt="Mathemon" />
             <span>Mathemon</span>
           </a>
         </h1>
-        <button
-          className={classNames({
-            [styles.disabled]: !pathHasSettings,
-          })}
+        <Button
           disabled={!pathHasSettings}
           onClick={toggleRightPanel}
+          className={styles['side-panel-toggle']}
         >
           <img src={rightPanelOpen ? close : gear} alt="Open Settings" />
-        </button>
+        </Button>
       </div>
       <SidePanel open={leftPanelOpen} onClose={closeLeftPanel} side={Side.Left}>
         {[firstEntry, ...routes].map(({ onClick, ...props }, index) => (
