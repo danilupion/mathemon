@@ -16,7 +16,9 @@ export type RequestWith<Value, Field extends string> = Request & {
   [key in Field]: Value;
 };
 
-export type RequestWithBody<Value> = RequestWith<Value, 'body'>;
+export type RequestWithBody<Value> = Omit<Request, 'body'> & {
+  body: Value;
+};
 
 type CustomHandler<Req extends Request = Request, Res extends Response = Response> = (
   req: Req,
