@@ -1,11 +1,10 @@
-import { CreateAssessmentBody } from '@mathemon/common/models/api/assessments.js';
-import { Operator } from '@mathemon/common/models/arithmeticOperation.js';
-import { ArithmeticOperationResult } from '@mathemon/common/models/arithmeticOperationResult.js';
+import { CreateAssessmentBody } from '@mathemon/common/models/api/evaluations.js';
+import { Operator, Solution } from '@mathemon/common/models/operation.js';
 import { RequestWithBody } from '@mathemon/turbo-server/helpers/express/route.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import { Response } from 'express';
 
-const isCorrect = ({ operation: { operator, operands }, result }: ArithmeticOperationResult) => {
+const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
   let resultOfOperation;
   switch (operator) {
     case Operator.addition:
@@ -19,10 +18,10 @@ const isCorrect = ({ operation: { operator, operands }, result }: ArithmeticOper
       break;
   }
 
-  return resultOfOperation === result;
+  return resultOfOperation === value;
 };
 
-export const createAssessment = async (
+export const createEvaluation = async (
   req: RequestWithBody<CreateAssessmentBody>,
   res: Response,
 ) => {

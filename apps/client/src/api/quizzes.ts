@@ -1,8 +1,8 @@
 import { CreateQuizBody } from '@mathemon/common/models/api/quizzes';
-import { ArithmeticOperation, Operator } from '@mathemon/common/models/arithmeticOperation';
+import { Operation, Operator } from '@mathemon/common/models/operation';
 import { postRequest } from '@mathemon/turbo-client/rest/methods';
 
 const basePath = '/api/quizzes';
 
 export const createQuiz = (operator: Operator, digits: number, carrying: boolean | undefined) =>
-  postRequest<CreateQuizBody, ArithmeticOperation[]>(basePath, { operator, digits, carrying });
+  postRequest<CreateQuizBody, Operation[]>(basePath, { operator, digits, carrying });

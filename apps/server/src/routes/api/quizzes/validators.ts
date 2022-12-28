@@ -1,4 +1,4 @@
-import { Operator } from '@mathemon/common/models/arithmeticOperation.js';
+import { Operator } from '@mathemon/common/models/operation.js';
 import { body } from 'express-validator';
 
 export const quizCreationValidator = [

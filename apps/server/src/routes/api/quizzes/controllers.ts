@@ -1,11 +1,11 @@
 import { CreateQuizBody } from '@mathemon/common/models/api/quizzes.js';
-import { ArithmeticOperation, Operator } from '@mathemon/common/models/arithmeticOperation.js';
+import { Operation, Operator } from '@mathemon/common/models/operation.js';
 import { RequestWithBody } from '@mathemon/turbo-server/helpers/express/route.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import config from 'config';
 import { Response } from 'express';
 
-import { randomInt } from '../../../../utils/math.js';
+import { randomInt } from '../../../utils/math.js';
 
 interface CreateOperandParams {
   digits: number;
@@ -40,7 +40,7 @@ const createOperand = ({ operator, digits, carrying, reference }: CreateOperandP
 };
 
 export const createQuiz = async (req: RequestWithBody<CreateQuizBody>, res: Response) => {
-  const quizList: ArithmeticOperation[] = [];
+  const quizList: Operation[] = [];
 
   for (let i = 0; i < quizSize; i++) {
     const operand1 = createOperand({ ...req.body });

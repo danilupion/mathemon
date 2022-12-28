@@ -1,4 +1,4 @@
-import { Operator } from '../arithmeticOperation.js';
+import { Operator } from '../operation.js';
 
 export interface CreateQuizBody {
   operator: Operator;

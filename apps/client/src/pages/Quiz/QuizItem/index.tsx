@@ -1,4 +1,4 @@
-import { ArithmeticOperation } from '@mathemon/common/models/arithmeticOperation';
+import { Operation } from '@mathemon/common/models/operation';
 import classNames from 'classnames';
 import { ChangeEvent, useCallback } from 'react';
 
@@ -7,21 +7,21 @@ import { InputDirection } from '../../../utils/settingsManager';
 
 import styles from './index.module.scss';
 
-interface ArithmeticQuizItemProps {
-  operation: ArithmeticOperation;
+interface QuizItemProps {
+  operation: Operation;
   inputDirection: InputDirection;
-  value: number | undefined;
+  solution: number | undefined;
   onSetValue: (result: number | undefined) => void;
   isCorrect?: boolean;
 }
 
-const Index = ({
+const QuizItem = ({
   operation,
   inputDirection,
-  value,
+  solution,
   onSetValue,
   isCorrect,
-}: ArithmeticQuizItemProps) => {
+}: QuizItemProps) => {
   const handleOnChange = useCallback(
     (ev: ChangeEvent<HTMLInputElement>) => {
       const inputValue = ev.target.value.trim();
@@ -67,7 +67,7 @@ const Index = ({
       <div>
         <input
           contentEditable={true}
-          value={value === undefined ? '' : value}
+          value={solution === undefined ? '' : solution}
           size={1}
           onChange={handleOnChange}
           maxLength={maxDigits(operation.operands) + 1}
@@ -79,4 +79,4 @@ const Index = ({
   );
 };
 
-export default Index;
+export default QuizItem;
