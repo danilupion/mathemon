@@ -7,6 +7,7 @@ import { Operator } from './models/ArithmeticOperation';
 import Home from './pages/Home';
 import MultiplicationTable from './pages/MultiplicationTable';
 import MultiplicationTables from './pages/MultiplicationTables';
+import NotFound from './pages/NotFound';
 import Pokedex from './pages/Pokedex';
 import Quiz from './pages/Quiz';
 import SignIn from './pages/SignIn';
@@ -23,6 +24,7 @@ const App = () => {
           <Route path="multiplicationTables" element={<MultiplicationTables />} />
           <Route path="multiplicationTables/:table" element={<MultiplicationTable />} />
           <Route path="pokedex" element={<Pokedex />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/signIn" element={<NotSignedInGuard />}>
           <Route path="" element={<SignIn />} />
