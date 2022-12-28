@@ -1,6 +1,6 @@
 import { UserRole } from '@mathemon/common/models/user';
 import { setToken } from '@mathemon/turbo-client/rest/init';
-import store from '@mathemon/turbo-client/store/index';
+import store from '@mathemon/turbo-client/store';
 import jwtDecode from 'jwt-decode';
 import { action, computed, makeAutoObservable } from 'mobx';
 

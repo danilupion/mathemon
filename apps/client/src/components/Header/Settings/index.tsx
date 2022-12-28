@@ -1,14 +1,11 @@
 import { Operator } from '@mathemon/common/models/operation';
 import { Form, Formik } from 'formik';
+import { observer } from 'mobx-react-lite';
 import { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import {
-  InputDirection,
-  loadCommonSettings,
-  loadSectionSettings,
-  saveSettings,
-} from '../../../utils/settingsManager';
+import { useSettingsStore } from '../../../hooks/useStore';
+import { InputDirection } from '../../../stores/settingsStore';
 import Button from '../../Button';
 import { FormCheckboxField } from '../../Form/Checkbox';
 import { FormSelectField } from '../../Form/Select';
@@ -31,15 +28,16 @@ interface SettingsValues {
   carrying: boolean | undefined;
 }
 
-const Settings = ({ onSave }: SettingsProps) => {
+const Settings = observer(({ onSave }: SettingsProps) => {
+  const settingsStore = useSettingsStore();
   const { pathname } = useLocation();
-  const currentSectionSettings = loadSectionSettings(pathToOperator[pathname]);
-  const currentCommonSettings = loadCommonSettings();
+  const currentSectionSettings = settingsStore.getSection(pathToOperator[pathname]);
+  const currentCommonSettings = settingsStore.getCommon();
 
   const handleSave = useCallback(
     (settings: SettingsValues) => {
       const operator = pathToOperator[pathname];
-      saveSettings(operator, {
+      settingsStore.saveSettings(operator, {
         common: {
           inputDirection: settings.inputDirection,
         },
@@ -51,7 +49,7 @@ const Settings = ({ onSave }: SettingsProps) => {
 
       onSave && onSave();
     },
-    [onSave, pathname],
+    [onSave, pathname, settingsStore],
   );
 
   return (
@@ -88,6 +86,6 @@ const Settings = ({ onSave }: SettingsProps) => {
       </Formik>
     </div>
   );
-};
+});
 
 export default Settings;

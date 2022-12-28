@@ -5,7 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { createEvaluation } from '../../api/evaluations';
 import { createQuiz } from '../../api/quizzes';
 import Button from '../../components/Button';
-import { loadCommonSettings, loadSectionSettings } from '../../utils/settingsManager';
+import { useSettingsStore } from '../../hooks/useStore';
 
 import QuizItem, { Item } from './QuizItem';
 import styles from './index.module.scss';
@@ -15,12 +15,12 @@ interface QuizProps {
 }
 
 const Quiz = observer(({ operator }: QuizProps) => {
-  const { inputDirection } = loadCommonSettings();
+  const settingsStore = useSettingsStore();
+  const { inputDirection } = settingsStore.getCommon();
+  const { digits, carrying } = settingsStore.getSection(operator);
   const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
-    const { digits, carrying } = loadSectionSettings(operator);
-
     createQuiz(operator, digits, carrying).then((items) => {
       setItems(
         items.map((item) => ({
@@ -28,7 +28,7 @@ const Quiz = observer(({ operator }: QuizProps) => {
         })),
       );
     });
-  }, [operator, setItems]);
+  }, [carrying, digits, operator, setItems]);
 
   const handleSetValue = useCallback(
     (index: number) => (value: number | undefined) => {

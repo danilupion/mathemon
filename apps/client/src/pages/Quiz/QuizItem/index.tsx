@@ -2,8 +2,8 @@ import { Evaluation, Solution } from '@mathemon/common/models/operation';
 import classNames from 'classnames';
 import { ChangeEvent, useCallback } from 'react';
 
+import { InputDirection } from '../../../stores/settingsStore';
 import { maxDigits } from '../../../utils/math';
-import { InputDirection } from '../../../utils/settingsManager';
 
 import styles from './index.module.scss';
 
