@@ -1,4 +1,4 @@
-import { Operation } from '@mathemon/common/models/operation';
+import { Evaluation, Solution } from '@mathemon/common/models/operation';
 import classNames from 'classnames';
 import { ChangeEvent, useCallback } from 'react';
 
@@ -7,21 +7,21 @@ import { InputDirection } from '../../../utils/settingsManager';
 
 import styles from './index.module.scss';
 
+export type Item = Omit<Evaluation, 'solution' | 'correct'> & {
+  solution: Omit<Solution, 'value'> & {
+    value?: number;
+  };
+  correct?: boolean;
+};
+
 interface QuizItemProps {
-  operation: Operation;
+  item: Item;
   inputDirection: InputDirection;
-  solution: number | undefined;
+
   onSetValue: (result: number | undefined) => void;
-  isCorrect?: boolean;
 }
 
-const QuizItem = ({
-  operation,
-  inputDirection,
-  solution,
-  onSetValue,
-  isCorrect,
-}: QuizItemProps) => {
+const QuizItem = ({ item, inputDirection, onSetValue }: QuizItemProps) => {
   const handleOnChange = useCallback(
     (ev: ChangeEvent<HTMLInputElement>) => {
       const inputValue = ev.target.value.trim();
@@ -51,14 +51,14 @@ const QuizItem = ({
   return (
     <div
       className={classNames(styles.quizItem, {
-        [styles.right]: isCorrect,
-        [styles.wrong]: isCorrect === false,
+        [styles.right]: item.correct,
+        [styles.wrong]: item.correct === false,
       })}
     >
       <div className={styles.operation}>
-        <div>{operation.operator} &nbsp;&nbsp;</div>
+        <div>{item.solution.operation.operator} &nbsp;&nbsp;</div>
         <div>
-          {operation.operands.map((operand, index) => (
+          {item.solution.operation.operands.map((operand, index) => (
             <div key={`${operand}-${index}`}>{operand}</div>
           ))}
         </div>
@@ -67,10 +67,10 @@ const QuizItem = ({
       <div>
         <input
           contentEditable={true}
-          value={solution === undefined ? '' : solution}
+          value={item.solution.value === undefined ? '' : item.solution.value}
           size={1}
           onChange={handleOnChange}
-          maxLength={maxDigits(operation.operands) + 1}
+          maxLength={maxDigits(item.solution.operation.operands) + 1}
           type="text"
           inputMode="numeric"
         />

@@ -1,4 +1,4 @@
-import { Evaluation, Operation, Operator } from '@mathemon/common/models/operation';
+import { Operator, Solution } from '@mathemon/common/models/operation';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -7,7 +7,7 @@ import { createQuiz } from '../../api/quizzes';
 import Button from '../../components/Button';
 import { loadCommonSettings, loadSectionSettings } from '../../utils/settingsManager';
 
-import QuizItem from './QuizItem';
+import QuizItem, { Item } from './QuizItem';
 import styles from './index.module.scss';
 
 interface QuizProps {
@@ -16,59 +16,58 @@ interface QuizProps {
 
 const Quiz = observer(({ operator }: QuizProps) => {
   const { inputDirection } = loadCommonSettings();
-  const [operations, setOperations] = useState<Operation[]>([]);
-  const [values, setValues] = useState<(number | undefined)[]>([]);
-  const [evaluations, setEvaluations] = useState<(Evaluation | undefined)[]>([]);
+  const [items, setItems] = useState<Item[]>([]);
 
   useEffect(() => {
     const { digits, carrying } = loadSectionSettings(operator);
 
     createQuiz(operator, digits, carrying).then((items) => {
-      setOperations(items);
-      setValues(items.map(() => undefined));
-      setEvaluations(items.map(() => undefined));
+      setItems(
+        items.map((item) => ({
+          solution: { operation: item, value: undefined },
+        })),
+      );
     });
-  }, [operator]);
+  }, [operator, setItems]);
 
   const handleSetValue = useCallback(
     (index: number) => (value: number | undefined) => {
-      setValues((prev) => {
+      setItems((prev) => {
         const newResults = [...prev];
-        newResults[index] = value;
+        newResults[index] = {
+          ...prev[index],
+          solution: {
+            ...prev[index].solution,
+            value,
+          },
+        };
         return newResults;
       });
     },
-    [],
+    [setItems],
   );
 
   const handleReview = useCallback(async () => {
-    const evaluations = await createEvaluation(
-      operations.map((item, index) => ({
-        operation: item,
-        value: values[index]!,
-      })),
-    );
+    const evaluations = await createEvaluation(items.map((item) => item.solution as Solution));
 
-    setEvaluations(evaluations);
-  }, [operations, values]);
+    setItems(evaluations);
+  }, [items]);
 
   return (
     <div className={styles.container}>
       <div className={styles.quiz}>
-        {operations.map((operation, index) => (
+        {items.map((item, index) => (
           <QuizItem
-            operation={operation}
+            item={item}
             inputDirection={inputDirection}
-            key={`${index} ${operation.operands[0]}${operation.operator}${operation.operands[1]}`}
+            key={`${index} ${item.solution.operation.operands[0]}${item.solution.operation.operator}${item.solution.operation.operands[1]}`}
             onSetValue={handleSetValue(index)}
-            solution={values[index]}
-            isCorrect={evaluations[index]?.correct}
           />
         ))}
       </div>
       <Button
         className={styles.evaluate}
-        disabled={values.some((r) => r === undefined) || evaluations.some((a) => a !== undefined)}
+        disabled={items.some((i) => i.solution.value === undefined)}
         onClick={handleReview}
       >
         Corregir!
