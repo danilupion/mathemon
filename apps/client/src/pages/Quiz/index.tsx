@@ -1,11 +1,10 @@
-import { Evaluation, Operation } from '@mathemon/common/models/operation';
+import { Evaluation, Operation, Operator } from '@mathemon/common/models/operation';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState } from 'react';
 
 import { createEvaluation } from '../../api/evaluations';
 import { createQuiz } from '../../api/quizzes';
 import Button from '../../components/Button';
-import { Operator } from '../../models/ArithmeticOperation';
 import { loadCommonSettings, loadSectionSettings } from '../../utils/settingsManager';
 
 import QuizItem from './QuizItem';

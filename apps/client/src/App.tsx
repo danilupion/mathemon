@@ -1,9 +1,9 @@
+import { Operator } from '@mathemon/common/models/operation';
 import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
 import NotSignedInGuard from './guards/NotSignedInGuard';
 import Layout from './layouts/Layout';
-import { Operator } from './models/ArithmeticOperation';
 import Home from './pages/Home';
 import MultiplicationTable from './pages/MultiplicationTable';
 import MultiplicationTables from './pages/MultiplicationTables';

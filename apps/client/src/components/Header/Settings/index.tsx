@@ -1,8 +1,8 @@
+import { Operator } from '@mathemon/common/models/operation';
 import { Form, Formik } from 'formik';
 import { useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { Operator } from '../../../models/ArithmeticOperation';
 import {
   InputDirection,
   loadCommonSettings,

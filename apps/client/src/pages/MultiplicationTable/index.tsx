@@ -1,6 +1,6 @@
+import { Operator } from '@mathemon/common/models/operation';
 import { useParams } from 'react-router-dom';
 
-import { Operator } from '../../models/ArithmeticOperation';
 import { range } from '../../utils/math';
 
 import styles from './index.module.scss';

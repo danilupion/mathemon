@@ -1,4 +1,4 @@
-import { Operator } from '../models/ArithmeticOperation';
+import { Operator } from '@mathemon/common/models/operation';
 
 interface OperatorSettings {
   digits: number;
