@@ -1,4 +1,4 @@
-@import '~nes.css/css/nes';
+@use 'src/styles/common.scss';
 
 .container {
   text-align: center;
@@ -12,7 +12,6 @@
   }
 
   .evaluate {
-    @extend .nes-btn;
-    @extend .is-primary;
+    @extend .primary-button;
   }
 }

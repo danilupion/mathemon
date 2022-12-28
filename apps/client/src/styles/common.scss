@@ -1,0 +1,15 @@
+@use 'nes.css/css/nes.css';
+
+.button {
+  @extend .nes-btn;
+  border-image-repeat: stretch;
+
+  &:disabled {
+    @extend .is-disabled;
+  }
+}
+
+.primary-button {
+  @extend .button;
+  @extend .is-primary;
+}

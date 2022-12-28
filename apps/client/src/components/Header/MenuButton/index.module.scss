@@ -1,7 +1,8 @@
-@import '~nes.css/css/nes';
+@use 'nes.css/css/nes.css';
+@use 'src/styles/common.scss';
 
 .menu-button {
-  @extend .nes-btn;
+  @extend .button;
   margin: 10px;
 
   &.current {

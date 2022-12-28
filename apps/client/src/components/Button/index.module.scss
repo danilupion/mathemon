@@ -1,9 +1,5 @@
-@import '~nes.css/css/nes';
+@use 'src/styles/common.scss';
 
 .button {
-  @extend .nes-btn;
-
-  &:disabled {
-    @extend .is-disabled;
-  }
+  @extend .button;
 }
