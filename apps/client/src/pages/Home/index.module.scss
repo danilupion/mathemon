@@ -1,11 +1,16 @@
+@use 'nes.css/css/nes.css';
+
 .container {
   text-align: center;
   i {
+    @extend .nes-ash;
     align-self: flex-end;
     top: 85px;
   }
 
   div {
+    @extend .nes-balloon;
+    @extend .from-left;
     max-width: 500px;
     text-align: left;
   }
