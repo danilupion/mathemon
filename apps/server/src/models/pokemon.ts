@@ -3,7 +3,7 @@ import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJ
 import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
 import { Document, Schema, model } from 'mongoose';
 
-export interface PokemonDocument extends Document, Pokemon {}
+export interface PokemonDocument extends Document, Omit<Pokemon, 'id'> {}
 
 const PokemonSchema = new Schema(
   {

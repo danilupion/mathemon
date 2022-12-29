@@ -1,4 +1,4 @@
-import { Pokemon } from '../../api/pokemons';
+import { Pokemon } from '@mathemon/common/models/pokemon';
 
 export enum PokemonImageType {
   Front = 'front',

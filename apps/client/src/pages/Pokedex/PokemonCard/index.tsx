@@ -1,8 +1,9 @@
-import { Pokemon } from '../../api/pokemons';
-import Card from '../../components/Card';
-import PokemonImage, { PokemonImageType } from '../../components/PokemonImage';
+import { Pokemon } from '@mathemon/common/models/pokemon';
 
-import styles from './PokemonCard.module.scss';
+import Card from '../../../components/Card';
+import PokemonImage, { PokemonImageType } from '../../../components/PokemonImage';
+
+import styles from './index.module.scss';
 
 interface PokemonCardProps {
   pokemon: Pokemon;
