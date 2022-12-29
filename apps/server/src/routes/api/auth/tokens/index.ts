@@ -1,4 +1,4 @@
-import { CreateTokenBody } from '@mathemon/common/models/api/auth.js';
+import { CreateTokenRequest } from '@mathemon/common/models/api/auth.js';
 import {
   RequestWithBody,
   postRoute,
@@ -18,7 +18,7 @@ const router = Router();
  *
  * Authenticates a user and returns a jwt if successful
  */
-postRoute<RequestWithBody<CreateTokenBody>>(router, '/', validateTokenCreation, createToken);
+postRoute<RequestWithBody<CreateTokenRequest>>(router, '/', validateTokenCreation, createToken);
 
 /**
  * Route: /api/auth/tokens

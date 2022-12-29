@@ -1,4 +1,4 @@
-import { CreateAssessmentBody } from '@mathemon/common/models/api/evaluations.js';
+import { CreateEvaluationRequest } from '@mathemon/common/models/api/evaluations.js';
 import { Operator, Solution } from '@mathemon/common/models/operation.js';
 import { RequestWithBody } from '@mathemon/turbo-server/helpers/express/route.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
@@ -22,12 +22,12 @@ const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
 };
 
 export const createEvaluation = async (
-  req: RequestWithBody<CreateAssessmentBody>,
+  req: RequestWithBody<CreateEvaluationRequest>,
   res: Response,
 ) => {
-  const assessment = req.body.map((result) => ({
+  const evaluations = req.body.map((result) => ({
     ...result,
     correct: isCorrect(result),
   }));
-  res.status(StatusCode.SuccessOK).send(assessment);
+  res.status(StatusCode.SuccessOK).send(evaluations);
 };

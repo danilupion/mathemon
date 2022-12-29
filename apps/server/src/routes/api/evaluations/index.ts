@@ -1,4 +1,4 @@
-import { CreateAssessmentBody } from '@mathemon/common/models/api/evaluations.js';
+import { CreateEvaluationRequest } from '@mathemon/common/models/api/evaluations.js';
 import { RequestWithBody, postRoute } from '@mathemon/turbo-server/helpers/express/route.js';
 import { Router } from 'express';
 
@@ -13,7 +13,7 @@ const router = Router();
  *
  * Returns a new evaluation.
  */
-postRoute<RequestWithBody<CreateAssessmentBody>>(
+postRoute<RequestWithBody<CreateEvaluationRequest>>(
   router,
   '/',
   evaluationCreationValidator,
