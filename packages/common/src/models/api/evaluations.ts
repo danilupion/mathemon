@@ -1,5 +1,5 @@
 import { Evaluation, Solution } from '../operation.js';
 
-export type CreateEvaluationRequest = Solution[];
+export type CreateEvaluationReq = Solution[];
 
-export type CreateEvaluationResponse = Evaluation[];
+export type CreateEvaluationRes = Evaluation[];

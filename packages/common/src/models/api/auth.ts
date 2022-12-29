@@ -1,8 +1,8 @@
-export interface CreateTokenRequest {
+export interface CreateTokenReq {
   usernameOrEmail: string;
   password: string;
 }
 
-export type CreateTokenResponse = {
+export type CreateTokenRes = {
   token: string;
 };

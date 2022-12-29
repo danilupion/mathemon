@@ -1,4 +1,4 @@
-import { CreateTokenRequest, CreateTokenResponse } from '@mathemon/common/models/api/auth.js';
+import { CreateTokenReq, CreateTokenRes } from '@mathemon/common/models/api/auth.js';
 import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
 import { generateToken } from '@mathemon/turbo-server/helpers/token.js';
@@ -14,7 +14,7 @@ export const getTokenPayload = (user: UserDocument) => ({
   role: user.role,
 });
 
-export const createToken = controller<CreateTokenRequest, CreateTokenResponse>(async (req, res) => {
+export const createToken = controller<CreateTokenReq, CreateTokenRes>(async (req, res) => {
   const user = await UserModel.findOne({
     $or: [{ email: req.body.usernameOrEmail }, { username: req.body.usernameOrEmail }],
   });
@@ -33,7 +33,7 @@ export const createToken = controller<CreateTokenRequest, CreateTokenResponse>(a
   });
 });
 
-export const renewToken = controller<never, CreateTokenResponse, JwtDataField>(async (req, res) => {
+export const renewToken = controller<never, CreateTokenRes, JwtDataField>(async (req, res) => {
   const user = await UserModel.findById(req.jwtUser.id);
 
   if (!user) {

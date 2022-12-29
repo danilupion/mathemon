@@ -1,9 +1,9 @@
 import { Operation, Operator } from '../operation.js';
 
-export interface CreateQuizRequest {
+export interface CreateQuizReq {
   operator: Operator;
   digits: number;
   carrying: boolean | undefined;
 }
 
-export type CreateQuizResponse = Operation[];
+export type CreateQuizRes = Operation[];
