@@ -5,5 +5,5 @@ export type WithTransformations<Value> = {
 
 export type WithValue<Value> = {
   value: Value;
-  onValueChange: (value: Value) => void;
+  onValueChange?: (value: Value) => void;
 };

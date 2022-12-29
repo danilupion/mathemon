@@ -15,6 +15,7 @@ const Select = <Value,>({
   className,
   options,
   value,
+  onChange,
   onValueChange,
   decode,
   encode,
@@ -22,9 +23,11 @@ const Select = <Value,>({
 }: SelectProps<Value>) => {
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLSelectElement>) => {
-      onValueChange(decode ? decode(event.target.value) : (event.target.value as Value));
+      onChange && onChange(event);
+      onValueChange &&
+        onValueChange(decode ? decode(event.target.value) : (event.target.value as Value));
     },
-    [decode, onValueChange],
+    [decode, onChange, onValueChange],
   );
 
   const doEncode = useCallback(

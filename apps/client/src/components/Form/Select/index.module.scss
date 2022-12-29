@@ -2,4 +2,8 @@
 
 .select {
   @extend .nes-select;
+
+  select {
+    border-image-repeat: stretch;
+  }
 }

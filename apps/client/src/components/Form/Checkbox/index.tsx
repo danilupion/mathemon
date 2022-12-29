@@ -11,12 +11,14 @@ export type CheckboxProps = Omit<JSX.IntrinsicElements['input'], 'value'> &
   WithValue<boolean> & {
     text?: string;
   };
-const Checkbox = ({ text, className, value, onValueChange, ...props }: CheckboxProps) => {
+const Checkbox = ({ text, className, value, onChange, onValueChange, ...props }: CheckboxProps) => {
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      onValueChange(event.target.checked);
+      onChange && onChange(event);
+
+      onValueChange && onValueChange(event.target.checked);
     },
-    [onValueChange],
+    [onChange, onValueChange],
   );
 
   return (

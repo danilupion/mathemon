@@ -2,6 +2,7 @@ import { Evaluation, Solution } from '@mathemon/common/models/operation';
 import classNames from 'classnames';
 import { ChangeEvent, useCallback } from 'react';
 
+import Input from '../../../components/Form/Input';
 import { InputDirection } from '../../../stores/settingsStore';
 import { maxDigits } from '../../../utils/math';
 
@@ -65,7 +66,7 @@ const QuizItem = ({ item, inputDirection, onSetValue }: QuizItemProps) => {
       </div>
       <hr />
       <div>
-        <input
+        <Input
           contentEditable={true}
           value={item.solution.value === undefined ? '' : item.solution.value}
           size={1}

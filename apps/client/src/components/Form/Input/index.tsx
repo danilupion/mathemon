@@ -15,6 +15,7 @@ export type InputProps<Value> = Omit<JSX.IntrinsicElements['input'], 'value' | '
 const Input = <Value,>({
   className,
   value,
+  onChange,
   onValueChange,
   decode,
   encode,
@@ -22,9 +23,11 @@ const Input = <Value,>({
 }: InputProps<Value>) => {
   const handleChange = useCallback(
     (event: ChangeEvent<HTMLInputElement>) => {
-      onValueChange(decode ? decode(event.target.value) : (event.target.value as Value));
+      onChange && onChange(event);
+      onValueChange &&
+        onValueChange(decode ? decode(event.target.value) : (event.target.value as Value));
     },
-    [decode, onValueChange],
+    [decode, onChange, onValueChange],
   );
 
   return (
