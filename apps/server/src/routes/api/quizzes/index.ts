@@ -1,5 +1,4 @@
-import { CreateQuizRequest } from '@mathemon/common/models/api/quizzes.js';
-import { RequestWithBody, postRoute } from '@mathemon/turbo-server/helpers/express/route.js';
+import { postRoute } from '@mathemon/turbo-server/helpers/express/route.js';
 import { Router } from 'express';
 
 import { createQuiz } from './controllers.js';
@@ -13,6 +12,6 @@ const router = Router();
  *
  * Returns a new quiz
  */
-postRoute<RequestWithBody<CreateQuizRequest>>(router, '/', quizCreationValidator, createQuiz);
+postRoute(router, '/', quizCreationValidator, createQuiz);
 
 export default router;

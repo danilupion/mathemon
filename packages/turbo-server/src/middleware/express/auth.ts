@@ -13,10 +13,9 @@ interface JwtData<UserRole extends string = string> {
   role: UserRole;
 }
 
-export type RequestWithJwtData<
-  UserRole extends string = string,
-  Key extends string = 'jwtUser',
-> = RequestWith<JwtData<UserRole>, Key>;
+export type JwtDataField<UserRole extends string = string, Key extends string = 'jwtUser'> = {
+  [key in Key]: JwtData<UserRole>;
+};
 
 const jwtSecret = config.get<string>('authentication.jwtSecret');
 
@@ -42,9 +41,9 @@ const strategy = new Strategy(
 
 passport.use(strategy);
 
-type Authentiator = (req: Request, res: Response, next: NextFunction) => void;
+type Authenticator = (req: Request, res: Response, next: NextFunction) => void;
 
-const cache = new Map<string, Authentiator>();
+const cache = new Map<string, Authenticator>();
 
 export const jwtAuth = ({ requestProperty = defaultProperty } = {}) => {
   if (!cache.has(requestProperty)) {
@@ -58,10 +57,13 @@ export const jwtAuth = ({ requestProperty = defaultProperty } = {}) => {
 };
 
 export const hasRole =
-  <UserRole extends string = string>(roles: UserRole[], requestProperty = defaultProperty) =>
-  (req: RequestWithJwtData<UserRole>, res: Response, next: NextFunction) => {
+  <UserRole extends string, Key extends string>(
+    roles: UserRole[],
+    requestProperty: Key = defaultProperty as Key,
+  ) =>
+  (req: RequestWith<JwtDataField<UserRole, Key>>, res: Response, next: NextFunction) => {
     jwtAuth({ requestProperty })(req, res, () => {
-      if (!roles.includes(req.jwtUser.role)) {
+      if (!roles.includes(req[requestProperty].role)) {
         throw new ClientErrorForbidden();
       }
       return next();

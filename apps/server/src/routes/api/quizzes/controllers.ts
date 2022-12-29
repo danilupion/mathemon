@@ -1,9 +1,8 @@
-import { CreateQuizRequest } from '@mathemon/common/models/api/quizzes.js';
+import { CreateQuizRequest, CreateQuizResponse } from '@mathemon/common/models/api/quizzes.js';
 import { Operation, Operator } from '@mathemon/common/models/operation.js';
-import { RequestWithBody } from '@mathemon/turbo-server/helpers/express/route.js';
+import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import config from 'config';
-import { Response } from 'express';
 
 import { randomInt } from '../../../utils/math.js';
 
@@ -39,7 +38,7 @@ const createOperand = ({ operator, digits, carrying, reference }: CreateOperandP
   }
 };
 
-export const createQuiz = async (req: RequestWithBody<CreateQuizRequest>, res: Response) => {
+export const createQuiz = controller<CreateQuizRequest, CreateQuizResponse>(async (req, res) => {
   const quizList: Operation[] = [];
 
   for (let i = 0; i < quizSize; i++) {
@@ -52,4 +51,4 @@ export const createQuiz = async (req: RequestWithBody<CreateQuizRequest>, res: R
     quizList.push({ operator: req.body.operator, operands: [operand1, operand2] });
   }
   res.status(StatusCode.SuccessOK).send(quizList);
-};
+});

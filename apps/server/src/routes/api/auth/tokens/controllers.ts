@@ -1,10 +1,9 @@
-import { CreateTokenRequest } from '@mathemon/common/models/api/auth.js';
-import { RequestWithBody } from '@mathemon/turbo-server/helpers/express/route.js';
+import { CreateTokenRequest, CreateTokenResponse } from '@mathemon/common/models/api/auth.js';
+import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
 import { generateToken } from '@mathemon/turbo-server/helpers/token.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
-import { RequestWithJwtData } from '@mathemon/turbo-server/middleware/express/auth.js';
-import { Response } from 'express';
+import { JwtDataField } from '@mathemon/turbo-server/middleware/express/auth.js';
 
 import UserModel, { UserDocument } from '../../../../models/user.js';
 
@@ -15,7 +14,7 @@ export const getTokenPayload = (user: UserDocument) => ({
   role: user.role,
 });
 
-export const createToken = async (req: RequestWithBody<CreateTokenRequest>, res: Response) => {
+export const createToken = controller<CreateTokenRequest, CreateTokenResponse>(async (req, res) => {
   const user = await UserModel.findOne({
     $or: [{ email: req.body.usernameOrEmail }, { username: req.body.usernameOrEmail }],
   });
@@ -32,9 +31,9 @@ export const createToken = async (req: RequestWithBody<CreateTokenRequest>, res:
   res.status(StatusCode.SuccessCreated).send({
     token: await generateToken(getTokenPayload(user)),
   });
-};
+});
 
-export const renewToken = async (req: RequestWithJwtData, res: Response) => {
+export const renewToken = controller<never, CreateTokenResponse, JwtDataField>(async (req, res) => {
   const user = await UserModel.findById(req.jwtUser.id);
 
   if (!user) {
@@ -42,4 +41,4 @@ export const renewToken = async (req: RequestWithJwtData, res: Response) => {
   }
 
   res.status(StatusCode.SuccessOK).send({ token: await generateToken(getTokenPayload(user)) });
-};
+});

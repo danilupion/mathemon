@@ -1,10 +1,5 @@
-import { CreateTokenRequest } from '@mathemon/common/models/api/auth.js';
-import {
-  RequestWithBody,
-  postRoute,
-  putRoute,
-} from '@mathemon/turbo-server/helpers/express/route.js';
-import { RequestWithJwtData, jwtAuth } from '@mathemon/turbo-server/middleware/express/auth.js';
+import { postRoute, putRoute } from '@mathemon/turbo-server/helpers/express/route.js';
+import { jwtAuth } from '@mathemon/turbo-server/middleware/express/auth.js';
 import { Router } from 'express';
 
 import { createToken, renewToken } from './controllers.js';
@@ -18,7 +13,7 @@ const router = Router();
  *
  * Authenticates a user and returns a jwt if successful
  */
-postRoute<RequestWithBody<CreateTokenRequest>>(router, '/', validateTokenCreation, createToken);
+postRoute(router, '/', validateTokenCreation, createToken);
 
 /**
  * Route: /api/auth/tokens
@@ -26,6 +21,6 @@ postRoute<RequestWithBody<CreateTokenRequest>>(router, '/', validateTokenCreatio
  *
  * Renews a jwt given a non expired one and returns it jwt if successful
  */
-putRoute<RequestWithJwtData>(router, '/', jwtAuth(), renewToken);
+putRoute(router, '/', jwtAuth(), renewToken);
 
 export default router;

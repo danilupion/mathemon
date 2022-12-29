@@ -1,8 +1,8 @@
 import Method from '@mathemon/turbo-common/http/method.js';
 import { ValidationError as MappedValidationError } from '@mathemon/turbo-common/rest/error.js';
-import { Handler, NextFunction, Request, Response, Router } from 'express';
+import { Handler, NextFunction, Request, Router } from 'express';
 import { ValidationChain, validationResult } from 'express-validator';
-import { Middleware, ValidationError } from 'express-validator/src/base.js';
+import { ValidationError } from 'express-validator/src/base.js';
 import { MongoServerError } from 'mongodb';
 
 import {
@@ -12,19 +12,13 @@ import {
   ServerErrorInternalServerError,
 } from '../httpError.js';
 
-export type RequestWith<Value, Field extends string> = Request & {
-  [key in Field]: Value;
-};
+import { Controller, ControllerRequest, ControllerResponse } from './controller.js';
+
+export type RequestWith<Fields extends object> = Request & Fields;
 
 export type RequestWithBody<Value> = Omit<Request, 'body'> & {
   body: Value;
 };
-
-type CustomHandler<Req extends Request = Request, Res extends Response = Response> = (
-  req: Req,
-  res: Res,
-  next: NextFunction,
-) => Promise<void> | void;
 
 type CustomValidationError = {
   field: string;
@@ -87,11 +81,15 @@ const errorMapper = (
   }, {} as MappedValidationError);
 };
 
-const handler =
-  <Req extends Request = Request, Res extends Response = Response>(
-    insecureHandler: CustomHandler<Req, Res>,
+const secureHandler =
+  <ReqBody, ResBody, ReqExtra extends object>(
+    insecureHandler: Controller<ReqBody, ResBody, ReqExtra>,
   ) =>
-  async (req: Req, res: Res, next: NextFunction) => {
+  async (
+    req: ControllerRequest<ReqBody, ReqExtra>,
+    res: ControllerResponse<ResBody>,
+    next: NextFunction,
+  ) => {
     try {
       const errors = validationErrors(req);
 
@@ -112,26 +110,22 @@ const handler =
     }
   };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const isValidationChain = (h: any): h is ValidationChain | ValidationChain[] => {
-  return Array.isArray(h) || h.builder !== undefined;
+type Middleware = ValidationChain | Handler | (ValidationChain | Handler)[];
+
+const isValidationChain = (h: Middleware): h is ValidationChain | ValidationChain[] => {
+  return Array.isArray(h) || (h as ValidationChain).builder !== undefined;
 };
 
 const methodFactory =
   (method: Method) =>
-  <Req extends Request = Request, Res extends Response = Response>(
+  <ReqBody, ResBody, ReqExtra extends object>(
     router: Router,
     path: string,
-    ...middleWare: (
-      | CustomHandler<Req, Res>
-      | ValidationChain
-      | Middleware
-      | (ValidationChain | Middleware)[]
-    )[]
+    ...middleWare: [...Middleware[], Controller<ReqBody, ResBody, ReqExtra>]
   ) => {
     router[method](
       path,
-      ...(middleWare as Handler[]).map((h) => (isValidationChain(h) ? h : handler(h))),
+      ...(middleWare as Handler[]).map((m) => (isValidationChain(m) ? m : secureHandler(m))),
     );
   };
 
