@@ -1,7 +1,8 @@
 import classNames from 'classnames';
-import { NavLink, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 import Button from '../../Button';
+import NavButton from '../../NavButton';
 
 import styles from './index.module.scss';
 
@@ -31,13 +32,13 @@ const MenuButton = ({ label, img, onClick, ...rest }: MenuButtonProps) => {
   );
 
   return 'to' in rest ? (
-    <NavLink
+    <NavButton
       to={rest.to}
       className={classNames(styles['menu-button'], { [styles.current]: pathname === rest.to })}
       onClick={onClick}
     >
       {content}
-    </NavLink>
+    </NavButton>
   ) : (
     <Button className={styles['menu-button']} onClick={onClick}>
       {content}
