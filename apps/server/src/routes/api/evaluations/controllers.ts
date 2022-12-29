@@ -6,6 +6,8 @@ import { Operator, Solution } from '@mathemon/common/models/operation.js';
 import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 
+import PokemonModel from '../../../models/pokemon.js';
+
 const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
   let resultOfOperation;
   switch (operator) {
@@ -29,6 +31,22 @@ export const createEvaluation = controller<CreateEvaluationReq, CreateEvaluation
       solution,
       correct: isCorrect(solution),
     }));
-    res.status(StatusCode.SuccessOK).send(evaluations);
+
+    let pokemon: any;
+    const correct = evaluations.filter((e) => e.correct).length;
+    if (correct === evaluations.length) {
+      pokemon = (await PokemonModel.aggregate([{ $sample: { size: 1 } }]))[0];
+      const { _id, __v, ...rest } = pokemon;
+      pokemon = rest;
+    }
+
+    res.status(StatusCode.SuccessOK).send({
+      evaluations,
+      score: {
+        total: evaluations.length,
+        correct,
+      },
+      reward: correct === evaluations.length ? pokemon : undefined,
+    });
   },
 );

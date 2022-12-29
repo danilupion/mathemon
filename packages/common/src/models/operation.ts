@@ -14,6 +14,11 @@ export type Solution = {
   value: number;
 };
 
+export type Score = {
+  total: number;
+  correct: number;
+};
+
 export type Evaluation = {
   solution: Solution;
   correct: boolean;

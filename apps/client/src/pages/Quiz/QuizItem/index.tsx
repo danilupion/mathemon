@@ -17,12 +17,13 @@ export type Item = Omit<Evaluation, 'solution' | 'correct'> & {
 
 interface QuizItemProps {
   item: Item;
+  editable: boolean;
   inputDirection: InputDirection;
 
   onSetValue: (result: number | undefined) => void;
 }
 
-const QuizItem = ({ item, inputDirection, onSetValue }: QuizItemProps) => {
+const QuizItem = ({ item, editable, inputDirection, onSetValue }: QuizItemProps) => {
   const handleOnChange = useCallback(
     (ev: ChangeEvent<HTMLInputElement>) => {
       const inputValue = ev.target.value.trim();
@@ -70,7 +71,7 @@ const QuizItem = ({ item, inputDirection, onSetValue }: QuizItemProps) => {
           contentEditable={true}
           value={item.solution.value === undefined ? '' : item.solution.value}
           size={1}
-          onChange={handleOnChange}
+          onChange={editable ? handleOnChange : undefined}
           maxLength={maxDigits(item.solution.operation.operands) + 1}
           type="text"
           inputMode="numeric"

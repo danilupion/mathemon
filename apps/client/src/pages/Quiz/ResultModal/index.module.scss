@@ -1,0 +1,64 @@
+@use 'nes.css/css/nes.css';
+@use 'src/styles/common.scss';
+
+dialog {
+  max-width: 375px;
+  .sentiment {
+    font-size: 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .score {
+    font-size: 20px;
+    font-weight: bold;
+
+    &.success {
+      color: #0eb500;
+    }
+
+    &.failure {
+      color: #b50b00;
+    }
+  }
+
+  .answers {
+    font-size: 14px;
+  }
+
+  .bottom {
+    margin-top: 20px;
+    font-size: 14px;
+
+    img {
+      width: 150px;
+      height: 150px;
+      margin-bottom: 20px;
+    }
+
+    .name {
+      text-transform: uppercase;
+      font-size: 20px;
+    }
+
+    div {
+      margin-bottom: 40px;
+    }
+
+    &.success {
+      a,
+      button {
+        @extend .button, .is-success;
+        text-transform: uppercase;
+      }
+    }
+
+    &.failure {
+      a,
+      button {
+        @extend .button, .is-error;
+      }
+    }
+  }
+}
