@@ -2,4 +2,4 @@ import routes from '@mathemon/turbo-server/test-utils/routes.js';
 
 import router from './index.js';
 
-routes(router, '/api', ['/auth', '/pokedex', '/quizzes', '/evaluations', '/*']);
+routes(router, '/api', ['/auth', '/evaluations', '/pokedex', '/profiles', '/quizzes', '/*']);
