@@ -1,17 +1,19 @@
 @use 'nes.css/css/nes.css';
 
 .container {
-  text-align: center;
-  i {
-    @extend .nes-ash;
-    align-self: flex-end;
-    top: 85px;
-  }
+  max-width: 400px;
+  margin: 0 auto;
 
   div {
     @extend .nes-balloon;
     @extend .from-left;
     max-width: 500px;
     text-align: left;
+    border-image-repeat: stretch;
+  }
+
+  i {
+    @extend .nes-ash;
+    align-self: flex-end;
   }
 }
