@@ -1,58 +1,26 @@
-import { UserRole } from '@mathemon/common/models/user';
-import { Form, Formik } from 'formik';
-import { useCallback, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
-import Button from '../../components/Button';
-import { FormCheckboxField } from '../../components/Form/Checkbox';
-import { FormInputField } from '../../components/Form/Input';
-import { useAuthStore } from '../../hooks/useStore';
+import TabPanel from '../../components/TabPanel';
 
+import LogIn from './LogIn';
+import Register from './Register';
 import styles from './index.module.scss';
 
-const initialValues = {
-  email: '',
-  password: '',
-  role: UserRole.user,
-  rememberMe: false,
-};
-
-type SignInValues = typeof initialValues;
-
 const SignIn = () => {
-  const [loginError, setLoginError] = useState<boolean>(false);
-  const authStore = useAuthStore();
-
-  const handleSubmission = useCallback(
-    async (values: SignInValues) => {
-      try {
-        setLoginError(false);
-        setLoginError(!(await authStore.signIn(values.email, values.password, values.rememberMe)));
-      } catch (error) {
-        setLoginError(true);
-      }
-    },
-    [setLoginError, authStore],
-  );
-
   return (
     <div className={styles.container}>
-      <div className={styles.overlay}>
-        <div className={styles.formContainer}>
-          <h1 className={styles.logo}>Mathemon</h1>
-          <Formik initialValues={initialValues} onSubmit={handleSubmission}>
-            {({ isSubmitting }) => (
-              <Form>
-                {loginError && <h4>Revisa tu usuario y contraseña</h4>}
-                <FormInputField<string> label="Email" type="email" name="email" />
-                <FormInputField<string> label="Password" type="password" name="password" />
-                <FormCheckboxField name="rememberMe" text="Recuérdame" />
-                <Button type="submit" disabled={isSubmitting} className={styles.send}>
-                  Entrar
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        </div>
+      <div>
+        <h1 className={styles.logo}>
+          <NavLink to="/">Mathemon</NavLink>
+        </h1>
+        <TabPanel>
+          <TabPanel.Tab label="Iniciar sesión">
+            <LogIn />
+          </TabPanel.Tab>
+          <TabPanel.Tab label="Registro">
+            <Register />
+          </TabPanel.Tab>
+        </TabPanel>
       </div>
     </div>
   );

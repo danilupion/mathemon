@@ -2,12 +2,18 @@
 @use 'src/styles/common.scss';
 
 .container {
-  @extend .nes-container;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
 
-  .send {
-    @extend .primary-button;
+  h1 {
+    text-align: center;
+    a {
+      text-decoration: none;
+      color: #f03030;
+    }
   }
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
 }
