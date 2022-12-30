@@ -3,9 +3,9 @@ import { bodylessPutRequest, postRequest } from '@mathemon/turbo-client/rest/met
 
 const basePath = '/api/auth/tokens';
 
-export const generateToken = (usernameOrEmail: string, password: string) =>
+export const generateToken = (email: string, password: string) =>
   postRequest<CreateTokenReq, CreateTokenRes>(basePath, {
-    usernameOrEmail,
+    email,
     password,
   }).then((res) => res.token);
 

@@ -15,9 +15,7 @@ export const getTokenPayload = (user: UserDocument) => ({
 });
 
 export const createToken = controller<CreateTokenReq, CreateTokenRes>(async (req, res) => {
-  const user = await UserModel.findOne({
-    $or: [{ email: req.body.usernameOrEmail }, { username: req.body.usernameOrEmail }],
-  });
+  const user = await UserModel.findOne({ email: req.body.email });
 
   if (!user) {
     throw new ClientErrorUnauthorized();
