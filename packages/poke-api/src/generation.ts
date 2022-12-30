@@ -1,4 +1,4 @@
-import got from 'got';
+import { default as got } from 'got';
 
 import { Pokemon, getPokemon } from './pokemon.js';
 import { promiseStore } from './utils.js';

@@ -1,4 +1,4 @@
-import got from 'got';
+import { default as got } from 'got';
 
 import { Ability, getAbility } from './ability.js';
 import { Move, getMove } from './move.js';
@@ -69,6 +69,7 @@ export const getPokemon = promiseStore(async (id: number) => {
     .json<PokeApiSpecies>();
 
   const pokemon = await got
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     .get(species.varieties.find((v) => v.is_default)!.pokemon.url)
     .json<PokeApiPokemon>();
 
