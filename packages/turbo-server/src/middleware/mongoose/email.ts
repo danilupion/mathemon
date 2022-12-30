@@ -1,4 +1,4 @@
-import { email } from '@mathemon/common/regex.js';
+import { email } from '@mathemon/turbo-common/regex.js';
 import { Schema, SchemaDefinition } from 'mongoose';
 
 interface EmailMiddlewareOptions {

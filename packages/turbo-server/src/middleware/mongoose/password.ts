@@ -1,4 +1,4 @@
-import { password } from '@mathemon/common/regex.js';
+import { password } from '@mathemon/turbo-common/regex.js';
 import { compare, hash } from 'bcrypt';
 import { Schema, SchemaDefinition } from 'mongoose';
 
