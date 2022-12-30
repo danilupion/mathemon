@@ -1,0 +1,20 @@
+@use 'nes.css/css/nes.css';
+@use 'src/styles/common.scss';
+
+.container {
+  width: 100%;
+
+  .tabs {
+    @extend .nes-container;
+    padding: 0 20px;
+    width: 100%;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+
+    .active {
+      @extend .button;
+      @extend .is-primary;
+    }
+  }
+}
