@@ -13,8 +13,7 @@
     border-right: none;
 
     .active {
-      @extend .button;
-      @extend .is-primary;
+      @extend .primary-button;
     }
   }
 }
