@@ -1,5 +1,5 @@
 import { postRoute, putRoute } from '@mathemon/turbo-server/helpers/express/route.js';
-import { jwtAuth } from '@mathemon/turbo-server/middleware/express/auth.js';
+import jwt from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 import { Router } from 'express';
 
 import { createToken, renewToken } from './controllers.js';
@@ -21,6 +21,6 @@ postRoute(router, '/', validateTokenCreation, createToken);
  *
  * Renews a jwt given a non expired one and returns it jwt if successful
  */
-putRoute(router, '/', jwtAuth(), renewToken);
+putRoute(router, '/', jwt(), renewToken);
 
 export default router;

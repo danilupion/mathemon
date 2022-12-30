@@ -1,9 +1,8 @@
 import { CreateTokenReq, CreateTokenRes } from '@mathemon/common/models/api/auth.js';
 import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
-import { generateToken } from '@mathemon/turbo-server/helpers/token.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
-import { JwtDataField } from '@mathemon/turbo-server/middleware/express/auth.js';
+import { JwtDataField, generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 
 import UserModel, { UserDocument } from '../../../../models/user.js';
 

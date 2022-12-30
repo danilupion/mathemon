@@ -9,9 +9,11 @@
   "quiz": {
     "size": 20
   },
-  "authentication": {
-    "jwtSecret": "RANDOM STRING, CHANGE ME",
-    "jwtExpiration": "7d"
+  "auth": {
+    "jwt": {
+      "secret": "RANDOM STRING, CHANGE ME",
+      "expiration": "7d"
+    }
   },
   "mongodb": {
     "host": "127.0.0.1",

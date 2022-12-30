@@ -1,10 +1,11 @@
 import config from 'config';
 import { NextFunction, Request, Response } from 'express';
+import jsonWebToken from 'jsonwebtoken';
 import passport from 'passport';
 import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
 
-import { RequestWith } from '../../helpers/express/route.js';
-import { ClientErrorForbidden, ClientErrorUnauthorized } from '../../helpers/httpError.js';
+import { RequestWith } from '../../../helpers/express/route.js';
+import { ClientErrorForbidden, ClientErrorUnauthorized } from '../../../helpers/httpError.js';
 
 const defaultProperty = 'jwtUser';
 
@@ -17,7 +18,8 @@ export type JwtDataField<UserRole extends string = string, Key extends string = 
   [key in Key]: JwtData<UserRole>;
 };
 
-const jwtSecret = config.get<string>('authentication.jwtSecret');
+const jwtSecret = config.get<string>('auth.jwt.secret');
+const jwtExpiration = config.get<string>('auth.jwt.expiration');
 
 /**
  * JWT strategy that will extend response with a new user property containing the id
@@ -45,7 +47,7 @@ type Authenticator = (req: Request, res: Response, next: NextFunction) => void;
 
 const cache = new Map<string, Authenticator>();
 
-export const jwtAuth = ({ requestProperty = defaultProperty } = {}) => {
+const jwtAuth = ({ requestProperty = defaultProperty } = {}) => {
   if (!cache.has(requestProperty)) {
     cache.set(
       requestProperty,
@@ -55,6 +57,31 @@ export const jwtAuth = ({ requestProperty = defaultProperty } = {}) => {
 
   return cache.get(requestProperty)!;
 };
+
+interface GenerateTokenOptions {
+  expiresIn?: string | number;
+  secret?: string;
+}
+
+export const generateToken = (
+  payload: object,
+  { expiresIn = jwtExpiration, secret = jwtSecret }: GenerateTokenOptions = {},
+): Promise<string> =>
+  new Promise((res, rej) => {
+    jsonWebToken.sign(
+      payload,
+      secret,
+      {
+        expiresIn,
+      },
+      (err, encoded) => {
+        if (err || encoded === undefined) {
+          return rej(err);
+        }
+        return res(encoded);
+      },
+    );
+  });
 
 export const hasRole =
   <UserRole extends string, Key extends string>(
@@ -69,3 +96,5 @@ export const hasRole =
       return next();
     });
   };
+
+export default jwtAuth;

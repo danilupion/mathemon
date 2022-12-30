@@ -3,8 +3,8 @@ import {
   connectMongoose,
   disconnectMongoose,
 } from '@mathemon/turbo-server/helpers/mongoose/connection.js';
-import { generateToken } from '@mathemon/turbo-server/helpers/token.js';
 import { Method, StatusCode } from '@mathemon/turbo-server/http.js';
+import { generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 import routes from '@mathemon/turbo-server/test-utils/routes.js';
 import server from '@mathemon/turbo-server/test-utils/server.js';
 import jwtDecode from 'jwt-decode';
@@ -34,7 +34,7 @@ describe('/api/auth/tokens', () => {
 
   describe('post', () => {
     describe('Should fail', () => {
-      it('With status 401 for not matching username or email', async () => {
+      it('With status 401 for not matching email', async () => {
         await UserModel.create({
           username: 'test',
           email: 'test@email.com',
@@ -43,7 +43,7 @@ describe('/api/auth/tokens', () => {
 
         const response = await server(router)
           .post('/')
-          .send({ usernameOrEmail: 'doesNotMatch', password: 'testTest1.' });
+          .send({ email: 'doesNotMatch@email.com', password: 'testTest1.' });
 
         expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
         expect(response.body).toStrictEqual({});
@@ -59,7 +59,7 @@ describe('/api/auth/tokens', () => {
 
         const response = await server(router)
           .post('/')
-          .send({ usernameOrEmail: 'test', password: 'doesNotMatch.' });
+          .send({ email: 'test@email.com', password: 'doesNotMatch1.' });
 
         expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
         expect.hasAssertions();
@@ -67,30 +67,6 @@ describe('/api/auth/tokens', () => {
     });
 
     describe('Should succeed', () => {
-      it('With token for matching username and password pair', async () => {
-        await UserModel.create({
-          username: 'test',
-          email: 'test@email.com',
-          password: 'testTest1.',
-          role: UserRole.superAdmin,
-        });
-
-        const response = await server(router).post('/').send({
-          usernameOrEmail: 'test',
-          password: 'testTest1.',
-        });
-        const decodedValues = jwtDecode.default(response.body.token);
-
-        expect(response.statusCode).toBe(StatusCode.SuccessCreated);
-        expect(response.type).toBe('application/json');
-        expect(decodedValues).toMatchObject({
-          username: 'test',
-          email: 'test@email.com',
-          role: 'superAdmin',
-        });
-        expect.hasAssertions();
-      });
-
       it('With token for matching email and password pair', async () => {
         await UserModel.create({
           username: 'test',
@@ -100,7 +76,7 @@ describe('/api/auth/tokens', () => {
         });
 
         const response = await server(router).post('/').send({
-          usernameOrEmail: 'test@email.com',
+          email: 'test@email.com',
           password: 'testTest1.',
         });
         const decodedValues = jwtDecode.default(response.body.token);

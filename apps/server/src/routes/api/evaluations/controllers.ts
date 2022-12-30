@@ -32,6 +32,8 @@ export const createEvaluation = controller<CreateEvaluationReq, CreateEvaluation
       correct: isCorrect(solution),
     }));
 
+    // TODO: Save to database and review approach
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     let pokemon: any;
     const correct = evaluations.filter((e) => e.correct).length;
     if (correct === evaluations.length) {

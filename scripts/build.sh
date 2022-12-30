@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 yarn;
 yarn clean:build;
 
