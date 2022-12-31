@@ -4,14 +4,8 @@ import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpErro
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import { JwtDataField, generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 
-import UserModel, { UserDocument } from '../../../../models/user.js';
-
-export const getTokenPayload = (user: UserDocument) => ({
-  id: user._id.toString(),
-  email: user.email,
-  username: user.username,
-  role: user.role,
-});
+import UserModel from '../../../../models/user.js';
+import { getTokenPayload } from '../../../../utils/auth.js';
 
 export const createToken = controller<CreateTokenReq, CreateTokenRes>(async (req, res) => {
   const user = await UserModel.findOne({ email: req.body.email });

@@ -1,5 +1,17 @@
+@use 'nes.css/css/nes.css';
 @use 'src/styles/common.scss';
 
-.send {
-  @extend .primary-button;
+.buttons {
+  display: flex;
+  gap: 20px;
+
+  .send {
+    @extend .primary-button;
+  }
+
+  .google {
+    @extend .nes-icon;
+    @extend .google;
+    @extend .is-small;
+  }
 }

@@ -76,7 +76,7 @@ export class AuthStore {
   };
 
   @action
-  private setToken = (token?: string) => {
+  public setToken = (token?: string) => {
     setToken(token);
     if (token) {
       const { id, username, role } = jwtDecode<LoggedUser>(token);

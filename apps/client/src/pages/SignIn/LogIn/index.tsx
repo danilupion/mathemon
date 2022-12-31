@@ -5,6 +5,7 @@ import Button from '../../../components/Button';
 import Form from '../../../components/Form';
 import { FormCheckboxField } from '../../../components/Form/Checkbox';
 import { FormInputField } from '../../../components/Form/Input';
+import NavButton from '../../../components/NavButton';
 import { useAuthStore } from '../../../hooks/useStore';
 
 import styles from './index.module.scss';
@@ -53,9 +54,14 @@ const LogIn = () => {
             <FormInputField<string> label="Email" type="email" name="email" />
             <FormInputField<string> label="Password" type="password" name="password" />
             <FormCheckboxField name="rememberMe" text="Recuérdame" />
-            <Button type="submit" disabled={isSubmitting || !isValid} className={styles.send}>
-              Entrar
-            </Button>
+            <div className={styles.buttons}>
+              <Button type="submit" disabled={isSubmitting || !isValid} className={styles.send}>
+                Entrar
+              </Button>
+              <NavButton href="/oauth/google" native>
+                <i className={styles.google} />
+              </NavButton>
+            </div>
           </>
         )}
       </Form>

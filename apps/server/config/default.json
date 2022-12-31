@@ -1,5 +1,6 @@
 {
   "environment": "development",
+  "url": "http://localhost:3200",
   "server": {
     "bodyParserLimits": {
       "json": "5mb"
@@ -13,6 +14,10 @@
     "jwt": {
       "secret": "RANDOM STRING, CHANGE ME",
       "expiration": "7d"
+    },
+    "google": {
+      "clientId": "CLIENT ID",
+      "clientSecret": "CLIENT SECRET"
     }
   },
   "mongodb": {

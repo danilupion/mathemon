@@ -10,8 +10,7 @@ import server from '@mathemon/turbo-server/test-utils/server.js';
 import jwtDecode from 'jwt-decode';
 
 import UserModel from '../../../../models/user.js';
-
-import { getTokenPayload } from './controllers.js';
+import { getTokenPayload } from '../../../../utils/auth.js';
 
 import router from './index.js';
 
@@ -34,6 +33,19 @@ describe('/api/auth/tokens', () => {
 
   describe('post', () => {
     describe('Should fail', () => {
+      it('With status 400 if no password is received and a matching email', async () => {
+        await UserModel.create({
+          username: 'test',
+          email: 'test@email.com',
+        });
+
+        const response = await server(router).post('/').send({ email: 'test@email.com' });
+
+        expect(response.statusCode).toBe(StatusCode.ClientErrorBadRequest);
+        expect(response.body).toStrictEqual({});
+        expect.hasAssertions();
+      });
+
       it('With status 401 for not matching email', async () => {
         await UserModel.create({
           username: 'test',

@@ -7,7 +7,7 @@ const Home = () => {
         ¡Aprendamos mates! Seleciona las operaciones que quieres practicar en el menú de la
         izquierda, en el menú de la derecha podrás seleccionar la dificultad.
       </div>
-      <i></i>
+      <i />
     </div>
   );
 };
