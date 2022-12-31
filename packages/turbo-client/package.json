@@ -21,6 +21,7 @@
   "scripts": {
     "build": "if ! [[ $NOCLEAN = \"1\" ]]; then rm -rf ./dist; fi && tsc",
     "build:watch": "export NOCLEAN=1 && nodemon --watch src -e ts,json --exec 'yarn build'",
+    "build:check": "tsc -p tsconfig.json --noEmit",
     "test": "jest --passWithNoTests",
     "test:watch": "jest --watch",
     "lint:fix": "eslint -c .eslintrc.json 'src/**/*.ts' --fix",
