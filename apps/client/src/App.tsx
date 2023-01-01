@@ -11,7 +11,6 @@ import NotFound from './pages/NotFound';
 import Pokedex from './pages/Pokedex';
 import Quiz from './pages/Quiz';
 import SignIn from './pages/SignIn';
-import Token from './pages/Token';
 
 const App = () => {
   return (
@@ -19,7 +18,6 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="" element={<Home />} />
-          <Route path="token" element={<Token />} />
           <Route path="addition" element={<Quiz operator={Operator.addition} />} />
           <Route path="subtraction" element={<Quiz operator={Operator.subtraction} />} />
           <Route path="multiplication" element={<Quiz operator={Operator.multiplication} />} />

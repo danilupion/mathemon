@@ -1,6 +1,6 @@
 import { UserRole } from '@mathemon/common/models/user';
 import { setToken } from '@mathemon/turbo-client/rest/init';
-import store from '@mathemon/turbo-client/store';
+import { cookieStorage, localStorage, sessionStorage } from '@mathemon/turbo-client/storage/index';
 import jwtDecode from 'jwt-decode';
 import { action, computed, makeAutoObservable } from 'mobx';
 
@@ -8,6 +8,10 @@ import { generateToken, renewToken } from '../api/auth';
 
 const TOKEN_RENEWAL_FREQUENCY = 60 * 60 * 1000;
 const TOKEN_STORAGE_KEY = 'token';
+
+const store = (persist: boolean) => {
+  return persist ? localStorage : sessionStorage;
+};
 
 export interface LoggedUser {
   username: string;
@@ -24,11 +28,17 @@ export class AuthStore {
   constructor() {
     try {
       makeAutoObservable(this);
-      let token = store(true).getItem(TOKEN_STORAGE_KEY);
+      let token = cookieStorage.getItem(TOKEN_STORAGE_KEY);
+
       if (token) {
-        this.rememberMe = true;
+        cookieStorage.removeItem(TOKEN_STORAGE_KEY);
       } else {
-        token = store(false).getItem(TOKEN_STORAGE_KEY);
+        token = localStorage.getItem(TOKEN_STORAGE_KEY);
+        if (token) {
+          this.rememberMe = true;
+        } else {
+          token = sessionStorage.getItem(TOKEN_STORAGE_KEY);
+        }
       }
 
       if (token) {

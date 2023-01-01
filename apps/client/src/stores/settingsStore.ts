@@ -1,5 +1,5 @@
 import { Operator } from '@mathemon/common/models/operation';
-import store from '@mathemon/turbo-client/store';
+import { localStorage } from '@mathemon/turbo-client/storage/index';
 import { action, computed, makeAutoObservable } from 'mobx';
 
 export enum InputDirection {
@@ -48,7 +48,7 @@ export class SettingsStore {
     makeAutoObservable(this);
 
     try {
-      const content = store(true).getItem(LOCALSTORAGE_KEY);
+      const content = localStorage.getItem(LOCALSTORAGE_KEY);
       this.settings = content ? JSON.parse(content) : {};
     } catch (e) {
       // do nothing
@@ -76,6 +76,6 @@ export class SettingsStore {
     this.settings[operator] = newSettings.section;
     this.settings[COMMON_SETTINGS_KEY] = newSettings.common;
 
-    store(true).setItem(LOCALSTORAGE_KEY, JSON.stringify(this.settings));
+    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(this.settings));
   };
 }

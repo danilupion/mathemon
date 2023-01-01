@@ -1,4 +1,3 @@
-import { CreateTokenRes } from '@mathemon/common/models/api/auth.js';
 import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
 import { generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
@@ -11,15 +10,17 @@ type UserFiled = {
   user?: UserDocument;
 };
 
-export const createTokenFromUser = controller<never, CreateTokenRes, UserFiled>(
-  async (req, res) => {
-    if (!req.user) {
-      throw new ClientErrorUnauthorized();
-    }
+export const createTokenFromUser = controller<never, never, UserFiled>(async (req, res) => {
+  if (!req.user) {
+    throw new ClientErrorUnauthorized();
+  }
 
-    res.redirect('/token?token=' + (await generateToken(getTokenPayload(req.user))));
-  },
-);
+  res.cookie('token', await generateToken(getTokenPayload(req.user)), {
+    secure: true,
+  });
+
+  res.redirect('/');
+});
 
 export const userFromProfile =
   <Profile extends OauthProfile>(
