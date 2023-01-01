@@ -1,12 +1,18 @@
 import { User, UserRole } from '@mathemon/common/models/user.js';
 import email from '@mathemon/turbo-server/middleware/mongoose/email.js';
 import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
-import google, { WithGoogle } from '@mathemon/turbo-server/middleware/mongoose/oauth/google.js';
+import oauthProfile, {
+  WithOauthProfile,
+} from '@mathemon/turbo-server/middleware/mongoose/oauthProfile.js';
 import password, { WithPassword } from '@mathemon/turbo-server/middleware/mongoose/password.js';
 import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
 import { Document, Schema, model } from 'mongoose';
 
-export type UserDocument = Document & User & WithPassword & WithGoogle;
+export type UserDocument = Document &
+  User &
+  WithPassword &
+  WithOauthProfile<'google'> &
+  WithOauthProfile<'facebook'>;
 
 const UserSchema = new Schema(
   {
@@ -28,7 +34,8 @@ const UserSchema = new Schema(
 )
   .plugin(email)
   .plugin(password, { required: false })
-  .plugin(google, { parent: 'profiles' })
+  .plugin(oauthProfile, { field: 'google', parent: 'profiles' })
+  .plugin(oauthProfile, { field: 'facebook', parent: 'profiles' })
   .plugin(timestamps)
   .plugin(normalizeJson, { remove: ['password', '__v'] });
 

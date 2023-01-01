@@ -18,6 +18,10 @@
     "google": {
       "clientId": "CLIENT ID",
       "clientSecret": "CLIENT SECRET"
+    },
+    "facebook": {
+      "clientId": "CLIENT ID",
+      "clientSecret": "CLIENT SECRET"
     }
   },
   "mongodb": {

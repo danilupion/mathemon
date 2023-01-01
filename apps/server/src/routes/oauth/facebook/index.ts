@@ -1,21 +1,21 @@
 import { getRoute } from '@mathemon/turbo-server/helpers/express/route.js';
-import googleOauthMiddleware from '@mathemon/turbo-server/middleware/express/oauth/google.js';
+import facebookOauthMiddleware from '@mathemon/turbo-server/middleware/express/oauth/facebook.js';
 import config from 'config';
 import { Router } from 'express';
 
 import { createTokenFromUser, userFromProfile } from '../controllers.js';
 
-const { initialize, initiator, callback } = googleOauthMiddleware;
+const { initialize, initiator, callback } = facebookOauthMiddleware;
 
 const router = Router();
 
 const url = config.get<string>('url');
 
 initialize({
-  callbackURL: `${url}/oauth/google/callback`,
+  callbackURL: `${url}/oauth/facebook/callback`,
   userFromProfile: userFromProfile(
-    'google',
-    (profile) => profile.emails && profile.emails.find((email) => email.verified)?.value,
+    'facebook',
+    (profile) => profile.emails && profile.emails[0] && profile.emails[0].value,
   ),
 });
 

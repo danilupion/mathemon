@@ -61,6 +61,9 @@ const LogIn = () => {
               <NavButton href="/oauth/google" native>
                 <i className={styles.google} />
               </NavButton>
+              <NavButton href="/oauth/facebook" native>
+                <i className={styles.facebook} />
+              </NavButton>
             </div>
           </>
         )}

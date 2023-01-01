@@ -14,4 +14,10 @@
     @extend .google;
     @extend .is-small;
   }
+
+  .facebook {
+    @extend .nes-icon;
+    @extend .facebook;
+    @extend .is-small;
+  }
 }

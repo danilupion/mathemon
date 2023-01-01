@@ -1,31 +1,31 @@
 import { Schema, SchemaDefinition } from 'mongoose';
 
-type GoogleProfile = {
+type OauthProfile = {
   id: string;
   displayName: string;
   emails: string[];
   photos: string[];
 };
 
-export type WithGoogle<
-  Field extends string = 'google',
+export type WithOauthProfile<
+  Field extends string,
   Parent extends string = 'profiles',
 > = Parent extends never
   ? {
-      [key in Field]?: GoogleProfile;
+      [key in Field]?: OauthProfile;
     }
   : {
-      [key in Parent]: { [key in Field]?: GoogleProfile };
+      [key in Parent]: { [key in Field]?: OauthProfile };
     };
 
-interface GoogleMiddlewareOptions {
-  field?: string;
+interface OauthProfileMiddlewareOptions {
+  field: string;
   parent?: string;
 }
 
-const googleMiddleware = (
+const oauthProfileMiddleware = (
   schema: Schema,
-  { field = 'google', parent }: GoogleMiddlewareOptions = {},
+  { field, parent }: OauthProfileMiddlewareOptions,
 ): void => {
   const fieldDescription: SchemaDefinition = {
     [field]: {
@@ -52,4 +52,4 @@ const googleMiddleware = (
   }
 };
 
-export default googleMiddleware;
+export default oauthProfileMiddleware;
