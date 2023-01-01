@@ -5,12 +5,6 @@ import { getAllPokemons } from './controllers.js';
 
 const router = Router();
 
-/**
- * Route: /api/pokedex
- * Method: GET
- *
- * Returns all pokemons
- */
 getRoute(router, '/', getAllPokemons);
 
 export default router;

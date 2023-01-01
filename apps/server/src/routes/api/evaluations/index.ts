@@ -6,12 +6,6 @@ import { evaluationCreationValidator } from './validators.js';
 
 const router = Router();
 
-/**
- * Route: /api/evaluations
- * Method: POST
- *
- * Returns a new evaluation.
- */
 postRoute(router, '/', evaluationCreationValidator, createEvaluation);
 
 export default router;
