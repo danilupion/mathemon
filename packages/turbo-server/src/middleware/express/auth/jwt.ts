@@ -1,13 +1,20 @@
 import config from 'config';
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Response } from 'express';
 import jsonWebToken from 'jsonwebtoken';
 import passport from 'passport';
-import { ExtractJwt, Strategy, VerifiedCallback } from 'passport-jwt';
+import { Strategy as AnonymousStrategy } from 'passport-anonymous';
+import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 
 import { RequestWith } from '../../../helpers/express/route.js';
 import { ClientErrorForbidden, ClientErrorUnauthorized } from '../../../helpers/httpError.js';
 
 const defaultProperty = 'jwtUser';
+const mandatoryJwtStrategyName = 'turbo-jwt-mandatory';
+const optionalJwtStrategyName = 'turbo-jwt-optionnal';
+const anonymousStrategyName = 'turbo-anonymous';
+
+const jwtSecret = config.get<string>('auth.jwt.secret');
+const jwtExpiration = config.get<string>('auth.jwt.expiration');
 
 interface Jwt<UserRole extends string = string> {
   id: string;
@@ -18,45 +25,46 @@ export type JwtData<UserRole extends string = string, Key extends string = 'jwtU
   [key in Key]: Jwt<UserRole>;
 };
 
-const jwtSecret = config.get<string>('auth.jwt.secret');
-const jwtExpiration = config.get<string>('auth.jwt.expiration');
+const strategyOptions = {
+  secretOrKey: jwtSecret,
+  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
+};
 
-/**
- * JWT strategy that will extend response with a new user property containing the id
- */
-const strategy = new Strategy(
-  {
-    secretOrKey: jwtSecret,
-    jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
-  },
+const mandatoryJwtStrategy = new JwtStrategy(
+  strategyOptions,
   <UserRole extends string = string>(payload: Jwt<UserRole>, done: VerifiedCallback) => {
-    if (payload.id) {
-      return done(null, {
-        id: payload.id,
-        role: payload.role,
-      });
+    if (payload.id && payload.role) {
+      return done(null, payload);
     }
 
     return done(new ClientErrorUnauthorized());
   },
 );
 
-passport.use(strategy);
+passport.use(mandatoryJwtStrategyName, mandatoryJwtStrategy);
 
-type Authenticator = (req: Request, res: Response, next: NextFunction) => void;
+const optionalJwtStrategy = new JwtStrategy(
+  strategyOptions,
+  <UserRole extends string = string>(payload: Jwt<UserRole>, done: VerifiedCallback) => {
+    if (payload.id && payload.role) {
+      return done(null, payload);
+    }
 
-const cache = new Map<string, Authenticator>();
+    return done(null);
+  },
+);
 
-const jwtAuth = ({ requestProperty = defaultProperty } = {}) => {
-  if (!cache.has(requestProperty)) {
-    cache.set(
-      requestProperty,
-      passport.authenticate('jwt', { session: false, assignProperty: requestProperty }),
-    );
-  }
+passport.use(optionalJwtStrategyName, optionalJwtStrategy);
+passport.use(anonymousStrategyName, new AnonymousStrategy());
 
-  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-  return cache.get(requestProperty)!;
+const jwtAuth = ({ requestProperty = defaultProperty, mandatory = true } = {}) => {
+  return passport.authenticate(
+    mandatory ? mandatoryJwtStrategyName : [optionalJwtStrategyName, anonymousStrategyName],
+    {
+      session: false,
+      assignProperty: requestProperty,
+    },
+  );
 };
 
 interface GenerateTokenOptions {
