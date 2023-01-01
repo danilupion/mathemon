@@ -2,7 +2,7 @@ import { CreateTokenReq, CreateTokenRes } from '@mathemon/common/models/api/auth
 import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
-import { JwtDataField, generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
+import { JwtData, generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 
 import UserModel from '../../../../models/user.js';
 import { getTokenPayload } from '../../../../utils/auth.js';
@@ -24,7 +24,7 @@ export const createToken = controller<CreateTokenReq, CreateTokenRes>(async (req
   });
 });
 
-export const renewToken = controller<never, CreateTokenRes, JwtDataField>(async (req, res) => {
+export const renewToken = controller<never, CreateTokenRes, JwtData>(async (req, res) => {
   const user = await UserModel.findById(req.jwtUser.id);
 
   if (!user) {

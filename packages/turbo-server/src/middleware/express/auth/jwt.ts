@@ -9,13 +9,13 @@ import { ClientErrorForbidden, ClientErrorUnauthorized } from '../../../helpers/
 
 const defaultProperty = 'jwtUser';
 
-interface JwtData<UserRole extends string = string> {
+interface Jwt<UserRole extends string = string> {
   id: string;
   role: UserRole;
 }
 
-export type JwtDataField<UserRole extends string = string, Key extends string = 'jwtUser'> = {
-  [key in Key]: JwtData<UserRole>;
+export type JwtData<UserRole extends string = string, Key extends string = 'jwtUser'> = {
+  [key in Key]: Jwt<UserRole>;
 };
 
 const jwtSecret = config.get<string>('auth.jwt.secret');
@@ -29,7 +29,7 @@ const strategy = new Strategy(
     secretOrKey: jwtSecret,
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
   },
-  <UserRole extends string = string>(payload: JwtData<UserRole>, done: VerifiedCallback) => {
+  <UserRole extends string = string>(payload: Jwt<UserRole>, done: VerifiedCallback) => {
     if (payload.id) {
       return done(null, {
         id: payload.id,
@@ -89,7 +89,7 @@ export const hasRole =
     roles: UserRole[],
     requestProperty: Key = defaultProperty as Key,
   ) =>
-  (req: RequestWith<JwtDataField<UserRole, Key>>, res: Response, next: NextFunction) => {
+  (req: RequestWith<JwtData<UserRole, Key>>, res: Response, next: NextFunction) => {
     jwtAuth({ requestProperty })(req, res, () => {
       if (!roles.includes(req[requestProperty].role)) {
         throw new ClientErrorForbidden();
