@@ -14,7 +14,9 @@ import {
 
 import { Controller, ControllerRequest, ControllerResponse } from './controller.js';
 
-export type RequestWith<Fields extends object> = Request & Fields;
+export type RequestWith<Fields extends object> = Omit<Request, 'body'> & { body: unknown } & Fields;
+
+export type RequestWithMaybe<ReqBody> = RequestWith<Partial<ReqBody>>;
 
 export type RequestWithBody<Value> = Omit<Request, 'body'> & {
   body: Value;
@@ -82,11 +84,11 @@ const errorMapper = (
 };
 
 const secureHandler =
-  <ReqBody, ResBody, ReqExtra extends object>(
-    insecureHandler: Controller<ReqBody, ResBody, ReqExtra>,
+  <ReqBody, ResBody, ReqExtra extends object, ReqExtraOptional extends boolean>(
+    insecureHandler: Controller<ReqBody, ResBody, ReqExtra, ReqExtraOptional>,
   ) =>
   async (
-    req: ControllerRequest<ReqBody, ReqExtra>,
+    req: ControllerRequest<ReqBody, ReqExtra, ReqExtraOptional>,
     res: ControllerResponse<ResBody>,
     next: NextFunction,
   ) => {
@@ -118,10 +120,10 @@ const isValidationChain = (h: Middleware): h is ValidationChain | ValidationChai
 
 const methodFactory =
   (method: Method) =>
-  <ReqBody, ResBody, ReqExtra extends object>(
+  <ReqBody, ResBody, ReqExtra extends object, ReqExtraOptional extends boolean>(
     router: Router,
     path: string,
-    ...middleWare: [...Middleware[], Controller<ReqBody, ResBody, ReqExtra>]
+    ...middleWare: [...Middleware[], Controller<ReqBody, ResBody, ReqExtra, ReqExtraOptional>]
   ) => {
     router[method](
       path,
