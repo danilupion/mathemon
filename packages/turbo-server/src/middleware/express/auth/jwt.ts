@@ -16,7 +16,7 @@ const anonymousStrategyName = 'turbo-anonymous';
 const jwtSecret = config.get<string>('auth.jwt.secret');
 const jwtExpiration = config.get<string>('auth.jwt.expiration');
 
-interface Jwt<UserRole extends string = string> {
+export interface Jwt<UserRole extends string = string> {
   id: string;
   role: UserRole;
 }

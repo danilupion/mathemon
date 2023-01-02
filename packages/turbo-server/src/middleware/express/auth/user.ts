@@ -1,0 +1,41 @@
+import { NextFunction, Response } from 'express';
+
+import { RequestWithMaybe } from '../../../helpers/express/route.js';
+import { ClientErrorUnauthorized } from '../../../helpers/httpError.js';
+import { Nullable } from '../../../types.js';
+
+type UserMiddlewareOptions<User, ReqField extends string, AuthData> = {
+  reqAuthField: ReqField;
+
+  userFactory: (auth: AuthData) => Promise<Nullable<User>> | Nullable<User>;
+  mandatory?: boolean;
+};
+
+export const user =
+  <AuthData, User, ReqField extends string>({
+    reqAuthField,
+    userFactory,
+    mandatory = true,
+  }: UserMiddlewareOptions<User, ReqField, AuthData>) =>
+  async (
+    req: RequestWithMaybe<{ [key in ReqField]: AuthData }>,
+    _res: Response,
+    next: NextFunction,
+  ) => {
+    if (req[reqAuthField]) {
+      const user = await userFactory(req[reqAuthField] as AuthData);
+
+      if (user) {
+        req.user = user;
+        return next();
+      }
+    }
+
+    if (!mandatory) {
+      return next();
+    }
+
+    throw new ClientErrorUnauthorized();
+  };
+
+export default user;
