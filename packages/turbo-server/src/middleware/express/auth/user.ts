@@ -1,6 +1,6 @@
 import { NextFunction, Response } from 'express';
 
-import { RequestWithMaybe } from '../../../helpers/express/route.js';
+import { RequestMaybeWithFields } from '../../../helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '../../../helpers/httpError.js';
 import { Nullable } from '../../../types.js';
 
@@ -18,7 +18,7 @@ export const user =
     mandatory = true,
   }: UserMiddlewareOptions<User, ReqField, AuthData>) =>
   async (
-    req: RequestWithMaybe<{ [key in ReqField]: AuthData }>,
+    req: RequestMaybeWithFields<{ [key in ReqField]: AuthData }>,
     _res: Response,
     next: NextFunction,
   ) => {

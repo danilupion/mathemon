@@ -5,7 +5,7 @@ import passport from 'passport';
 import { Strategy as AnonymousStrategy } from 'passport-anonymous';
 import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-jwt';
 
-import { RequestWith } from '../../../helpers/express/route.js';
+import { RequestWithFields } from '../../../helpers/express/controller.js';
 import { ClientErrorForbidden, ClientErrorUnauthorized } from '../../../helpers/httpError.js';
 
 const defaultProperty = 'jwtUser';
@@ -97,7 +97,7 @@ export const hasRole =
     roles: UserRole[],
     requestProperty: Key = defaultProperty as Key,
   ) =>
-  (req: RequestWith<JwtData<UserRole, Key>>, res: Response, next: NextFunction) => {
+  (req: RequestWithFields<JwtData<UserRole, Key>>, res: Response, next: NextFunction) => {
     jwtAuth({ requestProperty })(req, res, () => {
       if (!roles.includes(req[requestProperty].role)) {
         throw new ClientErrorForbidden();

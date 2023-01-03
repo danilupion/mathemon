@@ -1,36 +1,51 @@
-import { NextFunction, Response } from 'express';
+import { Request as ExpressRequest, Response as ExpressResponse, NextFunction } from 'express';
 
-import { RequestWith, RequestWithBody, RequestWithMaybe } from './route.js';
+export type Request = ExpressRequest;
 
-export type ControllerRequest<
-  ReqBody,
-  ReqExtra extends object,
-  ReqExtraOptional extends boolean,
-> = RequestWithBody<ReqBody> &
-  ([ReqExtra] extends [never]
-    ? RequestWithBody<ReqBody>
-    : ReqExtraOptional extends true
-    ? RequestWithMaybe<ReqExtra>
-    : RequestWith<ReqExtra>);
+export type Response<Body = any> = ExpressResponse<Body>;
 
-export type ControllerResponse<ResBody> = Response<ResBody>;
+export type RequestWithFields<
+  Fields extends object,
+  BaseRequest extends Request = Request,
+> = BaseRequest & Fields;
 
-export type Controller<
-  ReqBody,
-  ResBody,
-  ReqExtra extends object,
-  ReqExtraOptional extends boolean,
-> = (
-  req: ControllerRequest<ReqBody, ReqExtra, ReqExtraOptional>,
-  res: ControllerResponse<ResBody>,
+export type RequestMaybeWithFields<
+  Fields,
+  BaseRequest extends Request = Request,
+> = RequestWithFields<Partial<Fields>, BaseRequest>;
+
+export type RequestWithBody<Body, BaseRequest extends Request = Request> = Omit<
+  BaseRequest,
+  'body'
+> & {
+  body: Body;
+};
+
+export type RequestMaybeWithBody<Body, BaseRequest extends Request = Request> = RequestWithBody<
+  Partial<Body>,
+  BaseRequest
+>;
+
+export type RequestWithQuery<Query, BaseRequest extends Request = Request> = BaseRequest & {
+  query: Query;
+};
+
+export type RequestMaybeWithQuery<Query, BaseRequest extends Request = Request> = RequestWithQuery<
+  Partial<Query>,
+  BaseRequest
+>;
+
+export type ResponseWithBody<Body> = Response<Body>;
+
+export type Controller<Req extends Omit<Request, 'body'>, Res extends Response> = (
+  req: Req,
+  res: Res,
   next: NextFunction,
 ) => Promise<void> | void;
 
 export default <
-  ReqBody,
-  ResBody,
-  ReqExtra extends object = never,
-  ReqExtraOptional extends boolean = false,
+  Req extends Omit<Request, 'body'> = Omit<Request, 'body'>,
+  Res extends Response = Response,
 >(
-  controller: Controller<ReqBody, ResBody, ReqExtra, ReqExtraOptional>,
+  controller: Controller<Req, Res>,
 ) => controller;

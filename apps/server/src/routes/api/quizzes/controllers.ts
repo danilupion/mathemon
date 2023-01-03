@@ -1,6 +1,9 @@
 import { CreateQuizReq, CreateQuizRes } from '@mathemon/common/models/api/quizzes.js';
 import { Operation, Operator } from '@mathemon/common/models/operation.js';
-import controller from '@mathemon/turbo-server/helpers/express/controller.js';
+import controller, {
+  RequestWithBody,
+  ResponseWithBody,
+} from '@mathemon/turbo-server/helpers/express/controller.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import config from 'config';
 
@@ -44,7 +47,10 @@ const createOperand = ({ operator, digits, carrying, reference }: CreateOperandP
   }
 };
 
-export const createQuiz = controller<CreateQuizReq, CreateQuizRes>(async (req, res) => {
+export const createQuiz = controller<
+  RequestWithBody<CreateQuizReq>,
+  ResponseWithBody<CreateQuizRes>
+>(async (req, res) => {
   const quizList: Operation[] = [];
 
   for (let i = 0; i < quizSize; i++) {

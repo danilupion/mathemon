@@ -3,7 +3,11 @@ import {
   CreateEvaluationRes,
 } from '@mathemon/common/models/api/evaluations.js';
 import { Operator, Solution } from '@mathemon/common/models/operation.js';
-import controller from '@mathemon/turbo-server/helpers/express/controller.js';
+import controller, {
+  RequestWithBody,
+  RequestWithFields,
+  ResponseWithBody,
+} from '@mathemon/turbo-server/helpers/express/controller.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import { JwtData } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 import config from 'config';
@@ -38,49 +42,50 @@ const getPokemon = (pokemon: PokemonDocument) => {
   return { id: _id, ...rest };
 };
 
-export const createEvaluation = controller<CreateEvaluationReq, CreateEvaluationRes, JwtData, true>(
-  async (req, res) => {
-    const evaluations = req.body.map((solution) => ({
-      solution,
-      correct: isCorrect(solution),
-    }));
+export const createEvaluation = controller<
+  RequestWithBody<CreateEvaluationReq, RequestWithFields<JwtData>>,
+  ResponseWithBody<CreateEvaluationRes>
+>(async (req, res) => {
+  const evaluations = req.body.map((solution) => ({
+    solution,
+    correct: isCorrect(solution),
+  }));
 
-    let pokemon: PokemonDocument | undefined = undefined;
+  let pokemon: PokemonDocument | undefined = undefined;
 
-    const correct = evaluations.filter((e) => e.correct).length;
-    if (correct === evaluations.length) {
-      pokemon = (
-        await PokemonModel.aggregate([
-          { $match: { $expr: { $in: ['$generation', pokemonGenerations] } } },
-          { $sample: { size: 1 } },
-        ])
-      )[0];
+  const correct = evaluations.filter((e) => e.correct).length;
+  if (correct === evaluations.length) {
+    pokemon = (
+      await PokemonModel.aggregate([
+        { $match: { $expr: { $in: ['$generation', pokemonGenerations] } } },
+        { $sample: { size: 1 } },
+      ])
+    )[0];
+  }
+
+  if (pokemon && req.jwtUser) {
+    let pokedex = await PokedexModel.findOne({ user: req.jwtUser.id });
+    if (!pokedex) {
+      pokedex = new PokedexModel({ user: req.jwtUser.id });
     }
 
-    if (pokemon && req.jwtUser) {
-      let pokedex = await PokedexModel.findOne({ user: req.jwtUser.id });
-      if (!pokedex) {
-        pokedex = new PokedexModel({ user: req.jwtUser.id });
-      }
+    const pokedexEntry = pokedex.pokemons.has(pokemon.number.toString())
+      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        pokedex.pokemons.get(pokemon.number.toString())!
+      : { count: 0 };
 
-      const pokedexEntry = pokedex.pokemons.has(pokemon.number.toString())
-        ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-          pokedex.pokemons.get(pokemon.number.toString())!
-        : { count: 0 };
+    pokedexEntry.count += 1;
 
-      pokedexEntry.count += 1;
+    pokedex.pokemons.set(pokemon.number.toString(), pokedexEntry);
+    await pokedex.save();
+  }
 
-      pokedex.pokemons.set(pokemon.number.toString(), pokedexEntry);
-      await pokedex.save();
-    }
-
-    res.status(StatusCode.SuccessOK).send({
-      evaluations,
-      score: {
-        total: evaluations.length,
-        correct,
-      },
-      reward: pokemon ? getPokemon(pokemon) : undefined,
-    });
-  },
-);
+  res.status(StatusCode.SuccessOK).send({
+    evaluations,
+    score: {
+      total: evaluations.length,
+      correct,
+    },
+    reward: pokemon ? getPokemon(pokemon) : undefined,
+  });
+});

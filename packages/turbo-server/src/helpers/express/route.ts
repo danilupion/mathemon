@@ -1,6 +1,6 @@
 import Method from '@mathemon/turbo-common/http/method.js';
 import { ValidationError as MappedValidationError } from '@mathemon/turbo-common/rest/error.js';
-import { Handler, NextFunction, Request, Router } from 'express';
+import { Handler, NextFunction, Router } from 'express';
 import { ValidationChain, validationResult } from 'express-validator';
 import { ValidationError } from 'express-validator/src/base.js';
 import { MongoServerError } from 'mongodb';
@@ -12,15 +12,7 @@ import {
   ServerErrorInternalServerError,
 } from '../httpError.js';
 
-import { Controller, ControllerRequest, ControllerResponse } from './controller.js';
-
-export type RequestWith<Fields extends object> = Omit<Request, 'body'> & { body: unknown } & Fields;
-
-export type RequestWithMaybe<ReqBody> = RequestWith<Partial<ReqBody>>;
-
-export type RequestWithBody<Value> = Omit<Request, 'body'> & {
-  body: Value;
-};
+import { Controller, Request, Response } from './controller.js';
 
 type CustomValidationError = {
   field: string;
@@ -84,14 +76,8 @@ const errorMapper = (
 };
 
 const secureHandler =
-  <ReqBody, ResBody, ReqExtra extends object, ReqExtraOptional extends boolean>(
-    insecureHandler: Controller<ReqBody, ResBody, ReqExtra, ReqExtraOptional>,
-  ) =>
-  async (
-    req: ControllerRequest<ReqBody, ReqExtra, ReqExtraOptional>,
-    res: ControllerResponse<ResBody>,
-    next: NextFunction,
-  ) => {
+  <Req extends Request, Res extends Response>(insecureHandler: Controller<Req, Res>) =>
+  async (req: Req, res: Res, next: NextFunction) => {
     try {
       const errors = validationErrors(req);
 
@@ -120,10 +106,10 @@ const isValidationChain = (h: Middleware): h is ValidationChain | ValidationChai
 
 const methodFactory =
   (method: Method) =>
-  <ReqBody, ResBody, ReqExtra extends object, ReqExtraOptional extends boolean>(
+  <Req extends Request, Res extends Response>(
     router: Router,
     path: string,
-    ...middleWare: [...Middleware[], Controller<ReqBody, ResBody, ReqExtra, ReqExtraOptional>]
+    ...middleWare: [...Middleware[], Controller<Req, Res>]
   ) => {
     router[method](
       path,

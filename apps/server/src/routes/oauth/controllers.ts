@@ -1,4 +1,6 @@
-import controller from '@mathemon/turbo-server/helpers/express/controller.js';
+import controller, {
+  RequestWithFields,
+} from '@mathemon/turbo-server/helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
 import { generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 import { OauthProfile } from '@mathemon/turbo-server/middleware/express/oauth/index.js';
@@ -10,7 +12,7 @@ type UserFiled = {
   user?: UserDocument;
 };
 
-export const createTokenFromUser = controller<never, never, UserFiled>(async (req, res) => {
+export const createTokenFromUser = controller<RequestWithFields<UserFiled>>(async (req, res) => {
   if (!req.user) {
     throw new ClientErrorUnauthorized();
   }
