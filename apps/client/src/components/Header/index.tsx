@@ -80,7 +80,7 @@ const Header = () => {
 
   const firstEntry: MenuButtonProps = authStore.signedIn
     ? { label: 'Salir', onClick: authStore.signOut }
-    : { to: '/signIn', label: 'Ingresar', img: '/icons/basement-key.png' };
+    : { to: '/signIn', label: 'Iniciar Sesión', img: '/icons/basement-key.png' };
 
   return (
     <div className={styles.container}>

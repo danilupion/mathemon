@@ -12,5 +12,9 @@
 .images {
   img {
     width: 200px;
+
+    &.unknown {
+      filter: grayscale(1) blur(0.3rem);
+    }
   }
 }

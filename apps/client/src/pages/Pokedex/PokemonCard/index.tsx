@@ -1,7 +1,8 @@
 import { Pokemon } from '@mathemon/common/models/pokemon';
+import classNames from 'classnames';
 
 import Card from '../../../components/Card';
-import PokemonImage, { PokemonImageType } from '../../../components/PokemonImage';
+import PokemonImage from '../../../components/PokemonImage';
 
 import styles from './index.module.scss';
 
@@ -11,19 +12,13 @@ interface PokemonCardProps {
 
 const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   return (
-    <Card key={pokemon.id} title={pokemon.name}>
+    <Card key={pokemon.id} title={pokemon.number.toString()}>
       <table className={styles['pokemon-stats']}>
         <tbody>
           <tr>
-            <td>#: </td>
+            <td>Nombre: </td>
             <td>
-              <b>{pokemon.number}</b>
-            </td>
-          </tr>
-          <tr>
-            <td>Generación: </td>
-            <td>
-              <b>{pokemon.generation}</b>
+              <b>{pokemon.name}</b>
             </td>
           </tr>
           <tr>
@@ -41,9 +36,10 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
         </tbody>
       </table>
       <div className={styles.images}>
-        <PokemonImage pokemon={pokemon} />
-        <PokemonImage pokemon={pokemon} type={PokemonImageType.Back} />
-        <PokemonImage pokemon={pokemon} type={PokemonImageType.Icon} />
+        <PokemonImage
+          pokemon={pokemon}
+          className={classNames({ [styles.unknown]: pokemon.name === '???' })}
+        />
       </div>
     </Card>
   );

@@ -5,8 +5,10 @@ import {
 import { Operator, Solution } from '@mathemon/common/models/operation.js';
 import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
+import { JwtData } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 
-import PokemonModel from '../../../models/pokemon.js';
+import PokedexModel from '../../../models/pokedex.js';
+import PokemonModel, { PokemonDocument } from '../../../models/pokemon.js';
 
 const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
   let resultOfOperation;
@@ -25,21 +27,42 @@ const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
   return resultOfOperation === value;
 };
 
-export const createEvaluation = controller<CreateEvaluationReq, CreateEvaluationRes>(
+const getPokemon = (pokemon: PokemonDocument) => {
+  const { _id, __v, ...rest } = pokemon;
+  return { id: _id, ...rest };
+};
+
+export const createEvaluation = controller<CreateEvaluationReq, CreateEvaluationRes, JwtData, true>(
   async (req, res) => {
     const evaluations = req.body.map((solution) => ({
       solution,
       correct: isCorrect(solution),
     }));
 
-    // TODO: Save to database and review approach
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    let pokemon: any;
+    let pokemon: PokemonDocument | undefined = undefined;
+
     const correct = evaluations.filter((e) => e.correct).length;
     if (correct === evaluations.length) {
-      pokemon = (await PokemonModel.aggregate([{ $sample: { size: 1 } }]))[0];
-      const { _id, __v, ...rest } = pokemon;
-      pokemon = rest;
+      pokemon = (
+        await PokemonModel.aggregate([{ $match: { generation: 1 } }, { $sample: { size: 1 } }])
+      )[0];
+    }
+
+    if (pokemon && req.jwtUser) {
+      let pokedex = await PokedexModel.findOne({ user: req.jwtUser.id });
+      if (!pokedex) {
+        pokedex = new PokedexModel({ user: req.jwtUser.id });
+      }
+
+      const pokedexEntry = pokedex.pokemons.has(pokemon.number.toString())
+        ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          pokedex.pokemons.get(pokemon.number.toString())!
+        : { count: 0 };
+
+      pokedexEntry.count += 1;
+
+      pokedex.pokemons.set(pokemon.number.toString(), pokedexEntry);
+      await pokedex.save();
     }
 
     res.status(StatusCode.SuccessOK).send({
@@ -48,7 +71,7 @@ export const createEvaluation = controller<CreateEvaluationReq, CreateEvaluation
         total: evaluations.length,
         correct,
       },
-      reward: correct === evaluations.length ? pokemon : undefined,
+      reward: pokemon ? getPokemon(pokemon) : undefined,
     });
   },
 );

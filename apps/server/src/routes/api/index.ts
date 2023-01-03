@@ -3,7 +3,7 @@ import { Router } from 'express';
 
 import auth from './auth/index.js';
 import evaluations from './evaluations/index.js';
-import pokedex from './pokedex/index.js';
+import me from './me/index.js';
 import profiles from './profiles/index.js';
 import quizzes from './quizzes/index.js';
 
@@ -11,7 +11,7 @@ const router = Router();
 
 router.use('/auth', auth);
 router.use('/evaluations', evaluations);
-router.use('/pokedex', pokedex);
+router.use('/me', me);
 router.use('/profiles', profiles);
 router.use('/quizzes', quizzes);
 
