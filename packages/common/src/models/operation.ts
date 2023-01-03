@@ -2,6 +2,7 @@ export enum Operator {
   addition = '+',
   subtraction = '-',
   multiplication = 'x',
+  division = '÷',
 }
 
 export type Operation = {

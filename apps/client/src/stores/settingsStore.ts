@@ -39,6 +39,9 @@ const sectionDefaults: { [key in Operator]: OperatorSettings } = {
   [Operator.multiplication]: {
     digits: 1,
   },
+  [Operator.division]: {
+    digits: 1,
+  },
 };
 
 export class SettingsStore {

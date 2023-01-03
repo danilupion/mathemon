@@ -16,6 +16,7 @@ const pathToOperator: { [key: string]: Operator } = {
   '/addition': Operator.addition,
   '/subtraction': Operator.subtraction,
   '/multiplication': Operator.multiplication,
+  '/division': Operator.division,
 };
 
 interface SettingsProps {

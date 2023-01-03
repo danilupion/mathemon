@@ -22,6 +22,9 @@ const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
     case Operator.multiplication:
       resultOfOperation = operands[0] * operands[1];
       break;
+    case Operator.division:
+      resultOfOperation = operands[0] / operands[1];
+      break;
   }
 
   return resultOfOperation === value;

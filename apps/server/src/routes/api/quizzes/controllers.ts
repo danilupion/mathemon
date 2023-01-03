@@ -4,7 +4,7 @@ import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import config from 'config';
 
-import { randomInt } from '../../../utils/math.js';
+import { divisors, randomElement, randomInt } from '../../../utils/math.js';
 
 interface CreateOperandParams {
   digits: number;
@@ -35,6 +35,12 @@ const createOperand = ({ operator, digits, carrying, reference }: CreateOperandP
       return randomInt(0, reference === undefined ? 10 ** digits - 1 : reference);
     case Operator.multiplication:
       return randomInt(0, 10 ** digits - 1);
+    case Operator.division:
+      if (reference !== undefined) {
+        return randomElement(divisors(reference));
+      }
+
+      return randomInt(1, 10 ** digits - 1);
   }
 };
 

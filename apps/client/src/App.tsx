@@ -21,6 +21,7 @@ const App = () => {
           <Route path="addition" element={<Quiz operator={Operator.addition} />} />
           <Route path="subtraction" element={<Quiz operator={Operator.subtraction} />} />
           <Route path="multiplication" element={<Quiz operator={Operator.multiplication} />} />
+          <Route path="division" element={<Quiz operator={Operator.division} />} />
           <Route path="multiplicationTables" element={<MultiplicationTables />} />
           <Route path="multiplicationTables/:table" element={<MultiplicationTable />} />
           <Route path="pokedex" element={<Pokedex />} />

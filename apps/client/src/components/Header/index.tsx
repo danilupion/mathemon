@@ -29,23 +29,28 @@ const routes: MenuButtonProps[] = [
     ),
   },
   {
-    to: '/multiplicationTables',
-    label: 'Tablas',
+    to: '/multiplication',
+    label: 'Multiplicación',
     img: (
       <PokemonImage pokemon={4} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
     ),
   },
   {
-    to: '/multiplication',
-    label: 'Multiplicación',
+    to: '/division',
+    label: 'División',
     img: (
       <PokemonImage pokemon={25} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
     ),
   },
+  {
+    to: '/multiplicationTables',
+    label: 'Tablas',
+    img: '/icons/stone-plate.png',
+  },
   { to: '/pokedex', label: 'Pokedex', img: '/icons/poke-ball.png' },
 ];
 
-const pathsWithSettings = ['/addition', '/subtraction', '/multiplication'];
+const pathsWithSettings = ['/addition', '/subtraction', '/multiplication', '/division'];
 
 const Header = () => {
   const authStore = useAuthStore();
