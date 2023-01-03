@@ -2,6 +2,7 @@ import { Evaluation, Solution } from '@mathemon/common/models/operation';
 import classNames from 'classnames';
 import { ChangeEvent, useCallback } from 'react';
 
+import Card from '../../../components/Card';
 import Input from '../../../components/Form/Input';
 import { InputDirection } from '../../../stores/settingsStore';
 import { maxDigits } from '../../../utils/math';
@@ -51,7 +52,7 @@ const QuizItem = ({ item, editable, inputDirection, onSetValue }: QuizItemProps)
   );
 
   return (
-    <div
+    <Card
       className={classNames(styles.quizItem, {
         [styles.right]: item.correct,
         [styles.wrong]: item.correct === false,
@@ -77,7 +78,7 @@ const QuizItem = ({ item, editable, inputDirection, onSetValue }: QuizItemProps)
           inputMode="numeric"
         />
       </div>
-    </div>
+    </Card>
   );
 };
 
