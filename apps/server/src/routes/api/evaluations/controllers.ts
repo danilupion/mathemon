@@ -6,9 +6,12 @@ import { Operator, Solution } from '@mathemon/common/models/operation.js';
 import controller from '@mathemon/turbo-server/helpers/express/controller.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import { JwtData } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
+import config from 'config';
 
 import PokedexModel from '../../../models/pokedex.js';
 import PokemonModel, { PokemonDocument } from '../../../models/pokemon.js';
+
+const pokemonGenerations = config.get<number[]>('settings.pokemon.generations');
 
 const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
   let resultOfOperation;
@@ -47,7 +50,10 @@ export const createEvaluation = controller<CreateEvaluationReq, CreateEvaluation
     const correct = evaluations.filter((e) => e.correct).length;
     if (correct === evaluations.length) {
       pokemon = (
-        await PokemonModel.aggregate([{ $match: { generation: 1 } }, { $sample: { size: 1 } }])
+        await PokemonModel.aggregate([
+          { $match: { $expr: { $in: ['$generation', pokemonGenerations] } } },
+          { $sample: { size: 1 } },
+        ])
       )[0];
     }
 

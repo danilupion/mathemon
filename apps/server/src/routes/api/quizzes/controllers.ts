@@ -13,7 +13,7 @@ interface CreateOperandParams {
   reference?: number;
 }
 
-const quizSize = config.get<number>('quiz.size');
+const quizSize = config.get<number>('settings.quiz.size');
 
 const createOperand = ({ operator, digits, carrying, reference }: CreateOperandParams) => {
   switch (operator) {

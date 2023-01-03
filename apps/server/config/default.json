@@ -7,6 +7,14 @@
     },
     "port": 3200
   },
+  "settings": {
+    "pokemon": {
+      "generations": [1]
+    },
+    "quiz": {
+      "size": 20
+    }
+  },
   "quiz": {
     "size": 20
   },
