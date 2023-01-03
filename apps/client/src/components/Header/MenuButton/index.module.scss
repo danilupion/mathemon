@@ -3,6 +3,9 @@
 
 .menu-button {
   @extend .button;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 10px;
 
   &.current {
@@ -12,5 +15,9 @@
   img {
     width: 46px;
     height: 46px;
+  }
+
+  span {
+    width: 100%;
   }
 }

@@ -27,7 +27,7 @@ const MenuButton = ({ label, img, onClick, ...rest }: MenuButtonProps) => {
 
   const content = (
     <>
-      {img && typeof img === 'string' ? <img src={img} alt={label} /> : img} {label}
+      {img && typeof img === 'string' ? <img src={img} alt={label} /> : img} <span>{label}</span>
     </>
   );
 
