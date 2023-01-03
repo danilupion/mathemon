@@ -19,7 +19,7 @@ interface FailureProps {
 
 const Failure = ({ score, onRetry, onClose }: FailureProps) => (
   <>
-    <div className={styles.sentiment}>!Lo sentimos!</div>
+    <div className={styles.sentiment}>¡Lo sentimos!</div>
     <div className={classNames(styles.score, styles.failure)}>
       {score.correct}/{score.total}
     </div>
@@ -42,7 +42,7 @@ const Success = ({ score, reward, onClose }: SuccessProps) => {
 
   return (
     <>
-      <div className={styles.sentiment}>!Enhorabuena!</div>
+      <div className={styles.sentiment}>¡Enhorabuena!</div>
       <div className={classNames(styles.score, styles.success)}>
         {score.correct}/{score.total}
       </div>
