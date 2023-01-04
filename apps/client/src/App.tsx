@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 
 import './App.css';
 import NotSignedInGuard from './guards/NotSignedInGuard';
+import usePageTracking from './hooks/usePageTracking';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
 import MultiplicationTable from './pages/MultiplicationTable';
@@ -13,6 +14,8 @@ import Quiz from './pages/Quiz';
 import SignIn from './pages/SignIn';
 
 const App = () => {
+  usePageTracking();
+
   return (
     <div className="App">
       <Routes>
