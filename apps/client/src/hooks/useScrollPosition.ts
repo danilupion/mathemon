@@ -1,7 +1,7 @@
 import { debounce } from 'lodash';
 import { MutableRefObject, useLayoutEffect, useState } from 'react';
 
-interface ScrollPosition {
+export interface ScrollPosition {
   top: number;
   bottom: number;
   left: number;
@@ -27,7 +27,7 @@ interface ScrollPositionHookParameters<T extends HTMLElement> {
 
 const useScrollPosition = <T extends HTMLElement>({
   element,
-  debounce: debounceTime = 100,
+  debounce: debounceTime = 50,
 }: ScrollPositionHookParameters<T> = {}): ScrollPosition => {
   const [position, setPosition] = useState(
     getScrollPosition((element && element.current) || window.document.scrollingElement),
@@ -53,9 +53,11 @@ const useScrollPosition = <T extends HTMLElement>({
       : handleScroll;
 
     target?.addEventListener('scroll', handleScrollToUse, { passive: true });
+    target?.addEventListener('resize', handleScrollToUse, { passive: true });
 
     return () => {
       target?.removeEventListener('scroll', handleScrollToUse);
+      target?.removeEventListener('resize', handleScrollToUse);
     };
   }, [debounceTime, element]);
 
