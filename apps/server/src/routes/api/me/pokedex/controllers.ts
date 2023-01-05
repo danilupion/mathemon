@@ -1,5 +1,7 @@
 import { GetPokedexRes } from '@mathemon/common/models/api/me.js';
+import { PageQuery } from '@mathemon/turbo-server/api/pagination.js';
 import controller, {
+  RequestMaybeWithQuery,
   RequestWithFields,
   ResponseWithBody,
 } from '@mathemon/turbo-server/helpers/express/controller.js';
@@ -13,23 +15,27 @@ import PokemonModel from '../../../../models/pokemon.js';
 
 const pokemonGenerations = config.get<number[]>('settings.pokemon.generations');
 
-export const getPokedex = controller<RequestWithFields<JwtData>, ResponseWithBody<GetPokedexRes>>(
-  async (req, res) => {
-    const pokedex = await Pokedex.findOne({ user: req.jwtUser.id });
-    if (!pokedex) {
-      throw new ServerErrorInternalServerError(new Error('Pokedex not found'));
-    }
+const pageSize = 10;
 
-    const pokemons = await PokemonModel.find({ generation: pokemonGenerations }).sort({
-      number: 1,
-    });
+export const getPokedex = controller<
+  RequestMaybeWithQuery<PageQuery, RequestWithFields<JwtData>>,
+  ResponseWithBody<GetPokedexRes>
+>(async (req, res) => {
+  const pokedex = await Pokedex.findOne({ user: req.jwtUser.id });
+  if (!pokedex) {
+    throw new ServerErrorInternalServerError(new Error('Pokedex not found'));
+  }
 
-    res.status(StatusCode.SuccessOK).send(
-      pokemons.map((pokemon) => {
-        return pokedex.pokemons.has(pokemon.number.toString())
-          ? pokemon.toJSON()
-          : { ...pokemon.toJSON(), name: '???', habitat: '???', types: ['???'] };
-      }),
-    );
-  },
-);
+  const pokemons = await PokemonModel.find({ generation: pokemonGenerations })
+    .sort({ number: 1 })
+    .limit(pageSize)
+    .skip((req.query.page !== undefined ? req.query.page - 1 : 0) * pageSize);
+
+  res.status(StatusCode.SuccessOK).send(
+    pokemons.map((pokemon) => {
+      return pokedex.pokemons.has(pokemon.number.toString())
+        ? pokemon.toJSON()
+        : { ...pokemon.toJSON(), name: '???', habitat: '???', types: ['???'] };
+    }),
+  );
+});
