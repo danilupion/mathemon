@@ -1,6 +1,6 @@
 import { CreateEvaluationReq, CreateEvaluationRes } from '@mathemon/common/models/api/evaluations';
 import { Solution } from '@mathemon/common/models/operation';
-import { postRequest } from '@mathemon/turbo-client/rest/methods';
+import { postRequest } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/evaluations';
 

@@ -1,5 +1,5 @@
 import { GetPokedexRes } from '@mathemon/common/models/api/me';
-import { getRequest } from '@mathemon/turbo-client/rest/methods';
+import { getRequest } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/me';
 

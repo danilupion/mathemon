@@ -1,5 +1,5 @@
 import { CreateTokenReq, CreateTokenRes } from '@mathemon/common/models/api/auth';
-import { bodylessPutRequest, postRequest } from '@mathemon/turbo-client/rest/methods';
+import { bodilessPutRequest, postRequest } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/auth/tokens';
 
@@ -10,4 +10,4 @@ export const generateToken = (email: string, password: string) =>
   }).then((res) => res.token);
 
 export const renewToken = () =>
-  bodylessPutRequest<CreateTokenRes>(basePath).then((res) => res.token);
+  bodilessPutRequest<CreateTokenRes>(basePath).then((res) => res.token);

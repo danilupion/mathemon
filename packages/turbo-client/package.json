@@ -29,7 +29,8 @@
     "prettify": "prettier --write  \"./src/**/*.{ts,json}\""
   },
   "dependencies": {
-    "@mathemon/turbo-common": "1.0.0"
+    "@mathemon/turbo-common": "1.0.0",
+    "qs": "^6.11.0"
   },
   "devDependencies": {
     "@types/gtag.js": "^0.0.12",

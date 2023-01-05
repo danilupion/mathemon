@@ -1,6 +1,6 @@
 import { CreateQuizReq, CreateQuizRes } from '@mathemon/common/models/api/quizzes';
 import { Operator } from '@mathemon/common/models/operation';
-import { postRequest } from '@mathemon/turbo-client/rest/methods';
+import { postRequest } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/quizzes';
 

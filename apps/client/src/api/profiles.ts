@@ -1,5 +1,5 @@
 import { CreateProfileReq, CreateProfileRes } from '@mathemon/common/models/api/profiles';
-import { postRequest } from '@mathemon/turbo-client/rest/methods';
+import { postRequest } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/profiles';
 
