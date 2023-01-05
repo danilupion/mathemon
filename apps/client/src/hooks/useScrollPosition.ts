@@ -52,11 +52,9 @@ const useScrollPosition = <T extends HTMLElement>({
         })
       : handleScroll;
 
-    console.log('register');
     target?.addEventListener('scroll', handleScrollToUse, { passive: true });
 
     return () => {
-      console.log('unregister');
       target?.removeEventListener('scroll', handleScrollToUse);
     };
   }, [debounceTime, element]);

@@ -11,7 +11,6 @@ const Modal = ({ children, open, className, ...props }: DialogProps) => {
   useEffect(() => {
     const { current } = dialogRef;
     if (current) {
-      console.log(current);
       if (open) {
         !current.open && current.showModal();
       } else {
