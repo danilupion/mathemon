@@ -36,10 +36,24 @@ const usePagination = <
   const [data, setData] = useState<Data[]>([]);
   const [meta, setMeta] = useState<Meta>();
   const [full, setFull] = useState(false);
-
   const currentFetch = useRef<number>();
 
   const valueToCheck = position[direction];
+
+  useEffect(() => {
+    currentFetch.current = undefined;
+    setFetching(false);
+    setFull(false);
+    setData([]);
+    setNextPage(1);
+  }, [fetcher]);
+
+  useLayoutEffect(() => {
+    if (!fetching && valueToCheck <= offset && !full) {
+      setNextPage((value) => value + 1);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [full, offset, valueToCheck]);
 
   useEffect(() => {
     if (currentFetch.current !== nextPage) {
@@ -68,14 +82,7 @@ const usePagination = <
         });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nextPage]);
-
-  useLayoutEffect(() => {
-    if (!fetching && valueToCheck <= offset && !full) {
-      setNextPage((value) => value + 1);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [full, offset, valueToCheck]);
+  }, [nextPage, fetcher]);
 
   return [data, meta];
 };
