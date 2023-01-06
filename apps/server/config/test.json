@@ -13,6 +13,9 @@
     },
     "quiz": {
       "size": 20
+    },
+    "pokedex": {
+      "pageSize": 30
     }
   },
   "auth": {

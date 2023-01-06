@@ -1,11 +1,14 @@
 import { Pokemon } from '@mathemon/common/models/pokemon.js';
 import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
 import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
-import { Document, Schema, model } from 'mongoose';
+import config from 'config';
+import { Document, Model, QueryWithHelpers, Schema, model } from 'mongoose';
+
+const pokemonGenerations = config.get<number[]>('settings.pokemon.generations');
 
 export interface PokemonDocument extends Document, Omit<Pokemon, 'id'> {}
 
-const PokemonSchema = new Schema(
+const pokemonSchema = new Schema(
   {
     number: {
       type: Number,
@@ -50,9 +53,18 @@ const PokemonSchema = new Schema(
       },
     ],
   },
-  { collection: 'pokemons' },
+  {
+    collection: 'pokemons',
+  },
 )
   .plugin(timestamps)
-  .plugin(normalizeJson);
+  .plugin(normalizeJson)
+  .static('inUsedGenerations', function () {
+    return this.find({ generation: pokemonGenerations });
+  });
 
-export default model<PokemonDocument>('Pokemon', PokemonSchema);
+interface PokemonModel extends Model<PokemonDocument> {
+  inUsedGenerations(): QueryWithHelpers<PokemonDocument[], PokemonDocument>;
+}
+
+export default model<PokemonDocument, PokemonModel>('Pokemon', pokemonSchema);

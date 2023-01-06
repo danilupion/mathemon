@@ -13,10 +13,10 @@
     },
     "quiz": {
       "size": 20
+    },
+    "pokedex": {
+      "pageSize": 30
     }
-  },
-  "quiz": {
-    "size": 20
   },
   "auth": {
     "jwt": {

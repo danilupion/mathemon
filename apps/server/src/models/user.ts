@@ -14,7 +14,7 @@ export type UserDocument = Document &
   WithOauthProfile<'google'> &
   WithOauthProfile<'facebook'>;
 
-const UserSchema = new Schema(
+const userSchema = new Schema(
   {
     username: {
       type: String,
@@ -39,4 +39,4 @@ const UserSchema = new Schema(
   .plugin(timestamps)
   .plugin(normalizeJson, { remove: ['password', '__v'] });
 
-export default model<UserDocument>('User', UserSchema);
+export default model<UserDocument>('User', userSchema);

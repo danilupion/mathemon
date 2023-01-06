@@ -7,7 +7,7 @@ export type PokedexDocument = Document & {
   pokemons: Map<string, { count: number }>;
 };
 
-const PokedexSchema = new Schema(
+const pokedexSchema = new Schema(
   {
     pokemons: {
       type: Map,
@@ -29,4 +29,4 @@ const PokedexSchema = new Schema(
   .plugin(timestamps)
   .plugin(normalizeJson);
 
-export default model<PokedexDocument>('Pokedex', PokedexSchema);
+export default model<PokedexDocument>('Pokedex', pokedexSchema);
