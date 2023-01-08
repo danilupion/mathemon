@@ -13,3 +13,13 @@
   @extend .button;
   @extend .is-primary;
 }
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}

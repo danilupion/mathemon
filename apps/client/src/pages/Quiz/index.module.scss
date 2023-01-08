@@ -4,8 +4,8 @@
   text-align: center;
 
   .quiz {
-    display: flex;
-    flex-direction: row;
+    @extend .row;
+
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;

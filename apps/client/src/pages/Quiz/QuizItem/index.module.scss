@@ -1,9 +1,10 @@
 @use 'nes.css/css/nes.css';
+@use 'src/styles/common.scss';
 
 .quizItem {
   @extend .nes-container;
-  display: flex;
-  flex-direction: column;
+  @extend .column;
+
   margin: 5px;
 
   &.right {
@@ -15,12 +16,10 @@
   }
 
   .operation {
-    display: flex;
-    flex-direction: row;
+    @extend .row;
 
     & > div {
-      display: flex;
-      flex-direction: column;
+      @extend .column;
       justify-content: center;
       align-items: flex-end;
     }

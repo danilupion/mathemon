@@ -1,8 +1,10 @@
+@use 'src/styles/common.scss';
+
 .container {
   text-align: center;
   .grid {
-    display: flex;
-    flex-direction: row;
+    @extend .row;
+
     flex-wrap: wrap;
     justify-content: center;
   }
