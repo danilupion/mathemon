@@ -1,1 +1,1 @@
-export * from '@mathemon/turbo-common/regex.js';
+export { email, password } from '@mathemon/turbo-common/regex.js';
