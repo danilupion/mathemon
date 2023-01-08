@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import './App.css';
 import NotSignedInGuard from './guards/NotSignedInGuard';
 import usePageTracking from './hooks/usePageTracking';
+import HeadlessLayout from './layouts/HeadlessLayout';
 import Layout from './layouts/Layout';
 import Home from './pages/Home';
 import MultiplicationTable from './pages/MultiplicationTable';
@@ -31,7 +32,9 @@ const App = () => {
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/signIn" element={<NotSignedInGuard />}>
-          <Route path="" element={<SignIn />} />
+          <Route element={<HeadlessLayout />}>
+            <Route path="" element={<SignIn />} />
+          </Route>
         </Route>
       </Routes>
     </div>
