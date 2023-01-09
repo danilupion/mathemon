@@ -4,14 +4,17 @@ import { RequestMaybeWithFields } from '../../../helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '../../../helpers/httpError.js';
 import { Nullable } from '../../../types.js';
 
+export type UserData<User extends object, Key extends string = 'user'> = {
+  [key in Key]: User;
+};
+
 type UserMiddlewareOptions<User, ReqField extends string, AuthData> = {
   reqAuthField: ReqField;
-
   userFactory: (auth: AuthData) => Promise<Nullable<User>> | Nullable<User>;
   mandatory?: boolean;
 };
 
-export const user =
+const user =
   <AuthData, User, ReqField extends string>({
     reqAuthField,
     userFactory,

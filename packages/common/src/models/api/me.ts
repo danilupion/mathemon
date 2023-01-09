@@ -13,3 +13,14 @@ export type PokedexMeta = {
 };
 
 export type GetPokedexRes = PaginatedResponse<Pokemon, PokedexMeta>;
+
+export type AccountRes = {
+  username: string;
+  email: string;
+};
+
+export type PatchAccountReq = {
+  username?: string;
+  email?: string;
+  password?: string;
+};
