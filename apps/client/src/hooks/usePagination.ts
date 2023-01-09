@@ -29,7 +29,11 @@ const usePagination = <
   dataField = 'data' as DataField,
   metaField = 'meta' as MetaField,
   direction = 'bottom',
-}: UsePaginationParams<Data, Meta, DataField, MetaField>): [Data[], Meta | undefined] => {
+}: UsePaginationParams<Data, Meta, DataField, MetaField>): {
+  data: Data[];
+  fetching: boolean;
+  meta: Meta | undefined;
+} => {
   const [nextPage, setNextPage] = useState({ page: 1 });
   const [fetching, setFetching] = useState(true);
   const position = useScrollPosition();
@@ -87,7 +91,7 @@ const usePagination = <
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [nextPage]);
 
-  return [data, meta];
+  return { data, meta, fetching };
 };
 
 export default usePagination;

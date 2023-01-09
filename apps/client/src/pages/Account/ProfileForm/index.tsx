@@ -6,6 +6,7 @@ import { getAccount, updateAccount } from '../../../api/me';
 import Button from '../../../components/Button';
 import Form from '../../../components/Form';
 import { FormInputField } from '../../../components/Form/Input';
+import Loader from '../../../components/Loader';
 
 import styles from './index.module.scss';
 
@@ -22,7 +23,6 @@ const ProfileForm = () => {
       await updateAccount(values.username, values.email);
       setStatus('success');
     } catch (e) {
-      console.log(e);
       setStatus('error');
     }
   }, []);
@@ -35,11 +35,9 @@ const ProfileForm = () => {
     return errors;
   }, []);
 
-  if (!account) {
-    return null;
-  }
-
-  return (
+  return !account ? (
+    <Loader />
+  ) : (
     <Form initialValues={account} onSubmit={handleSubmission} validate={handleValidation}>
       {({ isSubmitting, isValid }) => (
         <>

@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { createEvaluation } from '../../api/evaluations';
 import { createQuiz } from '../../api/quizzes';
 import Button from '../../components/Button';
+import Loader from '../../components/Loader';
 import { useSettingsStore } from '../../hooks/useStore';
 
 import QuizItem, { Item } from './QuizItem';
@@ -24,8 +25,10 @@ const Quiz = observer(({ operator }: QuizProps) => {
   const [score, setScore] = useState<Score | undefined>(undefined);
   const [reward, setReward] = useState<Pokemon | undefined>(undefined);
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const init = useCallback(() => {
+    setLoading(true);
     setItems([]);
     setScore(undefined);
     setReward(undefined);
@@ -36,6 +39,7 @@ const Quiz = observer(({ operator }: QuizProps) => {
           solution: { operation: item, value: undefined },
         })),
       );
+      setLoading(false);
     });
   }, [operator, digits, carrying]);
 
@@ -76,6 +80,10 @@ const Quiz = observer(({ operator }: QuizProps) => {
   const retry = useCallback(() => {
     init();
   }, [init]);
+
+  if (loading) {
+    return <Loader />;
+  }
 
   return (
     <div className={styles.container}>

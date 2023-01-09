@@ -5,6 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useCallback, useState } from 'react';
 
 import { getPokedex } from '../../api/me';
+import Loader from '../../components/Loader';
 import usePagination from '../../hooks/usePagination';
 import { useAuthStore } from '../../hooks/useStore';
 
@@ -22,7 +23,7 @@ const LoggedInPokedex = () => {
   const [filter, setFilter] = useState('');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetcher = useCallback(curriedGetPokedex(filter), [filter]);
-  const [pokemons, meta] = usePagination<Pokemon, PokedexMeta>({ fetcher });
+  const { data: pokemons, fetching, meta } = usePagination<Pokemon, PokedexMeta>({ fetcher });
 
   return (
     <div className={styles.container}>
@@ -33,6 +34,7 @@ const LoggedInPokedex = () => {
           <PokemonCard key={pokemon.id} pokemon={pokemon} />
         ))}
       </div>
+      {fetching && <Loader />}
     </div>
   );
 };
