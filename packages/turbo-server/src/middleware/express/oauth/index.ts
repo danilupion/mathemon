@@ -1,4 +1,3 @@
-import { User as ExpressUser } from '@mathemon/common/models/user.js';
 import passport, { Profile as PassportProfile, Strategy } from 'passport';
 
 import { ClientErrorUnauthorized } from '../../../helpers/httpError.js';
@@ -14,7 +13,7 @@ type StrategyFactoryOptions<Profile extends PassportProfile> = {
 
 type StrategyFactoryCallback<
   Profile extends PassportProfile,
-  User extends ExpressUser = ExpressUser,
+  User extends Express.User = Express.User,
 > = (
   accessToken: string,
   _refreshToken: string,
@@ -34,7 +33,7 @@ type OauthMiddlewareOptions<Profile extends PassportProfile> = {
   defaultScope?: string[];
 };
 
-type InitializeMiddlewareOptions<Profile extends PassportProfile, User extends ExpressUser> = {
+type InitializeMiddlewareOptions<Profile extends PassportProfile, User extends Express.User> = {
   callbackURL: string;
   userFromProfile: (profile: Profile) => Promise<User | null | undefined>;
 };
@@ -48,7 +47,7 @@ export const oauthMiddlewareFactory = <Profile extends PassportProfile>({
   defaultScope = [],
 }: OauthMiddlewareOptions<Profile>) => {
   return {
-    initialize: <User extends ExpressUser>({
+    initialize: <User extends Express.User>({
       callbackURL,
       userFromProfile,
     }: InitializeMiddlewareOptions<Profile, User>) => {
