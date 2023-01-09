@@ -80,6 +80,7 @@ const Register = () => {
             type="submit"
             disabled={isSubmitting || !isValid || profileCreated}
             className={styles.send}
+            loading={isSubmitting}
           >
             Registrar
           </Button>

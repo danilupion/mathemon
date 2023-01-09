@@ -57,7 +57,12 @@ const PasswordForm = () => {
             name="passwordConfirmation"
             disabled={isSubmitting}
           />
-          <Button type="submit" disabled={isSubmitting || !isValid} className={styles.send}>
+          <Button
+            type="submit"
+            disabled={isSubmitting || !isValid}
+            className={styles.send}
+            loading={isSubmitting}
+          >
             Cambiar
           </Button>
         </>

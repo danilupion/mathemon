@@ -54,7 +54,12 @@ const ProfileForm = () => {
             name="username"
             disabled={isSubmitting}
           />
-          <Button type="submit" disabled={isSubmitting || !isValid} className={styles.send}>
+          <Button
+            type="submit"
+            disabled={isSubmitting || !isValid}
+            loading={isSubmitting}
+            className={styles.send}
+          >
             Actualizar
           </Button>
         </>

@@ -55,7 +55,12 @@ const LogIn = () => {
             <FormInputField<string> label="Password" type="password" name="password" />
             <FormCheckboxField name="rememberMe" text="Recuérdame" />
             <div className={styles.buttons}>
-              <Button type="submit" disabled={isSubmitting || !isValid} className={styles.send}>
+              <Button
+                type="submit"
+                disabled={isSubmitting || !isValid}
+                className={styles.send}
+                loading={isSubmitting}
+              >
                 Entrar
               </Button>
               <NavButton href="/oauth/google" native>

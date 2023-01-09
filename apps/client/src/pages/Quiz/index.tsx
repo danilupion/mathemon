@@ -108,7 +108,7 @@ const Quiz = observer(({ operator }: QuizProps) => {
         </Button>
       )}
       {!!score && (
-        <Button className={styles.evaluate} onClick={retry}>
+        <Button className={styles.evaluate} onClick={retry} loading={loading}>
           Reintentar
         </Button>
       )}
