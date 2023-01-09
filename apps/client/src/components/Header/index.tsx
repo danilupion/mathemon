@@ -83,9 +83,12 @@ const Header = () => {
 
   const pathHasSettings = pathsWithSettings.includes(pathname);
 
-  const firstEntry: MenuButtonProps = authStore.signedIn
-    ? { label: 'Salir', onClick: authStore.signOut }
-    : { to: '/signIn', label: 'Iniciar Sesión', img: '/icons/basement-key.png' };
+  const firstEntries: MenuButtonProps[] = authStore.signedIn
+    ? [
+        { label: 'Salir', onClick: authStore.signOut },
+        { label: 'Cuenta', to: '/account' },
+      ]
+    : [{ to: '/signIn', label: 'Iniciar Sesión', img: '/icons/basement-key.png' }];
 
   return (
     <div className={styles.container}>
@@ -108,7 +111,7 @@ const Header = () => {
         </Button>
       </div>
       <SidePanel open={leftPanelOpen} onClose={closeLeftPanel} side={Side.Left}>
-        {[firstEntry, ...routes].map(({ onClick, ...props }, index) => (
+        {[...firstEntries, ...routes].map(({ onClick, ...props }, index) => (
           <MenuButton
             key={index}
             {...props}
