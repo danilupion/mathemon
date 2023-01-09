@@ -6,6 +6,7 @@ import NotSignedInGuard from './guards/NotSignedInGuard';
 import usePageTracking from './hooks/usePageTracking';
 import HeadlessLayout from './layouts/HeadlessLayout';
 import Layout from './layouts/Layout';
+import Account from './pages/Account';
 import Home from './pages/Home';
 import MultiplicationTable from './pages/MultiplicationTable';
 import MultiplicationTables from './pages/MultiplicationTables';
@@ -22,6 +23,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="" element={<Home />} />
+          <Route path="account" element={<Account />} />
           <Route path="addition" element={<Quiz operator={Operator.addition} />} />
           <Route path="subtraction" element={<Quiz operator={Operator.subtraction} />} />
           <Route path="multiplication" element={<Quiz operator={Operator.multiplication} />} />

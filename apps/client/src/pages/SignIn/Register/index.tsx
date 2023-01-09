@@ -12,7 +12,7 @@ const initialValues = {
   email: '',
   username: '',
   password: '',
-  repeatedPassword: '',
+  passwordConfirmation: '',
 };
 
 type RegisterValues = typeof initialValues;
@@ -28,8 +28,8 @@ const Register = () => {
       errors.password =
         'La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un caracter especial';
     }
-    if (values.password !== values.repeatedPassword) {
-      errors.repeatedPassword = 'Las contraseñas no coinciden';
+    if (values.password !== values.passwordConfirmation) {
+      errors.passwordConfirmation = 'Las contraseñas no coinciden';
     }
     return errors;
   }, []);
@@ -73,7 +73,7 @@ const Register = () => {
           <FormInputField<string>
             label="Confirmación de password"
             type="password"
-            name="repeatedPassword"
+            name="passwordConfirmation"
             disabled={profileCreated}
           />
           <Button

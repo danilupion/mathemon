@@ -22,12 +22,15 @@ const statusMiddleware = async <Res>(res: SafeResponse<Res> | BadRequestResponse
       throw new BadRequestError('Bad request error', validationErrors);
     }
     case 401: {
-      // Todo: handle unauthorized
+      // TODO: handle unauthorized
       return res as SafeResponse<Res>;
     }
     default: {
       if (res.status >= 400) {
-        throw new Error(`Response with bad status ${res.status}`);
+        // TODO: consider using a custom error class (maybe the one implemented in turbo-server -moving it to turbo-common-)
+        const error = new Error('Request failed');
+        error.cause = res.status;
+        throw error;
       }
 
       return res as SafeResponse<Res>;
