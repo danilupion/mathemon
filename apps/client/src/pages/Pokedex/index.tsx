@@ -14,13 +14,11 @@ import styles from './index.module.scss';
 
 const curriedGetPokedex = curryRight(getPokedex, 2);
 
-const Pokedex = observer(() => {
-  const authStore = useAuthStore();
+const NotLoggedInPokedex = () => (
+  <div className={styles.container}>Necesitas iniciar sesión para ver tu pokedex</div>
+);
 
-  if (!authStore.signedIn) {
-    return <div className={styles.container}>Necesitas iniciar sesión para ver tu pokedex</div>;
-  }
-
+const LoggedInPokedex = () => {
   const [filter, setFilter] = useState('');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetcher = useCallback(curriedGetPokedex(filter), [filter]);
@@ -37,6 +35,12 @@ const Pokedex = observer(() => {
       </div>
     </div>
   );
+};
+
+const Pokedex = observer(() => {
+  const authStore = useAuthStore();
+
+  return authStore.signedIn ? <LoggedInPokedex /> : <NotLoggedInPokedex />;
 });
 
 export default Pokedex;
