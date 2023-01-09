@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import useScrollPosition, { ScrollPosition } from './useScrollPosition';
 
@@ -30,59 +30,62 @@ const usePagination = <
   metaField = 'meta' as MetaField,
   direction = 'bottom',
 }: UsePaginationParams<Data, Meta, DataField, MetaField>): [Data[], Meta | undefined] => {
-  const [nextPage, setNextPage] = useState(1);
+  const [nextPage, setNextPage] = useState({ page: 1 });
   const [fetching, setFetching] = useState(true);
   const position = useScrollPosition();
   const [data, setData] = useState<Data[]>([]);
   const [meta, setMeta] = useState<Meta>();
   const [full, setFull] = useState(false);
-  const currentFetch = useRef<number>();
 
   const valueToCheck = position[direction];
 
   useEffect(() => {
-    currentFetch.current = undefined;
     setFetching(false);
     setFull(false);
     setData([]);
-    setNextPage(1);
+    setNextPage({ page: 1 });
   }, [fetcher]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!fetching && valueToCheck <= offset && !full) {
-      setNextPage((value) => value + 1);
+      setNextPage(({ page }) => ({ page: page + 1 }));
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [full, offset, valueToCheck]);
 
-  useEffect(() => {
-    if (currentFetch.current !== nextPage) {
+  useLayoutEffect(() => {
+    let shouldUpdate = true;
+
+    if (!fetching) {
       setFetching(true);
-      currentFetch.current = nextPage;
-      fetcher(nextPage)
-        .then((result) => {
-          const newData = dataField ? result[dataField] : (result as Data[]);
-          const newMeta = dataField && metaField ? result[metaField] : undefined;
-          return new Promise<void>((res) => {
-            if (newData.length === 0) {
-              setFull(true);
+      fetcher(nextPage.page).then((result) => {
+        const newData = dataField ? result[dataField] : (result as Data[]);
+        const newMeta = dataField && metaField ? result[metaField] : undefined;
+        return new Promise<void>((res) => {
+          if (shouldUpdate) {
+            try {
+              if (newData.length === 0) {
+                setFull(true);
+              }
+              setData((value) => {
+                res();
+                return [...value, ...newData];
+              });
+              if (newMeta) {
+                setMeta(newMeta);
+              }
+            } finally {
+              setFetching(false);
             }
-            setData((value) => {
-              res();
-              return [...value, ...newData];
-            });
-            if (newMeta) {
-              setMeta(newMeta);
-            }
-            setFetching(false);
-          });
-        })
-        .then(() => {
-          currentFetch.current = undefined;
+          }
         });
+      });
     }
+    return () => {
+      shouldUpdate = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [nextPage, fetcher]);
+  }, [nextPage]);
 
   return [data, meta];
 };
