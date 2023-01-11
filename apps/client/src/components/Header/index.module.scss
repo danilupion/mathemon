@@ -1,3 +1,5 @@
+@use 'src/styles/common.scss';
+
 .container {
   margin-bottom: 100px;
 
@@ -47,4 +49,12 @@
     object-fit: cover;
     object-view-box: inset(53% 0% 0% 0%);
   }
+
+  .row {
+    @extend .row;
+  }
+}
+
+.account {
+  width: 100%;
 }

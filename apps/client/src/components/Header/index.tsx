@@ -17,6 +17,7 @@ const routes: MenuButtonProps[] = [
   {
     to: '/addition',
     label: 'Suma',
+    className: styles.addition,
     img: (
       <PokemonImage pokemon={1} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
     ),
@@ -24,6 +25,7 @@ const routes: MenuButtonProps[] = [
   {
     to: '/subtraction',
     label: 'Resta',
+    className: styles.subtraction,
     img: (
       <PokemonImage pokemon={7} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
     ),
@@ -31,6 +33,7 @@ const routes: MenuButtonProps[] = [
   {
     to: '/multiplication',
     label: 'Multiplicación',
+    className: styles.multiplication,
     img: (
       <PokemonImage pokemon={4} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
     ),
@@ -38,6 +41,7 @@ const routes: MenuButtonProps[] = [
   {
     to: '/division',
     label: 'División',
+    className: styles.division,
     img: (
       <PokemonImage pokemon={25} type={PokemonImageType.Icon} className={styles['pokemon-image']} />
     ),
@@ -83,10 +87,12 @@ const Header = () => {
 
   const pathHasSettings = pathsWithSettings.includes(pathname);
 
-  const firstEntries: MenuButtonProps[] = authStore.signedIn
+  const firstEntries: MenuButtonProps[] | MenuButtonProps[][] = authStore.signedIn
     ? [
-        { label: 'Salir', onClick: authStore.signOut },
-        { label: 'Cuenta', to: '/account' },
+        [
+          { label: 'Cuenta', to: '/account', className: styles.account },
+          { label: 'Salir', onClick: authStore.signOut },
+        ],
       ]
     : [{ to: '/signIn', label: 'Iniciar Sesión', img: '/icons/basement-key.png' }];
 
@@ -111,16 +117,32 @@ const Header = () => {
         </Button>
       </div>
       <SidePanel open={leftPanelOpen} onClose={closeLeftPanel} side={Side.Left}>
-        {[...firstEntries, ...routes].map(({ onClick, ...props }, index) => (
-          <MenuButton
-            key={index}
-            {...props}
-            onClick={() => {
-              onClick?.();
-              closeLeftPanel();
-            }}
-          />
-        ))}
+        {[...firstEntries, ...routes].map((item, index) => {
+          return Array.isArray(item) ? (
+            <div className={styles.row} key={index}>
+              {item.map(({ onClick, ...props }, subIndex) => (
+                <MenuButton
+                  key={subIndex}
+                  {...props}
+                  {...props}
+                  onClick={() => {
+                    onClick?.();
+                    closeLeftPanel();
+                  }}
+                />
+              ))}
+            </div>
+          ) : (
+            <MenuButton
+              key={index}
+              {...item}
+              onClick={() => {
+                item.onClick?.();
+                closeLeftPanel();
+              }}
+            />
+          );
+        })}
       </SidePanel>
       <SidePanel open={rightPanelOpen} onClose={closeRightPanel} side={Side.Right}>
         {pathHasSettings && <Settings onSave={closeRightPanel} />}

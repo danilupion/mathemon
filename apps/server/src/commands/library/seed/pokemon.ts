@@ -1,3 +1,4 @@
+import { PokemonType } from '@mathemon/common/models/pokemon.js';
 import { getGenerations } from '@mathemon/poke-api/generation.js';
 import { Pokemon } from '@mathemon/poke-api/pokemon.js';
 import chalk from 'chalk';
@@ -28,7 +29,7 @@ export const seedPokemon = async ({ verbose = false }: SeedPokemonOptions = {}) 
               name: pokemon.name,
               generation: pokemon.generation,
               habitat: pokemon.habitat,
-              types: pokemon.types,
+              types: pokemon.types as PokemonType[],
               abilities: pokemon.abilities.map((a) => a.name),
               moves: pokemon.moves.map((m) => m.name),
             },

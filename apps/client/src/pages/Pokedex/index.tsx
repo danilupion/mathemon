@@ -1,5 +1,4 @@
-import { PokedexMeta } from '@mathemon/common/models/api/me';
-import { Pokemon } from '@mathemon/common/models/pokemon';
+import { PokedexMeta, PokemonRes } from '@mathemon/common/models/api/me';
 import { curryRight } from 'lodash';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useState } from 'react';
@@ -23,7 +22,7 @@ const LoggedInPokedex = () => {
   const [filter, setFilter] = useState('');
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const fetcher = useCallback(curriedGetPokedex(filter), [filter]);
-  const { data: pokemons, fetching, meta } = usePagination<Pokemon, PokedexMeta>({ fetcher });
+  const { data: pokemons, fetching, meta } = usePagination<PokemonRes, PokedexMeta>({ fetcher });
 
   return (
     <div className={styles.container}>

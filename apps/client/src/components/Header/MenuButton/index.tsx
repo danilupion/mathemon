@@ -9,6 +9,7 @@ import styles from './index.module.scss';
 interface CommonProps {
   label: string;
   img?: string | JSX.Element;
+  className?: string;
 }
 
 interface LinkProps extends CommonProps {
@@ -22,7 +23,7 @@ interface ButtonProps extends CommonProps {
 
 export type MenuButtonProps = LinkProps | ButtonProps;
 
-const MenuButton = ({ label, img, onClick, ...rest }: MenuButtonProps) => {
+const MenuButton = ({ label, img, className, onClick, ...rest }: MenuButtonProps) => {
   const { pathname } = useLocation();
 
   const content = (
@@ -34,13 +35,17 @@ const MenuButton = ({ label, img, onClick, ...rest }: MenuButtonProps) => {
   return 'to' in rest ? (
     <NavButton
       to={rest.to}
-      className={classNames(styles['menu-button'], { [styles.current]: pathname === rest.to })}
+      className={classNames(
+        styles['menu-button'],
+        { [styles.current]: pathname === rest.to },
+        className,
+      )}
       onClick={onClick}
     >
       {content}
     </NavButton>
   ) : (
-    <Button className={styles['menu-button']} onClick={onClick}>
+    <Button className={classNames(styles['menu-button'], className)} onClick={onClick}>
       {content}
     </Button>
   );

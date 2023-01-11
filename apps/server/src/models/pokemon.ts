@@ -1,4 +1,4 @@
-import { Pokemon } from '@mathemon/common/models/pokemon.js';
+import { Pokemon, PokemonType } from '@mathemon/common/models/pokemon.js';
 import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
 import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
 import config from 'config';
@@ -38,6 +38,7 @@ const pokemonSchema = new Schema(
       {
         type: String,
         trim: true,
+        enum: Object.values(PokemonType),
       },
     ],
     abilities: [

@@ -1,4 +1,7 @@
-import { Pokemon } from '@mathemon/common/models/pokemon';
+type WithNumberAndName = {
+  number: number;
+  name: string;
+};
 
 export enum PokemonImageType {
   Front = 'front',
@@ -7,7 +10,7 @@ export enum PokemonImageType {
 }
 
 interface PokemonImageProps {
-  pokemon: Pokemon | number;
+  pokemon: WithNumberAndName | number;
   type?: PokemonImageType;
   className?: string;
 }

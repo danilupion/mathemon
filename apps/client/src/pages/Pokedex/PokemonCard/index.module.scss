@@ -1,5 +1,17 @@
+@use 'src/styles/common.scss';
+
 .container {
-  .images {
+  h3 {
+    margin-right: auto !important;
+    margin-left: auto !important;
+    text-transform: capitalize;
+  }
+  .id {
+    position: absolute;
+    left: 20px;
+    top: 20px;
+  }
+  .image {
     img {
       width: 200px;
 

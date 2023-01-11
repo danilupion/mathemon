@@ -14,6 +14,7 @@ import config from 'config';
 
 import PokedexModel from '../../../models/pokedex.js';
 import PokemonModel, { PokemonDocument } from '../../../models/pokemon.js';
+import { getTypesForOperator } from '../../../utils/pokemon.js';
 
 const pokemonGenerations = config.get<number[]>('settings.pokemon.generations');
 
@@ -46,6 +47,7 @@ export const createEvaluation = controller<
   RequestWithBody<CreateEvaluationReq, RequestWithFields<JwtData>>,
   ResponseWithBody<CreateEvaluationRes>
 >(async (req, res) => {
+  const operator = req.body[0].operation.operator;
   const evaluations = req.body.map((solution) => ({
     solution,
     correct: isCorrect(solution),
@@ -57,7 +59,14 @@ export const createEvaluation = controller<
   if (correct === evaluations.length) {
     pokemon = (
       await PokemonModel.aggregate([
-        { $match: { $expr: { $in: ['$generation', pokemonGenerations] } } },
+        {
+          $match: {
+            $and: [
+              { generation: { $in: pokemonGenerations } },
+              { 'types.0': { $in: getTypesForOperator(operator) } },
+            ],
+          },
+        },
         { $sample: { size: 1 } },
       ])
     )[0];

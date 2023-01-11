@@ -1,4 +1,5 @@
-import { Pokemon } from '@mathemon/common/models/pokemon';
+import { PokemonRes } from '@mathemon/common/models/api/me';
+import { Operator } from '@mathemon/common/models/operation';
 import classNames from 'classnames';
 
 import Card from '../../../components/Card';
@@ -7,20 +8,28 @@ import PokemonImage from '../../../components/PokemonImage';
 import styles from './index.module.scss';
 
 interface PokemonCardProps {
-  pokemon: Pokemon;
+  pokemon: PokemonRes;
 }
 
 const PokemonCard = ({ pokemon }: PokemonCardProps) => {
   return (
     <Card
       key={pokemon.id}
-      title={`#${pokemon.number}: ${pokemon.name}`}
-      className={styles.container}
+      title={pokemon.name}
+      className={classNames(styles.container, {
+        [styles.addition]: pokemon.operator === Operator.addition,
+        [styles.subtraction]: pokemon.operator === Operator.subtraction,
+        [styles.multiplication]: pokemon.operator === Operator.multiplication,
+        [styles.division]: pokemon.operator === Operator.division,
+      })}
     >
-      <div className={styles.images}>
+      <div className={styles.id}>#{pokemon.number}</div>
+      <div className={styles.image}>
         <PokemonImage
           pokemon={pokemon}
-          className={classNames({ [styles.unknown]: pokemon.name === '???' })}
+          className={classNames({
+            [styles.unknown]: pokemon.name === '???',
+          })}
         />
       </div>
     </Card>
