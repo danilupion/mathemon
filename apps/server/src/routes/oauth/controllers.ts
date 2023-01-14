@@ -61,9 +61,11 @@ export const userFromProfile =
     if (existingUserWithUsername) {
       username = `${username}-${profile.id}`;
     }
+
     return await UserModel.create({
       username,
       email,
+      verified: true,
       profiles: {
         [field]: profileField,
       },

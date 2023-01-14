@@ -7,7 +7,19 @@
     },
     "port": 3200
   },
+  "smtp": {
+    "host": "smtp.ethereal.email",
+    "port": 587,
+    "secure": false,
+    "auth": {
+      "user": "giuseppe.denesik0@ethereal.email",
+      "pass": "tNamhcx3PpNyvWzd5U"
+    }
+  },
   "settings": {
+    "verificationToken": {
+      "expiresIn": 7200
+    },
     "pokemon": {
       "generations": [1]
     },

@@ -35,17 +35,18 @@ export type RequestMaybeWithQuery<Query, BaseRequest extends Request = Request> 
   BaseRequest
 >;
 
+export type RequestWithParams<Params, BaseRequest extends Request = Request> = BaseRequest & {
+  params: Params;
+};
+
 export type ResponseWithBody<Body> = Response<Body>;
 
-export type Controller<Req extends Omit<Request, 'body'>, Res extends Response> = (
+export type Controller<Req extends Request, Res extends Response> = (
   req: Req,
   res: Res,
   next: NextFunction,
 ) => Promise<void> | void;
 
-export default <
-  Req extends Omit<Request, 'body'> = Omit<Request, 'body'>,
-  Res extends Response = Response,
->(
+export default <Req extends Request = Request, Res extends Response = Response>(
   controller: Controller<Req, Res>,
 ) => controller;

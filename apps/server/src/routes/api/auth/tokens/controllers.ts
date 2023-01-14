@@ -15,7 +15,7 @@ export const createToken = controller<
   RequestWithBody<CreateTokenReq>,
   ResponseWithBody<CreateTokenRes>
 >(async (req, res) => {
-  const user = await UserModel.findOne({ email: req.body.email });
+  const user = await UserModel.findOne({ email: req.body.email, verified: true });
 
   if (!user) {
     throw new ClientErrorUnauthorized();

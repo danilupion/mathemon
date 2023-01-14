@@ -37,6 +37,7 @@ describe('/api/auth/tokens', () => {
         await UserModel.create({
           username: 'test',
           email: 'test@email.com',
+          verified: true,
         });
 
         const response = await server(router).post('/').send({ email: 'test@email.com' });
@@ -51,6 +52,7 @@ describe('/api/auth/tokens', () => {
           username: 'test',
           email: 'test@email.com',
           password: 'testTest1.',
+          verified: true,
         });
 
         const response = await server(router)
@@ -67,11 +69,30 @@ describe('/api/auth/tokens', () => {
           username: 'test',
           email: 'test@email.com',
           password: 'testTest1.',
+          verified: true,
         });
 
         const response = await server(router)
           .post('/')
           .send({ email: 'test@email.com', password: 'doesNotMatch1.' });
+
+        expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
+        expect.hasAssertions();
+      });
+
+      it('With status 401 for matching email and password pair but not verified state', async () => {
+        await UserModel.create({
+          username: 'test',
+          email: 'test@email.com',
+          password: 'testTest1.',
+          verified: false,
+          role: UserRole.admin,
+        });
+
+        const response = await server(router).post('/').send({
+          email: 'test@email.com',
+          password: 'testTest1.',
+        });
 
         expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
         expect.hasAssertions();
@@ -84,6 +105,7 @@ describe('/api/auth/tokens', () => {
           username: 'test',
           email: 'test@email.com',
           password: 'testTest1.',
+          verified: true,
           role: UserRole.admin,
         });
 
