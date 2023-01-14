@@ -9,8 +9,9 @@ import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js
 import { Document, Schema, model } from 'mongoose';
 
 export type UserDocument = Document &
-  User &
-  WithPassword &
+  User & {
+    verified: boolean;
+  } & WithPassword &
   WithOauthProfile<'google'> &
   WithOauthProfile<'facebook'>;
 
@@ -22,6 +23,11 @@ const userSchema = new Schema(
       unique: true,
       trim: true,
       index: true,
+    },
+    verified: {
+      type: Boolean,
+      required: true,
+      default: false,
     },
     role: {
       type: String,

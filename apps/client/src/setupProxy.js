@@ -18,4 +18,11 @@ module.exports = function (app) {
       changeOrigin: true,
     }),
   );
+  app.use(
+    '/tokens',
+    createProxyMiddleware({
+      target: server,
+      changeOrigin: true,
+    }),
+  );
 };

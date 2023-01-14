@@ -23,7 +23,6 @@ export const builder: BuilderCallback<CreateUserOptions, CreateUserOptions> = (y
   yargs
     .positional('email', {
       describe: 'Email to be used',
-
       type: 'string',
     })
     .positional('username', {
