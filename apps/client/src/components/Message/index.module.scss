@@ -1,0 +1,27 @@
+div.message {
+  margin: 10px 0;
+  padding: 10px;
+  border-width: 3px;
+  border-style: solid;
+
+  &.info {
+    color: #005599;
+    background-color: #bbeeff;
+    border-color: #005599;
+  }
+  &.success {
+    color: #227700;
+    background-color: #dff2bf;
+    border-color: #227700;
+  }
+  &.warning {
+    color: #9f6000;
+    background-color: #feefb3;
+    border-color: #9f6000;
+  }
+  &.error {
+    color: #d8000c;
+    background-color: #ffbaba;
+    border-color: #d8000c;
+  }
+}
