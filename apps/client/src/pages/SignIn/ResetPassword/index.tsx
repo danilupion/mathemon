@@ -82,7 +82,7 @@ const ResetPassword = () => {
               className={styles.send}
               loading={isSubmitting}
             >
-              Registrar
+              Cambiar
             </Button>
           </>
         )}
