@@ -45,7 +45,7 @@ export type Controller<Req extends Request, Res extends Response> = (
   req: Req,
   res: Res,
   next: NextFunction,
-) => Promise<void> | void;
+) => Promise<void | Res> | void | Res;
 
 export default <Req extends Request = Request, Res extends Response = Response>(
   controller: Controller<Req, Res>,

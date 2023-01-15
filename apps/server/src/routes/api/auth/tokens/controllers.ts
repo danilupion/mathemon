@@ -26,7 +26,7 @@ export const createToken = controller<
     throw new ClientErrorUnauthorized();
   }
 
-  res.status(StatusCode.SuccessCreated).send({
+  return res.status(StatusCode.SuccessCreated).send({
     token: await generateToken(getTokenPayload(user)),
   });
 });
@@ -39,6 +39,8 @@ export const renewToken = controller<RequestWithFields<JwtData>, ResponseWithBod
       throw new ClientErrorUnauthorized();
     }
 
-    res.status(StatusCode.SuccessOK).send({ token: await generateToken(getTokenPayload(user)) });
+    return res
+      .status(StatusCode.SuccessOK)
+      .send({ token: await generateToken(getTokenPayload(user)) });
   },
 );

@@ -2,6 +2,6 @@ import { password } from '@mathemon/turbo-server/regex.js';
 import { body } from 'express-validator';
 
 export const validateTokenCreation = [
-  body('email').isString().trim().notEmpty(),
+  body('email').isString().isEmail().trim().notEmpty(),
   body('password').isString().trim().notEmpty().matches(password),
 ];

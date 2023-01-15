@@ -89,7 +89,7 @@ export const createEvaluation = controller<
     await pokedex.save();
   }
 
-  res.status(StatusCode.SuccessOK).send({
+  return res.status(StatusCode.SuccessOK).send({
     evaluations,
     score: {
       total: evaluations.length,

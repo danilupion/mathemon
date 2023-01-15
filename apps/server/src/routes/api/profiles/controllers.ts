@@ -41,7 +41,7 @@ export const createProfile = controller<
     text: `Pincha aquí para comprobar tu email: ${url}/tokens/verify/${token.token}`,
   });
 
-  res.status(StatusCode.SuccessCreated).send({
+  return res.status(StatusCode.SuccessCreated).send({
     success: !!user,
   });
 });

@@ -46,7 +46,7 @@ export const getPokedex = controller<
     .limit(pageSize)
     .skip((req.query.page !== undefined ? req.query.page - 1 : 0) * pageSize);
 
-  res.status(StatusCode.SuccessOK).send({
+  return res.status(StatusCode.SuccessOK).send({
     data: pokemons.map((pokemon) => {
       return pokedexPokemons.has(pokemon.number.toString())
         ? { ...pokemon.toJSON(), operator: getOperatorForType(pokemon.types[0]) }

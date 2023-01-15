@@ -19,7 +19,7 @@ export const getAccount = controller<
   RequestWithFields<UserData<UserDocument>>,
   ResponseWithBody<AccountRes>
 >(async (req, res) => {
-  res.status(StatusCode.SuccessOK).send({
+  return res.status(StatusCode.SuccessOK).send({
     email: req.user.email,
     username: req.user.username,
   });
@@ -53,7 +53,7 @@ export const patchAccount = controller<
 
   await req.user.save();
 
-  res.status(StatusCode.SuccessOK).send({
+  return res.status(StatusCode.SuccessOK).send({
     email: req.user.email,
     username: req.user.username,
   });

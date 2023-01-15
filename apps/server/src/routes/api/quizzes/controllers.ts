@@ -62,5 +62,6 @@ export const createQuiz = controller<
 
     quizList.push({ operator: req.body.operator, operands: [operand1, operand2] });
   }
-  res.status(StatusCode.SuccessOK).send(quizList);
+
+  return res.status(StatusCode.SuccessOK).send(quizList);
 });
