@@ -17,7 +17,7 @@
     }
   },
   "settings": {
-    "verificationToken": {
+    "singleUseToken": {
       "expiresIn": 7200
     },
     "pokemon": {

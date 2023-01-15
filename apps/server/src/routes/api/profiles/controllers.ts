@@ -8,7 +8,7 @@ import { ClientErrorConflict } from '@mathemon/turbo-server/helpers/httpError.js
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import config from 'config';
 
-import emailVerificationToken from '../../../models/emailVerificationToken.js';
+import SingleUseTokenModel, { SingleUseTokenType } from '../../../models/singleUseToken.js';
 import UserModel from '../../../models/user.js';
 
 const url = config.get<string>('url');
@@ -31,8 +31,9 @@ export const createProfile = controller<
     password: req.body.password,
   });
 
-  const token = await emailVerificationToken.create({
+  const token = await SingleUseTokenModel.create({
     user: user,
+    type: SingleUseTokenType.EmailVerification,
   });
 
   await sendEmail({

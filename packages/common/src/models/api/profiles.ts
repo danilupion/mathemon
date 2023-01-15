@@ -7,3 +7,12 @@ export interface CreateProfileReq {
 export type CreateProfileRes = {
   success: boolean;
 };
+
+export interface CreatePasswordResetTokenReq {
+  email: string;
+}
+
+export interface ChangePasswordReq {
+  token: string;
+  password: string;
+}

@@ -5,23 +5,33 @@ import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js
 import config from 'config';
 import { Document, ObjectId, Schema, model } from 'mongoose';
 
-const expiration = config.get<number>('settings.verificationToken.expiresIn');
+const expiration = config.get<number>('settings.singleUseToken.expiresIn');
 
 import { UserDocument } from './user.js';
 
-export type EmailVerificationTokenDocument = Document & {
+export enum SingleUseTokenType {
+  EmailVerification = 'emailVerification',
+  PasswordReset = 'passwordReset',
+}
+
+export type SingleUseTokenDocument = Document & {
   token: string;
   user: ObjectId | UserDocument;
 };
 
-const emailVerificationTokenSchema = new Schema(
+const singleUseTokenSchema = new Schema(
   {
     token: {
       type: String,
       required: true,
     },
+    type: {
+      type: String,
+      required: true,
+      enum: Object.values(SingleUseTokenType),
+    },
   },
-  { collection: 'emailVerificationTokens', minimize: false },
+  { collection: 'singleUseTokens', minimize: false },
 )
   .plugin(owner)
   .plugin(timestamps, { update: false })
@@ -44,11 +54,4 @@ const emailVerificationTokenSchema = new Schema(
     }
   });
 
-const EmailVerificationTokenModel = model<EmailVerificationTokenDocument>(
-  'EmailVerificationToken',
-  emailVerificationTokenSchema,
-);
-
-EmailVerificationTokenModel.syncIndexes();
-
-export default EmailVerificationTokenModel;
+export default model<SingleUseTokenDocument>('SingleUseToken', singleUseTokenSchema);

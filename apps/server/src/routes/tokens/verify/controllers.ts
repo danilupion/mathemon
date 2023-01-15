@@ -3,18 +3,19 @@ import controller, {
 } from '@mathemon/turbo-server/helpers/express/controller.js';
 import config from 'config';
 
-import EmailVerificationTokenModel from '../../../models/emailVerificationToken.js';
+import SingleUseTokenModel, { SingleUseTokenType } from '../../../models/singleUseToken.js';
 import { UserDocument } from '../../../models/user.js';
 
-const expiration = config.get<number>('settings.verificationToken.expiresIn');
+const expiration = config.get<number>('settings.singleUseToken.expiresIn');
 
 export const verifyEmailToken = controller<RequestWithParams<{ token: string }>>(
   async (req, res) => {
     const limit = new Date();
     limit.setTime(limit.getTime() - expiration * 1000);
 
-    const tokenToVerify = await EmailVerificationTokenModel.findOne({
+    const tokenToVerify = await SingleUseTokenModel.findOne({
       token: req.params.token,
+      type: SingleUseTokenType.EmailVerification,
       created: { $gte: limit },
     }).populate('user');
 

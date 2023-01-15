@@ -56,25 +56,25 @@ const Register = () => {
             label="Email"
             type="email"
             name="email"
-            disabled={profileCreated}
+            disabled={isSubmitting || profileCreated}
           />
           <FormInputField<string>
             label="Nombre de usuario"
             type="text"
             name="username"
-            disabled={profileCreated}
+            disabled={isSubmitting || profileCreated}
           />
           <FormInputField<string>
             label="Password"
             type="password"
             name="password"
-            disabled={profileCreated}
+            disabled={isSubmitting || profileCreated}
           />
           <FormInputField<string>
             label="Confirmación de password"
             type="password"
             name="passwordConfirmation"
-            disabled={profileCreated}
+            disabled={isSubmitting || profileCreated}
           />
           <Button
             type="submit"

@@ -13,7 +13,7 @@ import MultiplicationTables from './pages/MultiplicationTables';
 import NotFound from './pages/NotFound';
 import Pokedex from './pages/Pokedex';
 import Quiz from './pages/Quiz';
-import SignIn from './pages/SignIn';
+import SignIn, { SignInSection } from './pages/SignIn';
 
 const App = () => {
   usePageTracking();
@@ -36,6 +36,14 @@ const App = () => {
         <Route path="/signIn" element={<NotSignedInGuard />}>
           <Route element={<HeadlessLayout />}>
             <Route path="" element={<SignIn />} />
+            <Route
+              path="/signIn/forgotten-password"
+              element={<SignIn section={SignInSection.ForgottenPassword} />}
+            />
+            <Route
+              path="/signIn/reset-password/:token"
+              element={<SignIn section={SignInSection.ResetPassword} />}
+            />
           </Route>
         </Route>
       </Routes>

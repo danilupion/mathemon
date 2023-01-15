@@ -84,9 +84,12 @@ export const urlWithQuery = <Query extends object>(url: string, params: Query) =
 
 export const getRequest = bodilessRequest(createInitForGet);
 export const postRequest = request(createInitForPost);
+export const responselessPostRequest = request(createInitForPost, true);
 export const bodilessPostRequest = bodilessRequest(createInitForPost);
 export const patchRequest = request(createInitForPatch);
+export const responselessPatchRequest = request(createInitForPatch, true);
 export const bodilessPatchRequest = bodilessRequest(createInitForPatch);
 export const putRequest = request(createInitForPut);
+export const responselessPutRequest = request(createInitForPut, true);
 export const bodilessPutRequest = bodilessRequest(createInitForPut);
 export const deleteRequest = bodilessRequest(createInitForDelete, true);

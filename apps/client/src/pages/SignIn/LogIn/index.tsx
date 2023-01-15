@@ -1,5 +1,6 @@
 import { email, password } from '@mathemon/turbo-client/regex';
 import { useCallback, useState } from 'react';
+import { NavLink } from 'react-router-dom';
 
 import Button from '../../../components/Button';
 import Form from '../../../components/Form';
@@ -17,6 +18,7 @@ const initialValues = {
 };
 
 type SignInValues = typeof initialValues;
+
 const LogIn = () => {
   const [loginError, setLoginError] = useState<boolean>(false);
   const authStore = useAuthStore();
@@ -54,6 +56,9 @@ const LogIn = () => {
             <FormInputField<string> label="Email" type="email" name="email" />
             <FormInputField<string> label="Password" type="password" name="password" />
             <FormCheckboxField name="rememberMe" text="Recuérdame" />
+            <div className={styles['forgotten-password']}>
+              <NavLink to="/signIn/forgotten-password">Olvidé mi contraseña</NavLink>
+            </div>
             <div className={styles.buttons}>
               <Button
                 type="submit"

@@ -1,6 +1,15 @@
 @use 'nes.css/css/nes.css';
 @use 'src/styles/common.scss';
 
+.forgotten-password {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+
+  a {
+    text-decoration: underline;
+  }
+}
+
 .buttons {
   display: flex;
   gap: 20px;
