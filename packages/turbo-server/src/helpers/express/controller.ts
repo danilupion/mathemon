@@ -2,6 +2,7 @@ import { Request as ExpressRequest, Response as ExpressResponse, NextFunction } 
 
 export type Request = ExpressRequest;
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type Response<Body = any> = ExpressResponse<Body>;
 
 export type RequestWithFields<

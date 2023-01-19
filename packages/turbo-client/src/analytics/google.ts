@@ -13,9 +13,10 @@ export const initialize = () => {
       googleScript.async = true;
       googleScript.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
       googleScript.addEventListener('load', () => {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (window as any).dataLayer = (window as any).dataLayer || [];
         window.gtag = function gtag() {
-          // eslint-disable-next-line prefer-rest-params
+          // eslint-disable-next-line prefer-rest-params, @typescript-eslint/no-explicit-any
           (window as any).dataLayer.push(arguments);
         };
         window.gtag('js', new Date());
@@ -27,9 +28,11 @@ export const initialize = () => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const safeGtag: Gtag.Gtag = (...args: any[]) => {
   if (initializationPromise) {
     return initializationPromise.then(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       (gtag as any)(...args);
     });
   }

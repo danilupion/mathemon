@@ -6,3 +6,6 @@ yarn workspace @mathemon/client lint-staged
 yarn workspace @mathemon/server lint-staged
 yarn workspace @mathemon/common lint-staged
 yarn workspace @mathemon/poke-api lint-staged
+yarn workspace @mathemon/turbo-client lint-staged
+yarn workspace @mathemon/turbo-common lint-staged
+yarn workspace @mathemon/turbo-server lint-staged
