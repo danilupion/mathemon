@@ -16,6 +16,7 @@ export type PokedexMeta = {
 export type PokemonRes = Omit<Pokemon, 'types'> & {
   types: (PokemonType | '???')[];
   operator: Operator;
+  count: number;
 };
 
 export type GetPokedexRes = PaginatedResponse<PokemonRes, PokedexMeta>;

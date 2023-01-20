@@ -41,9 +41,14 @@ export const getPokedex = controller<
       return pokedexPokemons.has(pokemon.number.toString())
         ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           pokedexPokemons.get(pokemon.number.toString())!.count === 0
-          ? pokemon.toFound()
-          : { ...pokemon.toJSON(), operator: getOperatorForType(pokemon.types[0]) }
-        : pokemon.toUnknown();
+          ? { ...pokemon.toFound(), count: 0 }
+          : {
+              ...pokemon.toJSON(),
+              operator: getOperatorForType(pokemon.types[0]),
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              count: pokedexPokemons.get(pokemon.number.toString())!.count,
+            }
+        : { ...pokemon.toUnknown(), count: 0 };
     }),
     meta: {
       total: await PokemonModel.inUsedGenerations().countDocuments().exec(),
