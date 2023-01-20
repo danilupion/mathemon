@@ -16,8 +16,15 @@
       width: 200px;
 
       &.unknown {
-        filter: contrast(0) blur(2px);
-        opacity: 0.5;
+        @extend .unknown;
+      }
+
+      &.found {
+        @extend .found;
+      }
+
+      &.captured {
+        @extend .captured;
       }
     }
   }

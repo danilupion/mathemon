@@ -28,7 +28,9 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
         <PokemonImage
           pokemon={pokemon}
           className={classNames({
-            [styles.unknown]: pokemon.name === '???',
+            [styles.unknown]: pokemon.name === '???' && pokemon.habitat === '???',
+            [styles.found]: pokemon.name !== '???' && pokemon.habitat === '???',
+            [styles.captured]: pokemon.name !== '???' && pokemon.habitat !== '???',
           })}
         />
       </div>

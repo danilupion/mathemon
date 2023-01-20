@@ -12,12 +12,12 @@ import styles from './index.module.scss';
 
 interface FailureProps {
   score: Score;
-
+  reward: Pokemon;
   onClose?: () => void;
   onRetry?: () => void;
 }
 
-const Failure = ({ score, onRetry, onClose }: FailureProps) => (
+const Failure = ({ score, onRetry, reward, onClose }: FailureProps) => (
   <>
     <div className={styles.sentiment}>¡Lo sentimos!</div>
     <div className={classNames(styles.score, styles.failure)}>
@@ -25,7 +25,11 @@ const Failure = ({ score, onRetry, onClose }: FailureProps) => (
     </div>
     <div className={styles.answers}>respuestas correctas</div>
     <div className={classNames(styles.bottom, styles.failure)}>
-      <div>No has conseguido ningún Pokémon</div>
+      <PokemonImage pokemon={reward} />
+      <div>
+        Has encontrado a<div className={styles.name}>{reward.name}</div>
+        <div>pero se ha escapado.</div>
+      </div>
       <Button onClick={onRetry}>Reintentar</Button> <Button onClick={onClose}>Cerrar</Button>
     </div>
   </>
@@ -50,7 +54,7 @@ const Success = ({ score, reward, onClose }: SuccessProps) => {
       <div className={classNames(styles.bottom, styles.success)}>
         <PokemonImage pokemon={reward} />
         <div>
-          Has conseguido a <span className={styles.name}>{reward.name}</span>{' '}
+          Has atrapado a<div className={styles.name}>{reward.name}</div>
           {!authStore.signedIn && (
             <div>* no se guardará en tu pokedex porque no has iniciado sesión</div>
           )}
@@ -69,18 +73,19 @@ const Success = ({ score, reward, onClose }: SuccessProps) => {
 interface PrizeModalProps {
   open: boolean;
   score: Score;
-  reward?: Pokemon;
+  success: boolean;
+  reward: Pokemon;
   onClose?: () => void;
   onRetry?: () => void;
 }
 
-const PrizeModal = ({ open, score, reward, onClose, onRetry }: PrizeModalProps) => {
+const PrizeModal = ({ open, score, reward, success, onClose, onRetry }: PrizeModalProps) => {
   return (
     <Modal open={open} onClose={onClose}>
-      {reward ? (
+      {success ? (
         <Success score={score} reward={reward} onClose={onClose} />
       ) : (
-        <Failure score={score} onRetry={onRetry} onClose={onClose} />
+        <Failure score={score} reward={reward} onRetry={onRetry} onClose={onClose} />
       )}
     </Modal>
   );

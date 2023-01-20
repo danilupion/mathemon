@@ -6,5 +6,6 @@ export type CreateEvaluationReq = Solution[];
 export type CreateEvaluationRes = {
   evaluations: Evaluation[];
   score: Score;
-  reward?: Pokemon;
+  success: boolean;
+  reward: Pokemon;
 };

@@ -42,7 +42,7 @@ dialog {
       font-size: 20px;
     }
 
-    div {
+    & > div {
       margin-bottom: 40px;
     }
 
@@ -52,12 +52,20 @@ dialog {
         @extend .button, .is-success;
         text-transform: uppercase;
       }
+
+      img {
+        @extend .captured;
+      }
     }
 
     &.failure {
       a,
       button {
         @extend .button, .is-error;
+      }
+
+      img {
+        @extend .found;
       }
     }
   }

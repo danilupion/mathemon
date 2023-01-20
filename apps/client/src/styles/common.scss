@@ -39,3 +39,18 @@
 .division {
   background-color: #feffe3ff;
 }
+
+.unknown {
+  filter: contrast(0) blur(2px);
+  opacity: 0.5;
+}
+
+.found {
+  filter: contrast(0.3) blur(2px);
+  opacity: 0.3;
+}
+
+.captured {
+  filter: none;
+  opacity: 1;
+}

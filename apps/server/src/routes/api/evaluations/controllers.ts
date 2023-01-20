@@ -3,14 +3,17 @@ import {
   CreateEvaluationRes,
 } from '@mathemon/common/models/api/evaluations.js';
 import { Operator, Solution } from '@mathemon/common/models/operation.js';
+import { Pokemon } from '@mathemon/common/models/pokemon.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
   ResponseWithBody,
 } from '@mathemon/turbo-server/helpers/express/controller.js';
+import { ServerErrorInternalServerError } from '@mathemon/turbo-server/helpers/httpError.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
 import { JwtData } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 import config from 'config';
+import { ObjectId } from 'mongoose';
 
 import PokedexModel from '../../../models/pokedex.js';
 import PokemonModel, { PokemonDocument } from '../../../models/pokemon.js';
@@ -38,9 +41,9 @@ const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
   return resultOfOperation === value;
 };
 
-const getPokemon = (pokemon: PokemonDocument) => {
-  const { _id, __v, ...rest } = pokemon;
-  return { id: _id, ...rest };
+const getPokemon = (pokemon: PokemonDocument): Pokemon => {
+  const { _id, __v, ...rest } = pokemon.toJSON();
+  return { id: _id, ...rest } as Pokemon;
 };
 
 export const createEvaluation = controller<
@@ -53,26 +56,36 @@ export const createEvaluation = controller<
     correct: isCorrect(solution),
   }));
 
-  let pokemon: PokemonDocument | undefined = undefined;
-
   const correct = evaluations.filter((e) => e.correct).length;
-  if (correct === evaluations.length) {
-    pokemon = (
-      await PokemonModel.aggregate([
-        {
-          $match: {
-            $and: [
-              { generation: { $in: pokemonGenerations } },
-              { 'types.0': { $in: getTypesForOperator(operator) } },
-            ],
+  const success = correct === req.body.length;
+
+  const pokemon =
+    (await PokemonModel.findById(
+      (
+        await PokemonModel.aggregate<{ _id: ObjectId }>([
+          {
+            $match: {
+              $and: [
+                { generation: { $in: pokemonGenerations } },
+                { 'types.0': { $in: getTypesForOperator(operator) } },
+              ],
+            },
           },
-        },
-        { $sample: { size: 1 } },
-      ])
-    )[0];
+          {
+            $project: {
+              _id: 1,
+            },
+          },
+          { $sample: { size: 1 } },
+        ])
+      )[0]._id,
+    ).exec()) || undefined;
+
+  if (!pokemon) {
+    throw new ServerErrorInternalServerError(new Error('No pokemon found'));
   }
 
-  if (pokemon && req.jwtUser) {
+  if (req.jwtUser) {
     let pokedex = await PokedexModel.findOne({ user: req.jwtUser.id });
     if (!pokedex) {
       pokedex = new PokedexModel({ user: req.jwtUser.id });
@@ -83,7 +96,9 @@ export const createEvaluation = controller<
         pokedex.pokemons.get(pokemon.number.toString())!
       : { count: 0 };
 
-    pokedexEntry.count += 1;
+    if (success) {
+      pokedexEntry.count += 1;
+    }
 
     pokedex.pokemons.set(pokemon.number.toString(), pokedexEntry);
     await pokedex.save();
@@ -95,6 +110,7 @@ export const createEvaluation = controller<
       total: evaluations.length,
       correct,
     },
-    reward: pokemon ? getPokemon(pokemon) : undefined,
+    success,
+    reward: getPokemon(pokemon),
   });
 });

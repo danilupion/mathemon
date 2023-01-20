@@ -1,4 +1,4 @@
-import { GetPokedexRes, PokedexFilterQuery, PokemonRes } from '@mathemon/common/models/api/me.js';
+import { GetPokedexRes, PokedexFilterQuery } from '@mathemon/common/models/api/me.js';
 import { PageQuery } from '@mathemon/turbo-server/api/pagination.js';
 import controller, {
   RequestMaybeWithQuery,
@@ -10,20 +10,10 @@ import { JwtData } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 import config from 'config';
 
 import Pokedex, { PokedexDocument } from '../../../../models/pokedex.js';
-import PokemonModel, { PokemonDocument } from '../../../../models/pokemon.js';
+import PokemonModel from '../../../../models/pokemon.js';
 import { getOperatorForType } from '../../../../utils/pokemon.js';
 
 const pageSize = config.get<number>('settings.pokedex.pageSize');
-
-const unknowPokemon = (pokemon: PokemonDocument): PokemonRes => ({
-  ...pokemon.toJSON(),
-  name: '???',
-  habitat: '???',
-  types: ['???'],
-  abilities: ['???'],
-  moves: ['???'],
-  operator: getOperatorForType(pokemon.types[0]),
-});
 
 export const getPokedex = controller<
   RequestMaybeWithQuery<PageQuery & PokedexFilterQuery, RequestWithFields<JwtData>>,
@@ -49,13 +39,16 @@ export const getPokedex = controller<
   return res.status(StatusCode.SuccessOK).send({
     data: pokemons.map((pokemon) => {
       return pokedexPokemons.has(pokemon.number.toString())
-        ? { ...pokemon.toJSON(), operator: getOperatorForType(pokemon.types[0]) }
-        : unknowPokemon(pokemon);
+        ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+          pokedexPokemons.get(pokemon.number.toString())!.count === 0
+          ? pokemon.toFound()
+          : { ...pokemon.toJSON(), operator: getOperatorForType(pokemon.types[0]) }
+        : pokemon.toUnknown();
     }),
     meta: {
       total: await PokemonModel.inUsedGenerations().countDocuments().exec(),
       found: pokedexPokemons.size,
-      captured: Array.from(pokedexPokemons.entries()).filter(([, owned]) => owned).length,
+      captured: Array.from(pokedexPokemons.entries()).filter(([, { count }]) => count).length,
     },
   });
 });

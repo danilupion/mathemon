@@ -1,12 +1,20 @@
+import { Operator } from '@mathemon/common/models/operation.js';
 import { Pokemon, PokemonType } from '@mathemon/common/models/pokemon.js';
 import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
 import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
 import config from 'config';
 import { Document, Model, QueryWithHelpers, Schema, model } from 'mongoose';
 
+import { getOperatorForType } from '../utils/pokemon.js';
+
 const pokemonGenerations = config.get<number[]>('settings.pokemon.generations');
 
-export interface PokemonDocument extends Document, Omit<Pokemon, 'id'> {}
+type PokemonWithOperator = Pokemon & { operator: Operator };
+
+export interface PokemonDocument extends Document, Omit<Pokemon, 'id'> {
+  toUnknown(): PokemonWithOperator;
+  toFound(): PokemonWithOperator;
+}
 
 const pokemonSchema = new Schema(
   {
@@ -60,6 +68,22 @@ const pokemonSchema = new Schema(
 )
   .plugin(timestamps)
   .plugin(normalizeJson)
+  .method('toFound', function () {
+    return {
+      ...this.toJSON(),
+      habitat: '???',
+      types: ['???'],
+      abilities: ['???'],
+      moves: ['???'],
+      operator: getOperatorForType(this.types[0]),
+    };
+  })
+  .method('toUnknown', function () {
+    return {
+      ...this.toFound(),
+      name: '???',
+    };
+  })
   .static('inUsedGenerations', function () {
     return this.find({ generation: pokemonGenerations });
   });

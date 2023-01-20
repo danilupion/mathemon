@@ -22,16 +22,16 @@ const Quiz = observer(({ operator }: QuizProps) => {
   const { inputDirection } = settingsStore.getCommon();
   const { digits, carrying } = settingsStore.getSection(operator);
   const [items, setItems] = useState<Item[]>([]);
-  const [score, setScore] = useState<Score | undefined>(undefined);
-  const [reward, setReward] = useState<Pokemon | undefined>(undefined);
+  const [evaluation, setEvaluation] = useState<
+    { score: Score; success: boolean; reward: Pokemon } | undefined
+  >(undefined);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const init = useCallback(() => {
     setLoading(true);
     setItems([]);
-    setScore(undefined);
-    setReward(undefined);
+    setEvaluation(undefined);
     setOpen(false);
     createQuiz(operator, digits, carrying).then((items) => {
       setItems(
@@ -68,8 +68,11 @@ const Quiz = observer(({ operator }: QuizProps) => {
     const result = await createEvaluation(items.map((item) => item.solution as Solution));
 
     setItems(result.evaluations);
-    setScore(result.score);
-    setReward(result.reward);
+    setEvaluation({
+      score: result.score,
+      success: result.success,
+      reward: result.reward,
+    });
     setOpen(true);
   }, [items]);
 
@@ -91,14 +94,14 @@ const Quiz = observer(({ operator }: QuizProps) => {
         {items.map((item, index) => (
           <QuizItem
             item={item}
-            editable={!score}
+            editable={!(evaluation && evaluation.score)}
             inputDirection={inputDirection}
             key={`${index} ${item.solution.operation.operands[0]}${item.solution.operation.operator}${item.solution.operation.operands[1]}`}
             onSetValue={handleSetValue(index)}
           />
         ))}
       </div>
-      {!score && (
+      {!evaluation && (
         <Button
           className={styles.evaluate}
           disabled={items.length === 0 || items.some((i) => i.solution.value === undefined)}
@@ -107,16 +110,17 @@ const Quiz = observer(({ operator }: QuizProps) => {
           Corregir
         </Button>
       )}
-      {!!score && (
+      {!!evaluation && (
         <Button className={styles.evaluate} onClick={retry} loading={loading}>
           Reintentar
         </Button>
       )}
-      {score && (
+      {evaluation && (
         <ResultModal
           open={open}
-          score={score}
-          reward={reward}
+          score={evaluation.score}
+          reward={evaluation.reward}
+          success={evaluation.success}
           onClose={handleCloseResultModal}
           onRetry={retry}
         />
