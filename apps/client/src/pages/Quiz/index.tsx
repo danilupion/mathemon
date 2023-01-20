@@ -44,6 +44,21 @@ const Quiz = observer(({ operator }: QuizProps) => {
   }, [operator, digits, carrying]);
 
   useEffect(() => {
+    const onBeforeUnload = (e: BeforeUnloadEvent) => {
+      if (!evaluation) {
+        e.preventDefault();
+        e.returnValue = '¿Estás seguro de que quieres salir?';
+      }
+    };
+
+    window.addEventListener('beforeunload', onBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', onBeforeUnload);
+    };
+  }, [evaluation]);
+
+  useEffect(() => {
     init();
   }, [carrying, digits, init, operator]);
 
