@@ -53,14 +53,24 @@ export const createQuiz = controller<
 >(async (req, res) => {
   const quizList: Operation[] = [];
 
-  for (let i = 0; i < quizSize; i++) {
+  while (quizList.length < quizSize) {
     const operand1 = createOperand({ ...req.body });
     const operand2 = createOperand({
       ...req.body,
       reference: operand1,
     });
 
-    quizList.push({ operator: req.body.operator, operands: [operand1, operand2] });
+    const operation: Operation = { operator: req.body.operator, operands: [operand1, operand2] };
+    if (
+      !quizList.some(
+        (quiz) =>
+          quiz.operator === operation.operator &&
+          quiz.operands[0] === operation.operands[0] &&
+          quiz.operands[1] === operation.operands[1],
+      )
+    ) {
+      quizList.push(operation);
+    }
   }
 
   return res.status(StatusCode.SuccessOK).send(quizList);
