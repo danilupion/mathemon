@@ -13,12 +13,12 @@ export interface Ability {
 }
 
 export const getAbility = promiseStore(async (id: number) => {
-  const pokeAbility = await got
+  const pokeApiAbility = await got
     .get(`https://pokeapi.co/api/v2/ability/${id}`)
     .json<PokeApiAbility>();
 
   return {
-    id: pokeAbility.id,
-    name: pokeAbility.name,
+    id: pokeApiAbility.id,
+    name: pokeApiAbility.name,
   } as Ability;
 });

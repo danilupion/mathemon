@@ -14,3 +14,5 @@ export const promiseStore = <T, ID>(fetcher: (id: ID) => Promise<T>) => {
     return promise;
   };
 };
+
+export const getUrlId = (url: string) => Number.parseInt(url.split('/').reverse()[1]);

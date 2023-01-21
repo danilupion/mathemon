@@ -1,8 +1,9 @@
 import { default as got } from 'got';
 
 import { Ability, getAbility } from './ability.js';
+import { getEvolutionChain } from './evolutionChain.js';
 import { Move, getMove } from './move.js';
-import { promiseStore } from './utils.js';
+import { getUrlId, promiseStore } from './utils.js';
 
 interface PokeApiSpecies {
   id: number;
@@ -13,6 +14,9 @@ interface PokeApiSpecies {
   };
   habitat: {
     name: string;
+  };
+  evolution_chain: {
+    url: string;
   };
   varieties: {
     is_default: boolean;
@@ -55,18 +59,19 @@ export interface Pokemon {
   number: number;
   name: string;
   generation: number;
+  evolutionLevel: number;
   habitat: string;
   types: string[];
   abilities: Ability[];
   moves: Move[];
 }
 
-const getUrlId = (url: string) => Number.parseInt(url.split('/').reverse()[1]);
-
 export const getPokemon = promiseStore(async (id: number) => {
   const species = await got
     .get(`https://pokeapi.co/api/v2/pokemon-species/${id}`)
     .json<PokeApiSpecies>();
+
+  const evolutionChain = await getEvolutionChain(getUrlId(species.evolution_chain.url));
 
   const pokemon = await got
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -82,6 +87,8 @@ export const getPokemon = promiseStore(async (id: number) => {
     abilities: await Promise.all(
       pokemon.abilities.map(async (ability) => getAbility(getUrlId(ability.ability.url))),
     ),
+    evolutionLevel:
+      evolutionChain.chain.findIndex((list) => !!list.find((e) => e.id === species.id)) + 1,
     moves: await Promise.all(
       pokemon.moves
         .filter((move) =>

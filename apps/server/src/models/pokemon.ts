@@ -42,6 +42,11 @@ const pokemonSchema = new Schema(
       trim: true,
       index: true,
     },
+    evolutionLevel: {
+      type: Number,
+      required: true,
+      index: true,
+    },
     types: [
       {
         type: String,

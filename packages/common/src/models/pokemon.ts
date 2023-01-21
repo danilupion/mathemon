@@ -27,6 +27,7 @@ export interface Pokemon extends WithTimestamps {
   name: string;
   generation: number;
   habitat: string;
+  evolutionLevel: number;
   types: PokemonType[];
   abilities: string[];
   moves: string[];

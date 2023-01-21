@@ -29,6 +29,7 @@ export const seedPokemon = async ({ verbose = false }: SeedPokemonOptions = {}) 
               name: pokemon.name,
               generation: pokemon.generation,
               habitat: pokemon.habitat,
+              evolutionLevel: pokemon.evolutionLevel,
               types: pokemon.types as PokemonType[],
               abilities: pokemon.abilities.map((a) => a.name),
               moves: pokemon.moves.map((m) => m.name),
