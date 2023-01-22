@@ -1,5 +1,4 @@
 import { useCallback, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 import { useAuthStore } from '../../hooks/useStore';
 import Button from '../Button';
@@ -54,11 +53,8 @@ const routes: MenuButtonProps[] = [
   { to: '/pokedex', label: 'Pokedex', img: '/icons/poke-ball.png' },
 ];
 
-const pathsWithSettings = ['/addition', '/subtraction', '/multiplication', '/division'];
-
 const Header = () => {
   const authStore = useAuthStore();
-  const { pathname } = useLocation();
 
   const [leftPanelOpen, setLeftPanelOpen] = useState(false);
   const [rightPanelOpen, setRightPanelOpen] = useState(false);
@@ -85,8 +81,6 @@ const Header = () => {
     setRightPanelOpen(!rightPanelOpen);
   }, [rightPanelOpen, setRightPanelOpen, closeLeftPanel]);
 
-  const pathHasSettings = pathsWithSettings.includes(pathname);
-
   const firstEntries: MenuButtonProps[] | MenuButtonProps[][] = authStore.signedIn
     ? [
         [
@@ -108,11 +102,7 @@ const Header = () => {
             <span>Mathemon</span>
           </a>
         </h1>
-        <Button
-          disabled={!pathHasSettings}
-          onClick={toggleRightPanel}
-          className={styles['side-panel-toggle']}
-        >
+        <Button onClick={toggleRightPanel} className={styles['side-panel-toggle']}>
           <img src={rightPanelOpen ? close : gear} alt="Open Settings" />
         </Button>
       </div>
@@ -145,7 +135,7 @@ const Header = () => {
         })}
       </SidePanel>
       <SidePanel open={rightPanelOpen} onClose={closeRightPanel} side={Side.Right}>
-        {pathHasSettings && <Settings onSave={closeRightPanel} />}
+        <Settings onSave={closeRightPanel} />
       </SidePanel>
     </div>
   );

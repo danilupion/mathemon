@@ -2,6 +2,7 @@ import { Operator, Score, Solution } from '@mathemon/common/models/operation';
 import { Pokemon } from '@mathemon/common/models/pokemon';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState } from 'react';
+import { useBeforeUnload } from 'react-router-dom';
 
 import { createEvaluation } from '../../api/evaluations';
 import { createQuiz } from '../../api/quizzes';
@@ -20,13 +21,15 @@ interface QuizProps {
 const Quiz = observer(({ operator }: QuizProps) => {
   const settingsStore = useSettingsStore();
   const { inputDirection } = settingsStore.getCommon();
-  const { digits, carrying } = settingsStore.getSection(operator);
+  const { digits, ...operatorSettingsRest } = settingsStore.getOperator(operator);
   const [items, setItems] = useState<Item[]>([]);
   const [evaluation, setEvaluation] = useState<
     { score: Score; success: boolean; reward: Pokemon } | undefined
   >(undefined);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const carrying = 'carrying' in operatorSettingsRest ? operatorSettingsRest.carrying : undefined;
 
   const init = useCallback(() => {
     setLoading(true);
@@ -43,24 +46,16 @@ const Quiz = observer(({ operator }: QuizProps) => {
     });
   }, [operator, digits, carrying]);
 
-  useEffect(() => {
-    const onBeforeUnload = (e: BeforeUnloadEvent) => {
-      if (!evaluation) {
-        e.preventDefault();
-        e.returnValue = '¿Estás seguro de que quieres salir?';
-      }
-    };
-
-    window.addEventListener('beforeunload', onBeforeUnload);
-
-    return () => {
-      window.removeEventListener('beforeunload', onBeforeUnload);
-    };
-  }, [evaluation]);
+  useBeforeUnload((e) => {
+    if (!evaluation) {
+      e.preventDefault();
+      e.returnValue = '¿Estás seguro de que quieres salir?';
+    }
+  });
 
   useEffect(() => {
     init();
-  }, [carrying, digits, init, operator]);
+  }, [init]);
 
   const handleSetValue = useCallback(
     (index: number) => (value: number | undefined) => {

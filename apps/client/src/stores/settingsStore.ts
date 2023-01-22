@@ -6,28 +6,43 @@ export enum InputDirection {
   RTL = 'rtl',
   LFR = 'lfr',
 }
-interface OperatorSettings {
+
+interface AdditionSettings {
   digits: number;
-  carrying?: boolean;
+  carrying: boolean;
 }
 
-interface CommonSettings {
+interface SubtractionSettings {
+  digits: number;
+  carrying: boolean;
+}
+
+interface MultiplicationSettings {
+  digits: number;
+}
+
+interface DivisionSettings {
+  digits: number;
+}
+
+export type OperatorSettings =
+  | AdditionSettings
+  | SubtractionSettings
+  | MultiplicationSettings
+  | DivisionSettings;
+
+export interface CommonSettings {
   inputDirection: InputDirection;
 }
 
-type Settings = {
-  common: CommonSettings;
-  section: OperatorSettings;
-};
-
-const LOCALSTORAGE_KEY = 'operatorSettings';
+const LOCALSTORAGE_KEY = 'settings';
 const COMMON_SETTINGS_KEY = 'common';
 
 const commonDefaults: CommonSettings = {
   inputDirection: InputDirection.RTL,
 };
 
-const sectionDefaults: { [key in Operator]: OperatorSettings } = {
+const operatorDefaults: { [key in Operator]: OperatorSettings } = {
   [Operator.addition]: {
     digits: 2,
     carrying: false,
@@ -59,9 +74,9 @@ export class SettingsStore {
   }
 
   @computed
-  public getSection(operator: Operator): OperatorSettings {
+  public getOperator(operator: Operator): OperatorSettings {
     return {
-      ...sectionDefaults[operator],
+      ...operatorDefaults[operator],
       ...this.settings[operator],
     };
   }
@@ -75,9 +90,15 @@ export class SettingsStore {
   }
 
   @action
-  public saveSettings = (operator: Operator, newSettings: Settings) => {
-    this.settings[operator] = newSettings.section;
-    this.settings[COMMON_SETTINGS_KEY] = newSettings.common;
+  public saveOperatorSettings = (operator: Operator, newSettings: OperatorSettings) => {
+    this.settings[operator] = newSettings;
+
+    localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(this.settings));
+  };
+
+  @action
+  public saveCommonSettings = (newSettings: CommonSettings) => {
+    this.settings[COMMON_SETTINGS_KEY] = newSettings;
 
     localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(this.settings));
   };
