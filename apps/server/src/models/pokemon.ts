@@ -14,6 +14,7 @@ type PokemonWithOperator = Pokemon & { operator: Operator };
 export interface PokemonDocument extends Document, Omit<Pokemon, 'id'> {
   toUnknown(): PokemonWithOperator;
   toFound(): PokemonWithOperator;
+  normalize(): Pokemon;
 }
 
 const pokemonSchema = new Schema(
@@ -88,6 +89,10 @@ const pokemonSchema = new Schema(
       ...this.toFound(),
       name: '???',
     };
+  })
+  .method('normalize', function () {
+    const { _id, __v, ...rest } = this.toJSON();
+    return { id: _id, ...rest } as Pokemon;
   })
   .static('inUsedGenerations', function () {
     return this.find({ generation: pokemonGenerations });

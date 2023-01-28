@@ -2,10 +2,11 @@ import { Evaluation, Solution } from '@mathemon/common/models/operation';
 import classNames from 'classnames';
 import { ChangeEvent, useCallback } from 'react';
 
-import Card from '../../../components/Card';
-import Input from '../../../components/Form/Input';
-import { InputDirection } from '../../../stores/settingsStore';
-import { maxDigits } from '../../../utils/math';
+import Card from '../../components/Card';
+import Input from '../../components/Form/Input';
+import { useSettingsStore } from '../../hooks/useStore';
+import { InputDirection } from '../../stores/settingsStore';
+import { maxDigits } from '../../utils/math';
 
 import styles from './index.module.scss';
 
@@ -19,12 +20,14 @@ export type Item = Omit<Evaluation, 'solution' | 'correct'> & {
 interface QuizItemProps {
   item: Item;
   editable: boolean;
-  inputDirection: InputDirection;
 
   onSetValue: (result: number | undefined) => void;
 }
 
-const QuizItem = ({ item, editable, inputDirection, onSetValue }: QuizItemProps) => {
+const QuizItem = ({ item, editable, onSetValue }: QuizItemProps) => {
+  const settingsStore = useSettingsStore();
+  const { inputDirection } = settingsStore.getCommon();
+
   const handleOnChange = useCallback(
     (ev: ChangeEvent<HTMLInputElement>) => {
       const inputValue = ev.target.value.trim();

@@ -1,28 +1,32 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const server = 'http://127.0.0.1:3200';
+const serverHost = 'localhost:3200';
 
 module.exports = function (app) {
   app.use(
-    '/api',
-    createProxyMiddleware({
-      target: server,
+    createProxyMiddleware('/api', {
+      target: `http://${serverHost}`,
       changeOrigin: true,
     }),
   );
   app.use(
-    '/oauth',
-    createProxyMiddleware({
-      target: server,
+    createProxyMiddleware('/oauth', {
+      target: `http://${serverHost}`,
       changeOrigin: true,
     }),
   );
   app.use(
-    '/tokens',
-    createProxyMiddleware({
-      target: server,
+    createProxyMiddleware('/tokens', {
+      target: `http://${serverHost}`,
       changeOrigin: true,
+    }),
+  );
+  app.use(
+    createProxyMiddleware('/websocket', {
+      target: `ws://${serverHost}`,
+      ws: true,
+      logLevel: 'debug',
     }),
   );
 };

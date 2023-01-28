@@ -6,20 +6,21 @@ import controller, {
   ResponseWithBody,
 } from '@mathemon/turbo-server/helpers/express/controller.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
-import { JwtData } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
+import { UserData } from '@mathemon/turbo-server/middleware/express/auth/user.js';
 import config from 'config';
 
 import Pokedex, { PokedexDocument } from '../../../../models/pokedex.js';
 import PokemonModel from '../../../../models/pokemon.js';
+import { UserDocument } from '../../../../models/user.js';
 import { getOperatorForType } from '../../../../utils/pokemon.js';
 
 const pageSize = config.get<number>('settings.pokedex.pageSize');
 
 export const getPokedex = controller<
-  RequestMaybeWithQuery<PageQuery & PokedexFilterQuery, RequestWithFields<JwtData>>,
+  RequestMaybeWithQuery<PageQuery & PokedexFilterQuery, RequestWithFields<UserData<UserDocument>>>,
   ResponseWithBody<GetPokedexRes>
 >(async (req, res) => {
-  const pokedex = await Pokedex.findOne({ user: req.jwtUser.id });
+  const pokedex = await Pokedex.findOne({ user: req.user._id });
 
   const pokedexPokemons =
     pokedex && pokedex.pokemons ? pokedex.pokemons : (new Map() as PokedexDocument['pokemons']);

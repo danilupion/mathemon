@@ -8,12 +8,12 @@ import { ExtractJwt, Strategy as JwtStrategy, VerifiedCallback } from 'passport-
 import { RequestWithFields } from '../../../helpers/express/controller.js';
 import { ClientErrorForbidden, ClientErrorUnauthorized } from '../../../helpers/httpError.js';
 
-const defaultProperty = 'jwtUser';
+export const defaultProperty = 'jwtUser';
 const mandatoryJwtStrategyName = 'turbo-jwt-mandatory';
 const optionalJwtStrategyName = 'turbo-jwt-optionnal';
 const anonymousStrategyName = 'turbo-anonymous';
 
-const jwtSecret = config.get<string>('auth.jwt.secret');
+export const jwtSecret = config.get<string>('auth.jwt.secret');
 const jwtExpiration = config.get<string>('auth.jwt.expiration');
 
 export interface Jwt<UserRole extends string = string> {
@@ -27,33 +27,35 @@ export type JwtData<UserRole extends string = string, Key extends string = 'jwtU
 
 const strategyOptions = {
   secretOrKey: jwtSecret,
-  jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
+  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 };
 
-const mandatoryJwtStrategy = new JwtStrategy(
-  strategyOptions,
-  <UserRole extends string = string>(payload: Jwt<UserRole>, done: VerifiedCallback) => {
-    if (payload.id && payload.role) {
-      return done(null, payload);
-    }
+const mandatoryVerify = <UserRole extends string = string>(
+  payload: Jwt<UserRole>,
+  done: VerifiedCallback,
+) => {
+  if (payload.id && payload.role) {
+    return done(null, payload);
+  }
 
-    return done(new ClientErrorUnauthorized());
-  },
-);
+  return done(new ClientErrorUnauthorized());
+};
+
+const optionalVerify = <UserRole extends string = string>(
+  payload: Jwt<UserRole>,
+  done: VerifiedCallback,
+) => {
+  if (payload.id && payload.role) {
+    return done(null, payload);
+  }
+
+  return done(null);
+};
+
+const mandatoryJwtStrategy = new JwtStrategy(strategyOptions, mandatoryVerify);
+const optionalJwtStrategy = new JwtStrategy(strategyOptions, optionalVerify);
 
 passport.use(mandatoryJwtStrategyName, mandatoryJwtStrategy);
-
-const optionalJwtStrategy = new JwtStrategy(
-  strategyOptions,
-  <UserRole extends string = string>(payload: Jwt<UserRole>, done: VerifiedCallback) => {
-    if (payload.id && payload.role) {
-      return done(null, payload);
-    }
-
-    return done(null);
-  },
-);
-
 passport.use(optionalJwtStrategyName, optionalJwtStrategy);
 passport.use(anonymousStrategyName, new AnonymousStrategy());
 

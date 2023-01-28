@@ -6,14 +6,9 @@ import controller, {
 } from '@mathemon/turbo-server/helpers/express/controller.js';
 import { ClientErrorConflict } from '@mathemon/turbo-server/helpers/httpError.js';
 import { StatusCode } from '@mathemon/turbo-server/http.js';
-import { Jwt } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
 import { UserData } from '@mathemon/turbo-server/middleware/express/auth/user.js';
 
 import UserModel, { UserDocument } from '../../../../models/user.js';
-
-export const userFromJwt = async (jwtData: Jwt) => {
-  return await UserModel.findById(jwtData.id).exec();
-};
 
 export const getAccount = controller<
   RequestWithFields<UserData<UserDocument>>,

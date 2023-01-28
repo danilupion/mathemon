@@ -1,0 +1,41 @@
+@use 'src/styles/common.scss';
+
+.container {
+  @extend .column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+
+  .pokemonName {
+    text-transform: capitalize;
+  }
+
+  .pokemons {
+    @extend .row;
+
+    progress::-webkit-progress-value {
+      background: green;
+    }
+
+    .player {
+      margin-top: 60px;
+    }
+
+    .player,
+    .opponent {
+      img {
+        width: 200px;
+      }
+    }
+  }
+
+  .actions {
+    @extend .column;
+    align-items: center;
+
+    .buttons {
+      @extend .column;
+      gap: 10px;
+    }
+  }
+}

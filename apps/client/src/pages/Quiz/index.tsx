@@ -8,9 +8,9 @@ import { createEvaluation } from '../../api/evaluations';
 import { createQuiz } from '../../api/quizzes';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
+import QuizItem, { Item } from '../../components/QuizItem';
 import { useSettingsStore } from '../../hooks/useStore';
 
-import QuizItem, { Item } from './QuizItem';
 import ResultModal from './ResultModal';
 import styles from './index.module.scss';
 
@@ -20,7 +20,6 @@ interface QuizProps {
 
 const Quiz = observer(({ operator }: QuizProps) => {
   const settingsStore = useSettingsStore();
-  const { inputDirection } = settingsStore.getCommon();
   const { digits, ...operatorSettingsRest } = settingsStore.getOperator(operator);
   const [items, setItems] = useState<Item[]>([]);
   const [evaluation, setEvaluation] = useState<
@@ -105,7 +104,6 @@ const Quiz = observer(({ operator }: QuizProps) => {
           <QuizItem
             item={item}
             editable={!(evaluation && evaluation.score)}
-            inputDirection={inputDirection}
             key={`${index} ${item.solution.operation.operands[0]}${item.solution.operation.operator}${item.solution.operation.operands[1]}`}
             onSetValue={handleSetValue(index)}
           />

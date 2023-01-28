@@ -2,8 +2,6 @@ import {
   CreateEvaluationReq,
   CreateEvaluationRes,
 } from '@mathemon/common/models/api/evaluations.js';
-import { Operator, Solution } from '@mathemon/common/models/operation.js';
-import { Pokemon } from '@mathemon/common/models/pokemon.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
@@ -16,35 +14,11 @@ import config from 'config';
 import { ObjectId } from 'mongoose';
 
 import PokedexModel from '../../../models/pokedex.js';
-import PokemonModel, { PokemonDocument } from '../../../models/pokemon.js';
+import PokemonModel from '../../../models/pokemon.js';
+import { isCorrect } from '../../../utils/operation.js';
 import { getTypesForOperator } from '../../../utils/pokemon.js';
 
 const pokemonGenerations = config.get<number[]>('settings.pokemon.generations');
-
-const isCorrect = ({ operation: { operator, operands }, value }: Solution) => {
-  let resultOfOperation;
-  switch (operator) {
-    case Operator.addition:
-      resultOfOperation = operands[0] + operands[1];
-      break;
-    case Operator.subtraction:
-      resultOfOperation = operands[0] - operands[1];
-      break;
-    case Operator.multiplication:
-      resultOfOperation = operands[0] * operands[1];
-      break;
-    case Operator.division:
-      resultOfOperation = operands[0] / operands[1];
-      break;
-  }
-
-  return resultOfOperation === value;
-};
-
-const getPokemon = (pokemon: PokemonDocument): Pokemon => {
-  const { _id, __v, ...rest } = pokemon.toJSON();
-  return { id: _id, ...rest } as Pokemon;
-};
 
 export const createEvaluation = controller<
   RequestWithBody<CreateEvaluationReq, RequestWithFields<JwtData>>,
@@ -111,6 +85,6 @@ export const createEvaluation = controller<
       correct,
     },
     success,
-    reward: getPokemon(pokemon),
+    reward: pokemon.normalize(),
   });
 });

@@ -1,0 +1,5 @@
+@use 'nes.css/css/nes.css';
+
+progress {
+  @extend .nes-progress;
+}

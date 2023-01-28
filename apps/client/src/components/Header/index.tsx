@@ -50,6 +50,11 @@ const routes: MenuButtonProps[] = [
     label: 'Tablas',
     img: '/icons/stone-plate.png',
   },
+  {
+    to: '/explore',
+    label: 'Explorar',
+    img: '/icons/old-map.png',
+  },
   { to: '/pokedex', label: 'Pokedex', img: '/icons/poke-ball.png' },
 ];
 

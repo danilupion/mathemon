@@ -1,3 +1,4 @@
+import { createServer } from 'http';
 import { dirname, join, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
@@ -11,6 +12,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import routes from './routes/index.js';
+import socketServer from './socket/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -50,7 +52,10 @@ const startServer = async () => {
   app.use(errorHandler);
 
   await connectMongoose();
-  app.listen(port);
+  const httpServer = createServer(app);
+  socketServer(httpServer);
+
+  httpServer.listen(port);
   console.error(`Listening in port ${port}`, isDev);
 };
 

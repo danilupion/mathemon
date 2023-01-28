@@ -7,6 +7,7 @@ import usePageTracking from './hooks/usePageTracking';
 import HeadlessLayout from './layouts/HeadlessLayout';
 import Layout from './layouts/Layout';
 import Account from './pages/Account';
+import Explore from './pages/Explore';
 import Home from './pages/Home';
 import MultiplicationTable from './pages/MultiplicationTable';
 import MultiplicationTables from './pages/MultiplicationTables';
@@ -30,6 +31,7 @@ const App = () => {
           <Route path="division" element={<Quiz operator={Operator.division} />} />
           <Route path="multiplicationTables" element={<MultiplicationTables />} />
           <Route path="multiplicationTables/:table" element={<MultiplicationTable />} />
+          <Route path="explore" element={<Explore />} />
           <Route path="pokedex" element={<Pokedex />} />
           <Route path="*" element={<NotFound />} />
         </Route>
