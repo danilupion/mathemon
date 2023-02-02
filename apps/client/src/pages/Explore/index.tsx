@@ -2,7 +2,7 @@ import { Pokemon } from '@mathemon/common/models/pokemon';
 import { BattleState } from '@mathemon/common/models/websocket/battle';
 import { sample } from 'lodash';
 import { observer } from 'mobx-react-lite';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { FormEvent, useCallback, useEffect, useRef, useState } from 'react';
 
 import battle from '../../api/battle';
 import Button from '../../components/Button';
@@ -43,6 +43,14 @@ const Actions = ({
   updateItemValue,
   onSendChallengeResult,
 }: ActionProps) => {
+  const handleSubmit = useCallback(
+    (ev: FormEvent<HTMLFormElement>) => {
+      ev.preventDefault();
+      onSendChallengeResult();
+    },
+    [onSendChallengeResult],
+  );
+
   return (
     <Card className={styles.actions}>
       {(() => {
@@ -88,8 +96,12 @@ const Actions = ({
               <>
                 <h2>¡Resuelve la operación para que sea efectivo!</h2>
                 <Timer ms={challengeTime!} />
-                <QuizItem item={item!} editable={true} onSetValue={updateItemValue} />
-                <Button onClick={onSendChallengeResult}>Resolver</Button>
+                <form onSubmit={handleSubmit}>
+                  <QuizItem item={item!} editable={true} onSetValue={updateItemValue} />
+                  <Button className={styles.send} onClick={onSendChallengeResult}>
+                    Resolver
+                  </Button>
+                </form>
               </>
             );
           case BattleState.Won:
@@ -173,8 +185,8 @@ const LoggedInExplore = () => {
     <div className={styles.container}>
       <div className={styles.pokemons}>
         <div className={styles.player}>
-          <PokemonImage pokemon={userPokemon.number} type={PokemonImageType.Back} />
           <Progress value={userHealth} max={userMaxHealth} />
+          <PokemonImage pokemon={userPokemon.number} type={PokemonImageType.Back} />
         </div>
         <div className={styles.opponent}>
           <Progress value={opponentHealth} max={opponentMaxHealth} />

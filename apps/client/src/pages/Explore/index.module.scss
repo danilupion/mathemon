@@ -12,13 +12,23 @@
 
   .pokemons {
     @extend .row;
+    width: 100%;
+    gap: 30px;
+    justify-content: center;
+    background-image: url('~/public/backgrounds/forest.jpg');
+    background-size: cover;
+    background-position: 0 -200px;
 
-    progress::-webkit-progress-value {
-      background: green;
-    }
+    progress {
+      background-color: transparent;
 
-    .player {
-      margin-top: 60px;
+      &::-webkit-progress-value {
+        background: green;
+      }
+
+      &::-webkit-progress-bar {
+        background: transparent;
+      }
     }
 
     .player,
@@ -27,6 +37,10 @@
         width: 200px;
       }
     }
+  }
+
+  .send {
+    @extend .primary-button;
   }
 
   .actions {

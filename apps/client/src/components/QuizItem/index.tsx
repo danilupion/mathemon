@@ -73,6 +73,7 @@ const QuizItem = ({ item, editable, onSetValue }: QuizItemProps) => {
       <div>
         <Input
           contentEditable={true}
+          autoFocus
           value={item.solution.value === undefined ? '' : item.solution.value}
           size={1}
           onChange={editable ? handleOnChange : undefined}
