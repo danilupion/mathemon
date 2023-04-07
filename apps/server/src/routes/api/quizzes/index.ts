@@ -1,11 +1,13 @@
 import { postRoute } from '@mathemon/turbo-server/helpers/express/route.js';
 import { Router } from 'express';
 
-import { createQuiz } from './controllers.js';
-import { quizCreationValidator } from './validators.js';
+import { createPracticeQuiz, createRealQuiz } from './controllers.js';
+import { practiceCreationValidator, quizCreationValidator } from './validators.js';
 
 const router = Router();
 
-postRoute(router, '/', quizCreationValidator, createQuiz);
+postRoute(router, '/real', quizCreationValidator, createRealQuiz);
+
+postRoute(router, '/practice', practiceCreationValidator, createPracticeQuiz);
 
 export default router;

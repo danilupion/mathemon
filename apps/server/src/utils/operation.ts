@@ -4,7 +4,8 @@ import { randomInt } from './math.js';
 
 interface CreateAugendParams {
   operator: Operator.addition;
-  digits: number;
+  min: number;
+  max: number;
   carrying: boolean;
 }
 
@@ -14,7 +15,8 @@ interface CreateAddendParams extends CreateAugendParams {
 
 interface CreateMinuendParams {
   operator: Operator.subtraction;
-  digits: number;
+  min: number;
+  max: number;
   carrying: boolean;
 }
 
@@ -24,7 +26,8 @@ interface CreateSubtrahendParams extends CreateMinuendParams {
 
 interface CreateMultiplicandParams {
   operator: Operator.multiplication;
-  digits: number;
+  min: number;
+  max: number;
 }
 
 interface CreateMultiplierParams extends CreateMultiplicandParams {
@@ -33,58 +36,48 @@ interface CreateMultiplierParams extends CreateMultiplicandParams {
 
 interface CreateDivisorParams {
   operator: Operator.division;
-  digits: number;
+  min: number;
+  max: number;
 }
 
 interface CreateDividendParams extends CreateDivisorParams {
   reference: number;
 }
 
-type CreateOperandParams =
-  | CreateAddendParams
-  | CreateAugendParams
-  | CreateMinuendParams
-  | CreateSubtrahendParams
-  | CreateMultiplicandParams
-  | CreateMultiplierParams
-  | CreateDivisorParams
-  | CreateDividendParams;
-
-const createOperand = (params: CreateOperandParams) => {
-  switch (params.operator) {
-    case Operator.addition: {
-      const { digits, carrying } = params;
-      if ('reference' in params && !carrying) {
-        const referenceDigits = params.reference.toString().split('');
-        const newDigits = referenceDigits.map((d) => randomInt(0, 9 - Number(d)).toString());
-        return Number(newDigits.join(''));
-      }
-
-      return randomInt(0, 10 ** digits - 1);
-    }
-    case Operator.subtraction: {
-      const { digits, carrying } = params;
-      if ('reference' in params && !carrying) {
-        const referenceDigits = params.reference.toString().split('');
-        const newDigits = referenceDigits.map((d) => randomInt(0, Number(d)).toString());
-        return Number(newDigits.join(''));
-      }
-
-      return randomInt(0, 'reference' in params ? params.reference : 10 ** digits - 1);
-    }
-    case Operator.multiplication: {
-      const { digits } = params;
-      return randomInt(0, 10 ** digits - 1);
-    }
-    case Operator.division: {
-      const { digits } = params;
-      if ('reference' in params) {
-        return params.reference * randomInt(2, 10 ** digits - 1);
-      }
-
-      return randomInt(2, 10 ** digits - 1);
-    }
+const createAdditionOperand = (params: CreateAddendParams | CreateAugendParams) => {
+  const { min, max, carrying } = params;
+  if ('reference' in params && !carrying) {
+    const referenceDigits = params.reference.toString().split('');
+    const newDigits = referenceDigits.map((d) => randomInt(0, 9 - Number(d)).toString());
+    return Number(newDigits.join(''));
   }
+
+  return randomInt(min, max);
+};
+
+const createSubtractionOperand = (params: CreateSubtrahendParams | CreateMinuendParams) => {
+  const { min, max, carrying } = params;
+  if (!carrying && 'reference' in params) {
+    const referenceDigits = params.reference.toString().split('');
+    const newDigits = referenceDigits.map((d) => randomInt(0, Number(d)).toString());
+    return Number(newDigits.join(''));
+  }
+
+  return randomInt(min, 'reference' in params ? params.reference : max);
+};
+
+const createMultiplicationOperand = (params: CreateMultiplicandParams | CreateMultiplierParams) => {
+  const { min, max } = params;
+  return randomInt(min, max);
+};
+
+const createDivisionOperand = (params: CreateDivisorParams | CreateDividendParams) => {
+  const { min, max } = params;
+  if ('reference' in params) {
+    return params.reference * randomInt(min, max);
+  }
+
+  return randomInt(min, max);
 };
 
 interface CreateAdditionParams {
@@ -114,27 +107,108 @@ export type CreateOperationParams =
   | CreateMultiplicationParams
   | CreateDivisionParams;
 
+interface CreateMultiplicationPracticeParams {
+  operator: Operator.multiplication;
+  operand: number;
+}
+
+export type CreatePracticeOperationParams = CreateMultiplicationPracticeParams;
+
+const createAdditionOperation = (params: CreateAdditionParams): Operation => {
+  const max = 10 ** params.digits - 1;
+  const augend = createAdditionOperand({
+    ...params,
+    min: 0,
+    max,
+  });
+  const addend = createAdditionOperand({
+    ...params,
+    min: 0,
+    max,
+    reference: augend,
+  });
+  return { operator: params.operator, operands: [augend, addend] };
+};
+
+const createSubtractionOperation = (params: CreateSubtractionParams): Operation => {
+  const max = 10 ** params.digits - 1;
+  const minuend = createSubtractionOperand({
+    ...params,
+    min: 0,
+    max,
+  });
+  const subthrahend = createSubtractionOperand({
+    ...params,
+    min: 0,
+    max,
+    reference: minuend,
+  });
+  return { operator: params.operator, operands: [minuend, subthrahend] };
+};
+
+const createMultiplicationPracticeOperation = (
+  params: CreateMultiplicationPracticeParams,
+): Operation => {
+  const multiplicand = params.operand;
+  return {
+    operator: Operator.multiplication,
+    operands: [multiplicand, randomInt(1, 10)],
+  };
+};
+
+const createMultiplicationOperation = (params: CreateMultiplicationParams): Operation => {
+  const max = 10 ** params.digits - 1;
+  const multiplicand = createMultiplicationOperand({
+    operator: params.operator,
+    min: 1,
+    max,
+  });
+  const multiplier = createMultiplicationOperand({
+    operator: params.operator,
+    min: 1,
+    max,
+    reference: multiplicand,
+  });
+  return { operator: params.operator, operands: [multiplicand, multiplier] };
+};
+
+const createDivisionOperation = (params: CreateDivisionParams): Operation => {
+  const max = 10 ** params.digits - 1;
+  const divisor = createDivisionOperand({
+    operator: params.operator,
+    min: 1,
+    max,
+  });
+  const dividend = createDivisionOperand({
+    operator: params.operator,
+    min: 1,
+    max,
+    reference: divisor,
+  });
+  return { operator: params.operator, operands: [dividend, divisor] };
+};
+
 export const createOperation = (params: CreateOperationParams): Operation => {
   switch (params.operator) {
     case Operator.addition: {
-      const augend = createOperand({ ...params });
-      const addend = createOperand({ ...params, reference: augend });
-      return { operator: params.operator, operands: [augend, addend] };
+      return createAdditionOperation(params);
     }
     case Operator.subtraction: {
-      const minuend = createOperand({ ...params });
-      const subthrahend = createOperand({ ...params, reference: minuend });
-      return { operator: params.operator, operands: [minuend, subthrahend] };
+      return createSubtractionOperation(params);
     }
     case Operator.multiplication: {
-      const multiplicand = createOperand({ ...params });
-      const multiplier = createOperand({ ...params });
-      return { operator: params.operator, operands: [multiplicand, multiplier] };
+      return createMultiplicationOperation(params);
     }
     case Operator.division: {
-      const divisor = createOperand({ ...params });
-      const dividend = createOperand({ ...params, reference: divisor });
-      return { operator: params.operator, operands: [dividend, divisor] };
+      return createDivisionOperation(params);
+    }
+  }
+};
+
+export const createPracticeOperation = (params: CreateMultiplicationPracticeParams): Operation => {
+  switch (params.operator) {
+    case Operator.multiplication: {
+      return createMultiplicationPracticeOperation(params);
     }
   }
 };

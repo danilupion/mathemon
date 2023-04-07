@@ -6,3 +6,8 @@ export const quizCreationValidator = [
   body('digits').isInt().notEmpty(),
   body('carrying').optional().isBoolean(),
 ];
+
+export const practiceCreationValidator = [
+  body('operator').isString().trim().isIn([Operator.multiplication]).notEmpty(),
+  body('operand').isInt().notEmpty(),
+];

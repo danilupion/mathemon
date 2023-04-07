@@ -13,7 +13,7 @@ import MultiplicationTable from './pages/MultiplicationTable';
 import MultiplicationTables from './pages/MultiplicationTables';
 import NotFound from './pages/NotFound';
 import Pokedex from './pages/Pokedex';
-import Quiz from './pages/Quiz';
+import Quiz, { QuizMode } from './pages/Quiz';
 import SignIn, { SignInSection } from './pages/SignIn';
 
 const App = () => {
@@ -31,6 +31,10 @@ const App = () => {
           <Route path="division" element={<Quiz operator={Operator.division} />} />
           <Route path="multiplicationTables" element={<MultiplicationTables />} />
           <Route path="multiplicationTables/:table" element={<MultiplicationTable />} />
+          <Route
+            path="multiplicationPractice/:table"
+            element={<Quiz mode={QuizMode.Practice} operator={Operator.multiplication} />}
+          />
           <Route path="explore" element={<Explore />} />
           <Route path="pokedex" element={<Pokedex />} />
           <Route path="*" element={<NotFound />} />

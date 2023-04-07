@@ -2,10 +2,10 @@ import { Operator, Score, Solution } from '@mathemon/common/models/operation';
 import { Pokemon } from '@mathemon/common/models/pokemon';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState } from 'react';
-import { useBeforeUnload } from 'react-router-dom';
+import { useBeforeUnload, useParams } from 'react-router-dom';
 
 import { createEvaluation } from '../../api/evaluations';
-import { createQuiz } from '../../api/quizzes';
+import { createPracticeQuiz, createRealQuiz } from '../../api/quizzes';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import QuizItem, { Item } from '../../components/QuizItem';
@@ -14,13 +14,18 @@ import { useSettingsStore } from '../../hooks/useStore';
 import ResultModal from './ResultModal';
 import styles from './index.module.scss';
 
-interface QuizProps {
-  operator: Operator;
+export enum QuizMode {
+  Practice = 'practice',
+  Quiz = 'quiz',
 }
 
-const Quiz = observer(({ operator }: QuizProps) => {
+interface QuizProps {
+  operator: Operator;
+  mode?: QuizMode;
+}
+
+const Quiz = observer(({ operator, mode = QuizMode.Quiz }: QuizProps) => {
   const settingsStore = useSettingsStore();
-  const { digits, ...operatorSettingsRest } = settingsStore.getOperator(operator);
   const [items, setItems] = useState<Item[]>([]);
   const [evaluation, setEvaluation] = useState<
     { score: Score; success: boolean; reward: Pokemon } | undefined
@@ -28,22 +33,52 @@ const Quiz = observer(({ operator }: QuizProps) => {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const carrying = 'carrying' in operatorSettingsRest ? operatorSettingsRest.carrying : undefined;
+  let digits: number | undefined = undefined;
+  let carrying: boolean | undefined;
+  let table: number | undefined;
+
+  if (mode === QuizMode.Quiz) {
+    const settings = settingsStore.getOperator(operator);
+    digits = settings.digits;
+    carrying = 'carrying' in settings ? settings.carrying : undefined;
+  } else {
+    table = Number(useParams().table);
+
+    if (!Number.isInteger(table)) {
+      return null;
+    }
+  }
 
   const init = useCallback(() => {
     setLoading(true);
     setItems([]);
     setEvaluation(undefined);
     setOpen(false);
-    createQuiz(operator, digits, carrying).then((items) => {
-      setItems(
-        items.map((item) => ({
-          solution: { operation: item, value: undefined },
-        })),
-      );
-      setLoading(false);
-    });
-  }, [operator, digits, carrying]);
+    switch (mode) {
+      case QuizMode.Practice: {
+        createPracticeQuiz(operator, table!).then((items) => {
+          setItems(
+            items.map((item) => ({
+              solution: { operation: item, value: undefined },
+            })),
+          );
+        });
+        break;
+      }
+      case QuizMode.Quiz: {
+        createRealQuiz(operator, digits!, carrying).then((items) => {
+          setItems(
+            items.map((item) => ({
+              solution: { operation: item, value: undefined },
+            })),
+          );
+        });
+        break;
+      }
+    }
+
+    setLoading(false);
+  }, [mode, operator, digits, carrying, table]);
 
   useBeforeUnload((e) => {
     if (!evaluation) {
