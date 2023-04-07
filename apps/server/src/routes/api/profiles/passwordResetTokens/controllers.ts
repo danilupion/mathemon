@@ -62,7 +62,7 @@ export const changePassword = controller<
   user.verified = true;
   user.password = req.body.password;
 
-  await Promise.all([user.save(), tokenToUse.remove()]);
+  await Promise.all([user.save(), SingleUseTokenModel.deleteOne({ _id: tokenToUse._id }).exec()]);
 
   return res.status(200).send();
 });

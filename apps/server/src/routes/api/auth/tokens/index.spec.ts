@@ -152,7 +152,7 @@ describe('/api/auth/tokens', () => {
           role: UserRole.admin,
         });
         const token = await generateToken(getTokenPayload(user));
-        await user.delete();
+        await UserModel.deleteMany({ _id: user._id }).exec();
         const response = await server(router).put('/').set('Authorization', `bearer ${token}`);
 
         expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);

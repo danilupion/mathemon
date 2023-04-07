@@ -26,7 +26,10 @@ export const verifyEmailToken = controller<RequestWithParams<{ token: string }>>
     const user = tokenToVerify.user as UserDocument;
 
     user.verified = true;
-    await Promise.all([user.save(), tokenToVerify.remove()]);
+    await Promise.all([
+      user.save(),
+      SingleUseTokenModel.deleteOne({ _id: tokenToVerify._id }).exec(),
+    ]);
 
     res.redirect('/signIn?emailValidation=true');
   },
