@@ -1,7 +1,9 @@
 import {
   CreatePracticeQuizReq,
+  CreateQuizReq,
   CreateQuizRes,
   CreateRealQuizReq,
+  QuizMode,
 } from '@mathemon/common/models/api/quizzes.js';
 import { Operation } from '@mathemon/common/models/operation.js';
 import controller, {
@@ -15,14 +17,11 @@ import { createOperation, createPracticeOperation } from '../../../utils/operati
 
 const quizSize = config.get<number>('settings.quiz.size');
 
-export const createRealQuiz = controller<
-  RequestWithBody<CreateRealQuizReq>,
-  ResponseWithBody<CreateQuizRes>
->(async (req, res) => {
+const createRealQuiz = (params: CreateRealQuizReq): Operation[] => {
   const quizList: Operation[] = [];
 
   while (quizList.length < quizSize) {
-    const operation = createOperation(req.body);
+    const operation = createOperation(params);
 
     if (
       !quizList.some(
@@ -36,17 +35,14 @@ export const createRealQuiz = controller<
     }
   }
 
-  return res.status(StatusCode.SuccessOK).send(quizList);
-});
+  return quizList;
+};
 
-export const createPracticeQuiz = controller<
-  RequestWithBody<CreatePracticeQuizReq>,
-  ResponseWithBody<CreateQuizRes>
->(async (req, res) => {
+const createPracticeQuiz = (params: CreatePracticeQuizReq): Operation[] => {
   const quizList: Operation[] = [];
 
   while (quizList.length < 10) {
-    const operation = createPracticeOperation(req.body);
+    const operation = createPracticeOperation(params);
 
     if (
       !quizList.some(
@@ -60,5 +56,17 @@ export const createPracticeQuiz = controller<
     }
   }
 
-  return res.status(StatusCode.SuccessOK).send(quizList);
+  return quizList;
+};
+
+export const createQuiz = controller<
+  RequestWithBody<CreateQuizReq>,
+  ResponseWithBody<CreateQuizRes>
+>(async (req, res) => {
+  switch (req.body.mode) {
+    case QuizMode.Real:
+      return res.status(StatusCode.SuccessOK).send(createRealQuiz(req.body));
+    case QuizMode.Practice:
+      return res.status(StatusCode.SuccessOK).send(createPracticeQuiz(req.body));
+  }
 });

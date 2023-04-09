@@ -1,3 +1,4 @@
+import { QuizMode } from '@mathemon/common/models/api/quizzes';
 import { Operator } from '@mathemon/common/models/operation';
 import { Route, Routes } from 'react-router-dom';
 
@@ -13,7 +14,7 @@ import MultiplicationTable from './pages/MultiplicationTable';
 import MultiplicationTables from './pages/MultiplicationTables';
 import NotFound from './pages/NotFound';
 import Pokedex from './pages/Pokedex';
-import Quiz, { QuizMode } from './pages/Quiz';
+import Quiz from './pages/Quiz';
 import SignIn, { SignInSection } from './pages/SignIn';
 
 const App = () => {

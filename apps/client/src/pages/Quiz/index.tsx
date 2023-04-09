@@ -1,3 +1,9 @@
+import {
+  CreatePracticeQuizReq,
+  CreateQuizRes,
+  CreateRealQuizReq,
+  QuizMode,
+} from '@mathemon/common/models/api/quizzes';
 import { Operator, Score, Solution } from '@mathemon/common/models/operation';
 import { Pokemon } from '@mathemon/common/models/pokemon';
 import { observer } from 'mobx-react-lite';
@@ -5,7 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useBeforeUnload, useParams } from 'react-router-dom';
 
 import { createEvaluation } from '../../api/evaluations';
-import { createPracticeQuiz, createRealQuiz } from '../../api/quizzes';
+import { createQuiz } from '../../api/quizzes';
 import Button from '../../components/Button';
 import Loader from '../../components/Loader';
 import QuizItem, { Item } from '../../components/QuizItem';
@@ -14,17 +20,12 @@ import { useSettingsStore } from '../../hooks/useStore';
 import ResultModal from './ResultModal';
 import styles from './index.module.scss';
 
-export enum QuizMode {
-  Practice = 'practice',
-  Quiz = 'quiz',
-}
-
 interface QuizProps {
   operator: Operator;
   mode?: QuizMode;
 }
 
-const Quiz = observer(({ operator, mode = QuizMode.Quiz }: QuizProps) => {
+const Quiz = observer(({ operator, mode = QuizMode.Real }: QuizProps) => {
   const settingsStore = useSettingsStore();
   const [items, setItems] = useState<Item[]>([]);
   const [evaluation, setEvaluation] = useState<
@@ -37,7 +38,7 @@ const Quiz = observer(({ operator, mode = QuizMode.Quiz }: QuizProps) => {
   let carrying: boolean | undefined;
   let table: number | undefined;
 
-  if (mode === QuizMode.Quiz) {
+  if (mode === QuizMode.Real) {
     const settings = settingsStore.getOperator(operator);
     digits = settings.digits;
     carrying = 'carrying' in settings ? settings.carrying : undefined;
@@ -49,33 +50,39 @@ const Quiz = observer(({ operator, mode = QuizMode.Quiz }: QuizProps) => {
     }
   }
 
-  const init = useCallback(() => {
+  const init = useCallback(async () => {
     setLoading(true);
     setItems([]);
     setEvaluation(undefined);
     setOpen(false);
+    let itemsPromise: Promise<CreateQuizRes>;
     switch (mode) {
       case QuizMode.Practice: {
-        createPracticeQuiz(operator, table!).then((items) => {
-          setItems(
-            items.map((item) => ({
-              solution: { operation: item, value: undefined },
-            })),
-          );
-        });
+        itemsPromise = createQuiz({
+          mode: QuizMode.Practice,
+          operator,
+          operand: table!,
+        } as CreatePracticeQuizReq);
         break;
       }
-      case QuizMode.Quiz: {
-        createRealQuiz(operator, digits!, carrying).then((items) => {
-          setItems(
-            items.map((item) => ({
-              solution: { operation: item, value: undefined },
-            })),
-          );
-        });
+      case QuizMode.Real: {
+        itemsPromise = createQuiz({
+          mode: QuizMode.Real,
+          operator,
+          digits,
+          carrying,
+        } as CreateRealQuizReq);
         break;
       }
     }
+
+    itemsPromise.then((items) => {
+      setItems(
+        items.map((item) => ({
+          solution: { operation: item, value: undefined },
+        })),
+      );
+    });
 
     setLoading(false);
   }, [mode, operator, digits, carrying, table]);

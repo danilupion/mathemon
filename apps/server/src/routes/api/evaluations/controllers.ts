@@ -65,10 +65,7 @@ export const createEvaluation = controller<
       pokedex = new PokedexModel({ user: req.jwtUser.id });
     }
 
-    const pokedexEntry = pokedex.pokemons.has(pokemon.number.toString())
-      ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        pokedex.pokemons.get(pokemon.number.toString())!
-      : { count: 0 };
+    const pokedexEntry = pokedex.pokemons.get(pokemon.number.toString()) || { count: 0 };
 
     if (success) {
       pokedexEntry.count += 1;
