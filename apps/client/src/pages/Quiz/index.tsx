@@ -1,6 +1,5 @@
 import {
   CreatePracticeQuizReq,
-  CreateQuizRes,
   CreateRealQuizReq,
   QuizMode,
 } from '@mathemon/common/models/api/quizzes';
@@ -50,33 +49,33 @@ const Quiz = observer(({ operator, mode = QuizMode.Real }: QuizProps) => {
     }
   }
 
+  const createQuizReq = useCallback(() => {
+    switch (mode) {
+      case QuizMode.Practice: {
+        return {
+          mode,
+          operator,
+          operand: table!,
+        } as CreatePracticeQuizReq;
+      }
+      case QuizMode.Real: {
+        return {
+          mode,
+          operator,
+          digits,
+          carrying,
+        } as CreateRealQuizReq;
+      }
+    }
+  }, [mode, operator, digits, carrying, table]);
+
   const init = useCallback(async () => {
     setLoading(true);
     setItems([]);
     setEvaluation(undefined);
     setOpen(false);
-    let itemsPromise: Promise<CreateQuizRes>;
-    switch (mode) {
-      case QuizMode.Practice: {
-        itemsPromise = createQuiz({
-          mode: QuizMode.Practice,
-          operator,
-          operand: table!,
-        } as CreatePracticeQuizReq);
-        break;
-      }
-      case QuizMode.Real: {
-        itemsPromise = createQuiz({
-          mode: QuizMode.Real,
-          operator,
-          digits,
-          carrying,
-        } as CreateRealQuizReq);
-        break;
-      }
-    }
 
-    itemsPromise.then((items) => {
+    createQuiz(createQuizReq()).then((items) => {
       setItems(
         items.map((item) => ({
           solution: { operation: item, value: undefined },
@@ -85,7 +84,7 @@ const Quiz = observer(({ operator, mode = QuizMode.Real }: QuizProps) => {
     });
 
     setLoading(false);
-  }, [mode, operator, digits, carrying, table]);
+  }, [createQuizReq]);
 
   useBeforeUnload((e) => {
     if (!evaluation) {
@@ -95,7 +94,7 @@ const Quiz = observer(({ operator, mode = QuizMode.Real }: QuizProps) => {
   });
 
   useEffect(() => {
-    init();
+    init().catch((e) => console.error(e));
   }, [init]);
 
   const handleSetValue = useCallback(
@@ -116,7 +115,10 @@ const Quiz = observer(({ operator, mode = QuizMode.Real }: QuizProps) => {
   );
 
   const handleReview = useCallback(async () => {
-    const result = await createEvaluation(items.map((item) => item.solution as Solution));
+    const result = await createEvaluation({
+      quiz: createQuizReq(),
+      solutions: items.map((item) => item.solution as Solution),
+    });
 
     setItems(result.evaluations);
     setEvaluation({
@@ -125,14 +127,14 @@ const Quiz = observer(({ operator, mode = QuizMode.Real }: QuizProps) => {
       reward: result.reward,
     });
     setOpen(true);
-  }, [items]);
+  }, [createQuizReq, items]);
 
   const handleCloseResultModal = useCallback(() => {
     setOpen(false);
   }, [setOpen]);
 
   const retry = useCallback(() => {
-    init();
+    init().catch((e) => console.error(e));
   }, [init]);
 
   if (loading) {

@@ -24,14 +24,14 @@ export const createEvaluation = controller<
   RequestWithBody<CreateEvaluationReq, RequestWithFields<JwtData>>,
   ResponseWithBody<CreateEvaluationRes>
 >(async (req, res) => {
-  const operator = req.body[0].operation.operator;
-  const evaluations = req.body.map((solution) => ({
+  const operator = req.body.quiz.operator;
+  const evaluations = req.body.solutions.map((solution) => ({
     solution,
     correct: isCorrect(solution),
   }));
 
   const correct = evaluations.filter((e) => e.correct).length;
-  const success = correct === req.body.length;
+  const success = correct === req.body.solutions.length;
 
   const pokemon =
     (await PokemonModel.findById(
