@@ -82,6 +82,6 @@ export const createEvaluation = controller<
       correct,
     },
     success,
-    reward: pokemon.normalize(),
+    reward: pokemon.toJSON(),
   });
 });

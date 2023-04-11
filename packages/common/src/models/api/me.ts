@@ -1,7 +1,6 @@
 import { PaginatedResponse } from '@mathemon/turbo-common/api/pagination.js';
 
-import { Operator } from '../operation.js';
-import { Pokemon, PokemonType } from '../pokemon.js';
+import { PokedexPokemon } from '../pokemon.js';
 
 export type PokedexFilterQuery = {
   search?: string;
@@ -13,13 +12,11 @@ export type PokedexMeta = {
   captured: number;
 };
 
-export type PokemonRes = Omit<Pokemon, 'types'> & {
-  types: (PokemonType | '???')[];
-  operator: Operator;
+export type PokedexPokemonRes = PokedexPokemon & {
   count: number;
 };
 
-export type GetPokedexRes = PaginatedResponse<PokemonRes, PokedexMeta>;
+export type GetPokedexRes = PaginatedResponse<PokedexPokemonRes, PokedexMeta>;
 
 export type AccountRes = {
   username: string;

@@ -1,4 +1,5 @@
 import { WithTimestamps } from './common/timestamps.js';
+import { Operator } from './operation.js';
 
 export enum PokemonType {
   Grass = 'grass',
@@ -32,3 +33,22 @@ export interface Pokemon extends WithTimestamps {
   abilities: string[];
   moves: string[];
 }
+
+export interface PokedexCapturedPokemon extends Pokemon {
+  operator: Operator;
+  difficultyLevel: number;
+}
+
+export interface PokedexFoundPokemon
+  extends Omit<PokedexCapturedPokemon, 'habitat' | 'types' | 'abilities' | 'moves'> {
+  habitat: undefined;
+  types: undefined;
+  abilities: undefined;
+  moves: undefined;
+}
+
+export interface PokedexUnknownPokemon extends Omit<PokedexFoundPokemon, 'name'> {
+  name: undefined;
+}
+
+export type PokedexPokemon = PokedexUnknownPokemon | PokedexFoundPokemon | PokedexCapturedPokemon;

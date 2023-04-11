@@ -12,9 +12,17 @@ import config from 'config';
 import Pokedex, { PokedexDocument } from '../../../../models/pokedex.js';
 import PokemonModel from '../../../../models/pokemon.js';
 import { UserDocument } from '../../../../models/user.js';
-import { getOperatorForType } from '../../../../utils/pokemon.js';
 
 const pageSize = config.get<number>('settings.pokedex.pageSize');
+
+const buildPokemonQuery = (pokedexPokemons: PokedexDocument['pokemons'], search?: string) => {
+  return search
+    ? PokemonModel.find({
+        name: { $regex: search, $options: 'i' },
+        number: { $in: [...pokedexPokemons.keys()] },
+      })
+    : PokemonModel.inUsedGenerations();
+};
 
 export const getPokedex = controller<
   RequestMaybeWithQuery<PageQuery & PokedexFilterQuery, RequestWithFields<UserData<UserDocument>>>,
@@ -22,37 +30,33 @@ export const getPokedex = controller<
 >(async (req, res) => {
   const pokedex = await Pokedex.findOne({ user: req.user._id });
 
-  const pokedexPokemons =
-    pokedex && pokedex.pokemons ? pokedex.pokemons : (new Map() as PokedexDocument['pokemons']);
+  const pokedexPokemons = pokedex && pokedex.pokemons ? pokedex.pokemons : new Map();
 
-  const pokemonsQuery = req.query.search
-    ? PokemonModel.find({
-        name: { $regex: req.query.search, $options: 'i' },
-        number: { $in: [...pokedexPokemons.keys()] },
-      })
-    : PokemonModel.inUsedGenerations();
+  const page = req.query.page !== undefined ? req.query.page - 1 : 0;
 
-  const pokemons = await pokemonsQuery
-    .sort({ number: 1 })
-    .limit(pageSize)
-    .skip((req.query.page !== undefined ? req.query.page - 1 : 0) * pageSize);
+  const [pokemons, total] = await Promise.all([
+    buildPokemonQuery(pokedexPokemons, req.query.search)
+      .sort({ number: 1 })
+      .limit(pageSize)
+      .skip(page * pageSize),
+    PokemonModel.inUsedGenerations().countDocuments(),
+  ]);
 
   return res.status(StatusCode.SuccessOK).send({
     data: pokemons.map((pokemon) => {
       return pokedexPokemons.has(pokemon.number.toString())
         ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           pokedexPokemons.get(pokemon.number.toString())!.count === 0
-          ? { ...pokemon.toFound(), count: 0 }
+          ? { ...pokemon.toPokedexFound(), count: 0 }
           : {
-              ...pokemon.toJSON(),
-              operator: getOperatorForType(pokemon.types[0]),
+              ...pokemon.toPokedexCaptured(),
               // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               count: pokedexPokemons.get(pokemon.number.toString())!.count,
             }
-        : { ...pokemon.toUnknown(), count: 0 };
+        : { ...pokemon.toPokedexUnknown(), count: 0 };
     }),
     meta: {
-      total: await PokemonModel.inUsedGenerations().countDocuments().exec(),
+      total,
       found: pokedexPokemons.size,
       captured: Array.from(pokedexPokemons.entries()).filter(([, { count }]) => count).length,
     },

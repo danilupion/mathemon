@@ -70,11 +70,11 @@ const battleMiddleware = async (
 
   socket.emit(ServerToClientEvents.Initialization, {
     user: {
-      pokemon: userPokemon.normalize(),
+      pokemon: userPokemon.toJSON(),
       health: userHealth,
     },
     opponent: {
-      pokemon: opponentPokemon.normalize(),
+      pokemon: opponentPokemon.toJSON(),
       health: opponentHealth,
     },
   });

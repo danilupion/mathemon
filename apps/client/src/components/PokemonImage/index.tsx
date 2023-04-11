@@ -1,6 +1,6 @@
 type WithNumberAndName = {
   number: number;
-  name: string;
+  name: undefined | string;
 };
 
 export enum PokemonImageType {

@@ -1,5 +1,10 @@
-import { Operator } from '@mathemon/common/models/operation.js';
-import { Pokemon, PokemonType } from '@mathemon/common/models/pokemon.js';
+import {
+  PokedexCapturedPokemon,
+  PokedexFoundPokemon,
+  PokedexUnknownPokemon,
+  Pokemon,
+  PokemonType,
+} from '@mathemon/common/models/pokemon.js';
 import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
 import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
 import config from 'config';
@@ -9,12 +14,10 @@ import { getOperatorForType } from '../utils/pokemon.js';
 
 const pokemonGenerations = config.get<number[]>('settings.pokemon.generations');
 
-type PokemonWithOperator = Pokemon & { operator: Operator };
-
 export interface PokemonDocument extends Document, Omit<Pokemon, 'id'> {
-  toUnknown(): PokemonWithOperator;
-  toFound(): PokemonWithOperator;
-  normalize(): Pokemon;
+  toPokedexUnknown(): PokedexUnknownPokemon;
+  toPokedexFound(): PokedexFoundPokemon;
+  toPokedexCaptured(): PokedexCapturedPokemon;
 }
 
 const pokemonSchema = new Schema(
@@ -74,25 +77,28 @@ const pokemonSchema = new Schema(
 )
   .plugin(timestamps)
   .plugin(normalizeJson)
-  .method('toFound', function () {
+  .method('toPokedexCaptured', function (): PokedexCapturedPokemon {
+    const operator = getOperatorForType(this.types[0]);
+
     return {
       ...this.toJSON(),
-      habitat: '???',
-      types: ['???'],
-      abilities: ['???'],
-      moves: ['???'],
-      operator: getOperatorForType(this.types[0]),
+      operator,
     };
   })
-  .method('toUnknown', function () {
+  .method('toPokedexFound', function (): PokedexFoundPokemon {
     return {
-      ...this.toFound(),
-      name: '???',
+      ...this.toPokedexCaptured(),
+      habitat: undefined,
+      types: undefined,
+      abilities: undefined,
+      moves: undefined,
     };
   })
-  .method('normalize', function () {
-    const { _id, __v, ...rest } = this.toJSON();
-    return { id: _id, ...rest } as Pokemon;
+  .method('toPokedexUnknown', function (): PokedexUnknownPokemon {
+    return {
+      ...this.toPokedexFound(),
+      name: undefined,
+    };
   })
   .static('inUsedGenerations', function () {
     return this.find({ generation: pokemonGenerations });
