@@ -26,7 +26,7 @@ const PokemonCard = ({ pokemon }: PokemonCardProps) => {
     >
       <div className={styles.id}>#{pokemon.number}</div>
       {pokemon.count > 0 && <div className={styles.count}>x{pokemon.count}</div>}
-      <div className={styles.level}>Lv{pokemon.evolutionLevel}</div>
+      <div className={styles.level}>Lv{pokemon.difficultyLevel}</div>
       <div className={styles.image}>
         <PokemonImage
           pokemon={pokemon}

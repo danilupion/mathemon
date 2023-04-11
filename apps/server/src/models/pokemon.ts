@@ -10,7 +10,7 @@ import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js
 import config from 'config';
 import { Document, Model, QueryWithHelpers, Schema, model } from 'mongoose';
 
-import { getOperatorForType } from '../utils/pokemon.js';
+import { getDifficulty, getOperator } from '../utils/pokemon.js';
 
 const pokemonGenerations = config.get<number[]>('settings.pokemon.generations');
 
@@ -78,11 +78,13 @@ const pokemonSchema = new Schema(
   .plugin(timestamps)
   .plugin(normalizeJson)
   .method('toPokedexCaptured', function (): PokedexCapturedPokemon {
-    const operator = getOperatorForType(this.types[0]);
+    const operator = getOperator(this);
+    const difficultyLevel = getDifficulty(this);
 
     return {
       ...this.toJSON(),
       operator,
+      difficultyLevel,
     };
   })
   .method('toPokedexFound', function (): PokedexFoundPokemon {

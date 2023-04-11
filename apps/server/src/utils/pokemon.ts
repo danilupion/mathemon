@@ -1,5 +1,5 @@
 import { Operator } from '@mathemon/common/models/operation.js';
-import { PokemonType } from '@mathemon/common/models/pokemon.js';
+import { Pokemon, PokemonType } from '@mathemon/common/models/pokemon.js';
 
 const typeToOperatorMap: { [key in PokemonType]: Operator } = {
   [PokemonType.Grass]: Operator.addition,
@@ -32,7 +32,19 @@ const operatorToTypeMap: { [key in Operator]: [PokemonType] } = Object.entries(
   {} as { [key in Operator]: [PokemonType] },
 );
 
-export const getOperatorForType = (type: PokemonType): Operator => typeToOperatorMap[type];
-
 export const getTypesForOperator = (operator: Operator): [PokemonType] =>
   operatorToTypeMap[operator];
+
+export const getOperator = (pokemon: Pokemon): Operator => typeToOperatorMap[pokemon.types[0]];
+
+export const getDifficulty = (pokemon: Pokemon): number => {
+  switch (getOperator(pokemon)) {
+    case Operator.addition:
+    case Operator.subtraction:
+      return ((pokemon.number - 1) % 6) + 1; // up to 3 digits with and without carrying
+    case Operator.multiplication:
+      return ((pokemon.number - 1) % 4) + 1; // up to 3 digits with practice mode
+    case Operator.division:
+      return ((pokemon.number - 1) % 3) + 1; // up to 3 digits
+  }
+};
