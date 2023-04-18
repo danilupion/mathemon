@@ -1,7 +1,7 @@
 import Method from '@mathemon/turbo-common/http/method.js';
 import { ValidationError as MappedValidationError } from '@mathemon/turbo-common/rest/error.js';
 import { Handler, NextFunction, Router } from 'express';
-import { ValidationChain, validationResult } from 'express-validator';
+import { FieldValidationError, ValidationChain, validationResult } from 'express-validator';
 import { ValidationError } from 'express-validator/src/base.js';
 import { MongoServerError } from 'mongodb';
 
@@ -19,32 +19,26 @@ type CustomValidationError = {
   message: string;
 };
 
-const flattenNestedErrors = (errors: ValidationError[]): ValidationError[] => {
-  const flattenedErrors: ValidationError[] = [];
-
-  for (const error of errors) {
-    if (error.nestedErrors) {
-      flattenedErrors.push(...flattenNestedErrors(error.nestedErrors as ValidationError[]));
-    } else {
-      flattenedErrors.push(error);
-    }
+const extractFieldValidationErrors = (error: ValidationError): FieldValidationError[] => {
+  if (error.type === 'field') {
+    return [error];
+  } else if (error.type === 'alternative' || error.type === 'alternative_grouped') {
+    return error.nestedErrors.flat().flatMap(extractFieldValidationErrors);
+  } else {
+    // You can handle 'unknown_fields' errors here if necessary
+    return [];
   }
-
-  return flattenedErrors;
 };
 
 const errorNormalizer = (
   error: ValidationError,
 ): CustomValidationError | CustomValidationError[] => {
-  if (error.nestedErrors) {
-    return flattenNestedErrors(error.nestedErrors as ValidationError[]).map(
-      errorNormalizer,
-    ) as CustomValidationError[];
-  }
-  return {
-    field: error.param,
-    message: error.msg,
-  };
+  const fieldErrors = extractFieldValidationErrors(error);
+
+  return fieldErrors.map((fieldError) => ({
+    field: fieldError.path,
+    message: fieldError.msg,
+  }));
 };
 
 const validationErrors = validationResult.withDefaults({
