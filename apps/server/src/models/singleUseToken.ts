@@ -1,7 +1,7 @@
 import { randomBytes } from 'crypto';
 
-import owner from '@mathemon/turbo-server/middleware/mongoose/owner.js';
-import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
+import owner from '@danilupion/turbo-server/middleware/mongoose/owner.js';
+import timestamps from '@danilupion/turbo-server/middleware/mongoose/timestamps.js';
 import config from 'config';
 import { Document, ObjectId, Schema, model } from 'mongoose';
 

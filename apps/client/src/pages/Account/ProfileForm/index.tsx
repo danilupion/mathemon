@@ -1,5 +1,5 @@
+import { email } from '@danilupion/turbo-client/regex';
 import { AccountRes } from '@mathemon/common/models/api/me';
-import { email } from '@mathemon/turbo-client/regex';
 import { useCallback, useEffect, useState } from 'react';
 
 import { getAccount, updateAccount } from '../../../api/me';

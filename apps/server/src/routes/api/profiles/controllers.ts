@@ -1,11 +1,11 @@
-import { CreateProfileReq, CreateProfileRes } from '@mathemon/common/models/api/profiles.js';
-import { sendEmail } from '@mathemon/turbo-server/helpers/email.js';
+import { sendEmail } from '@danilupion/turbo-server/helpers/email.js';
 import controller, {
   RequestWithBody,
   ResponseWithBody,
-} from '@mathemon/turbo-server/helpers/express/controller.js';
-import { ClientErrorConflict } from '@mathemon/turbo-server/helpers/httpError.js';
-import { StatusCode } from '@mathemon/turbo-server/http.js';
+} from '@danilupion/turbo-server/helpers/express/controller.js';
+import { ClientErrorConflict } from '@danilupion/turbo-server/helpers/httpError.js';
+import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { CreateProfileReq, CreateProfileRes } from '@mathemon/common/models/api/profiles.js';
 import config from 'config';
 
 import SingleUseTokenModel, { SingleUseTokenType } from '../../../models/singleUseToken.js';

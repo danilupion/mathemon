@@ -29,7 +29,7 @@
     "prettify": "prettier --write  \"./src/**/*.{ts,json}\""
   },
   "dependencies": {
-    "@mathemon/turbo-common": "1.0.0"
+    "@danilupion/turbo-common": "1.0.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",

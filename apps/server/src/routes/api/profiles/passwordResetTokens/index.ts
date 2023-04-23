@@ -1,4 +1,4 @@
-import { postRoute, putRoute } from '@mathemon/turbo-server/helpers/express/route.js';
+import { postRoute, putRoute } from '@danilupion/turbo-server/helpers/express/route.js';
 import { Router } from 'express';
 
 import { changePassword, createPasswordToken } from './controllers.js';

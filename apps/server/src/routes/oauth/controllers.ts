@@ -1,9 +1,9 @@
 import controller, {
   RequestWithFields,
-} from '@mathemon/turbo-server/helpers/express/controller.js';
-import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
-import { generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
-import { OauthProfile } from '@mathemon/turbo-server/middleware/express/oauth/index.js';
+} from '@danilupion/turbo-server/helpers/express/controller.js';
+import { ClientErrorUnauthorized } from '@danilupion/turbo-server/helpers/httpError.js';
+import { generateToken } from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
+import { OauthProfile } from '@danilupion/turbo-server/middleware/express/oauth/index.js';
 
 import UserModel, { UserDocument } from '../../models/user.js';
 import { getTokenPayload } from '../../utils/auth.js';

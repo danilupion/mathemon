@@ -1,5 +1,5 @@
+import { postRequest } from '@danilupion/turbo-client/rest/request';
 import { CreateEvaluationReq, CreateEvaluationRes } from '@mathemon/common/models/api/evaluations';
-import { postRequest } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/evaluations';
 

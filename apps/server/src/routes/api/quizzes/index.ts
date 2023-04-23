@@ -1,4 +1,4 @@
-import { postRoute } from '@mathemon/turbo-server/helpers/express/route.js';
+import { postRoute } from '@danilupion/turbo-server/helpers/express/route.js';
 import { Router } from 'express';
 
 import { createQuiz } from './controllers.js';

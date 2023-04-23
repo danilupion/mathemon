@@ -1,4 +1,4 @@
-import { Jwt } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
+import { Jwt } from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
 
 import UserModel from '../../../models/user.js';
 

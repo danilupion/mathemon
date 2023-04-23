@@ -1,4 +1,4 @@
-import { email } from '@mathemon/turbo-client/regex';
+import { email } from '@danilupion/turbo-client/regex';
 import { useCallback, useState } from 'react';
 
 import { createPasswordResetToken } from '../../../api/profiles';

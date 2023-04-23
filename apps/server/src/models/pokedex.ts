@@ -1,6 +1,6 @@
-import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
-import owner from '@mathemon/turbo-server/middleware/mongoose/owner.js';
-import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
+import normalizeJson from '@danilupion/turbo-server/middleware/mongoose/normalizeJson.js';
+import owner from '@danilupion/turbo-server/middleware/mongoose/owner.js';
+import timestamps from '@danilupion/turbo-server/middleware/mongoose/timestamps.js';
 import { Document, Schema, model } from 'mongoose';
 
 export type PokedexDocument = Document & {

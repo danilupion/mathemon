@@ -1,4 +1,4 @@
-import { StatusCode } from '@mathemon/turbo-server/http.js';
+import { StatusCode } from '@danilupion/turbo-server/http.js';
 import { Router } from 'express';
 
 import facebook from './facebook/index.js';

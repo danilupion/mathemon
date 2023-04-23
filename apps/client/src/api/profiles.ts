@@ -1,14 +1,14 @@
 import {
+  postRequest,
+  responselessPostRequest,
+  responselessPutRequest,
+} from '@danilupion/turbo-client/rest/request';
+import {
   ChangePasswordReq,
   CreatePasswordResetTokenReq,
   CreateProfileReq,
   CreateProfileRes,
 } from '@mathemon/common/models/api/profiles';
-import {
-  postRequest,
-  responselessPostRequest,
-  responselessPutRequest,
-} from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/profiles';
 

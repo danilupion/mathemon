@@ -1,7 +1,7 @@
 import { Server as HttpServer } from 'http';
 
-import jwtAuthSocket from '@mathemon/turbo-server/middleware/socket.io/auth/jwt.js';
-import wrap from '@mathemon/turbo-server/middleware/socket.io/wrap.js';
+import jwtAuthSocket from '@danilupion/turbo-server/middleware/socket.io/auth/jwt.js';
+import wrap from '@danilupion/turbo-server/middleware/socket.io/wrap.js';
 import { Server } from 'socket.io';
 
 import userMiddleware from '../middlewares/user.js';

@@ -1,4 +1,4 @@
-import { email, password } from '@mathemon/turbo-client/regex';
+import { email, password } from '@danilupion/turbo-client/regex';
 import { useCallback, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 

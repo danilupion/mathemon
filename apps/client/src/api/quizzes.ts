@@ -1,6 +1,6 @@
+import { postRequest } from '@danilupion/turbo-client/rest/request';
 import { CreateQuizRes } from '@mathemon/common/models/api/quizzes';
 import { CreateQuizReq } from '@mathemon/common/models/api/quizzes';
-import { postRequest } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/quizzes';
 

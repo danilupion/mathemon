@@ -1,4 +1,4 @@
-import { initialize } from '@mathemon/turbo-client/analytics/google';
+import { initialize } from '@danilupion/turbo-client/analytics/google';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';

@@ -1,5 +1,5 @@
-import { postRoute, putRoute } from '@mathemon/turbo-server/helpers/express/route.js';
-import jwt from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
+import { postRoute, putRoute } from '@danilupion/turbo-server/helpers/express/route.js';
+import jwt from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
 import { Router } from 'express';
 
 import { createToken, renewToken } from './controllers.js';

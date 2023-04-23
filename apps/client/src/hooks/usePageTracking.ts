@@ -1,4 +1,4 @@
-import { pageview } from '@mathemon/turbo-client/analytics/google';
+import { pageview } from '@danilupion/turbo-client/analytics/google';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 

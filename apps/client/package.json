@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@mathemon/common": "1.0.0",
-    "@mathemon/turbo-client": "1.0.0",
+    "@danilupion/turbo-client": "1.0.0",
     "classnames": "^2.3.1",
     "formik": "^2.2.9",
     "lodash": "^4.17.21",

@@ -1,4 +1,4 @@
-import { sendEmail } from '@mathemon/turbo-server/helpers/email.js';
+import { sendEmail } from '@danilupion/turbo-server/helpers/email.js';
 import chalk from 'chalk';
 import { BuilderCallback } from 'yargs';
 

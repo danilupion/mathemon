@@ -1,5 +1,5 @@
-import { getRoute, patchRoute } from '@mathemon/turbo-server/helpers/express/route.js';
-import jwtAuth from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
+import { getRoute, patchRoute } from '@danilupion/turbo-server/helpers/express/route.js';
+import jwtAuth from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
 import { Router } from 'express';
 
 import userMiddleware from '../../../../middlewares/user.js';

@@ -1,5 +1,5 @@
+import { localStorage } from '@danilupion/turbo-client/storage/index';
 import { Operator } from '@mathemon/common/models/operation';
-import { localStorage } from '@mathemon/turbo-client/storage/index';
 import { action, computed, makeAutoObservable } from 'mobx';
 
 export enum InputDirection {

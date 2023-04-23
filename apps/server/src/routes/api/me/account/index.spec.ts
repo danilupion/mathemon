@@ -1,5 +1,5 @@
-import { Method } from '@mathemon/turbo-server/http.js';
-import routes from '@mathemon/turbo-server/test-utils/routes.js';
+import { Method } from '@danilupion/turbo-server/http.js';
+import routes from '@danilupion/turbo-server/test-utils/routes.js';
 
 import router from './index.js';
 

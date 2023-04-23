@@ -1,4 +1,4 @@
-import { PaginatedResponse } from '@mathemon/turbo-common/api/pagination.js';
+import { PaginatedResponse } from '@danilupion/turbo-common/api/pagination.js';
 
 import { PokedexPokemon } from '../pokemon.js';
 

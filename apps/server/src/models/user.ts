@@ -1,11 +1,11 @@
-import { User, UserRole } from '@mathemon/common/models/user.js';
-import email from '@mathemon/turbo-server/middleware/mongoose/email.js';
-import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
+import email from '@danilupion/turbo-server/middleware/mongoose/email.js';
+import normalizeJson from '@danilupion/turbo-server/middleware/mongoose/normalizeJson.js';
 import oauthProfile, {
   WithOauthProfile,
-} from '@mathemon/turbo-server/middleware/mongoose/oauthProfile.js';
-import password, { WithPassword } from '@mathemon/turbo-server/middleware/mongoose/password.js';
-import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
+} from '@danilupion/turbo-server/middleware/mongoose/oauthProfile.js';
+import password, { WithPassword } from '@danilupion/turbo-server/middleware/mongoose/password.js';
+import timestamps from '@danilupion/turbo-server/middleware/mongoose/timestamps.js';
+import { User, UserRole } from '@mathemon/common/models/user.js';
 import { Document, Schema, model } from 'mongoose';
 
 export type UserDocument = Document &

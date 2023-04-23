@@ -3,7 +3,6 @@
 yarn;
 yarn clean:build;
 
-yarn build:turbo;
 yarn build:libs;
 yarn build:apps;
 

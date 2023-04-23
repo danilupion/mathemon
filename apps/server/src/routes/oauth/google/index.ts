@@ -1,5 +1,7 @@
-import { getRoute } from '@mathemon/turbo-server/helpers/express/route.js';
-import googleOauthMiddleware from '@mathemon/turbo-server/middleware/express/oauth/google.js';
+import { getRoute } from '@danilupion/turbo-server/helpers/express/route.js';
+import googleOauthMiddleware, {
+  GoogleProfile,
+} from '@danilupion/turbo-server/middleware/express/oauth/google.js';
 import config from 'config';
 import { Router } from 'express';
 
@@ -13,7 +15,7 @@ const url = config.get<string>('url');
 
 initialize({
   callbackURL: `${url}/oauth/google/callback`,
-  userFromProfile: userFromProfile(
+  userFromProfile: userFromProfile<GoogleProfile>(
     'google',
     (profile) => profile.emails && profile.emails.find((email) => email.verified)?.value,
   ),

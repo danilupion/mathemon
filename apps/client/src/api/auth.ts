@@ -1,5 +1,5 @@
+import { bodilessPutRequest, postRequest } from '@danilupion/turbo-client/rest/request';
 import { CreateTokenReq, CreateTokenRes } from '@mathemon/common/models/api/auth';
-import { bodilessPutRequest, postRequest } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/auth/tokens';
 

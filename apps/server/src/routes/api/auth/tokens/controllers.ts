@@ -1,12 +1,12 @@
-import { CreateTokenReq, CreateTokenRes } from '@mathemon/common/models/api/auth.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
   ResponseWithBody,
-} from '@mathemon/turbo-server/helpers/express/controller.js';
-import { ClientErrorUnauthorized } from '@mathemon/turbo-server/helpers/httpError.js';
-import { StatusCode } from '@mathemon/turbo-server/http.js';
-import { JwtData, generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
+} from '@danilupion/turbo-server/helpers/express/controller.js';
+import { ClientErrorUnauthorized } from '@danilupion/turbo-server/helpers/httpError.js';
+import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { JwtData, generateToken } from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
+import { CreateTokenReq, CreateTokenRes } from '@mathemon/common/models/api/auth.js';
 
 import UserModel from '../../../../models/user.js';
 import { getTokenPayload } from '../../../../utils/auth.js';

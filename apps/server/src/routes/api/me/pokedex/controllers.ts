@@ -1,12 +1,12 @@
-import { GetPokedexRes, PokedexFilterQuery } from '@mathemon/common/models/api/me.js';
-import { PageQuery } from '@mathemon/turbo-server/api/pagination.js';
+import { PageQuery } from '@danilupion/turbo-server/api/pagination.js';
 import controller, {
   RequestMaybeWithQuery,
   RequestWithFields,
   ResponseWithBody,
-} from '@mathemon/turbo-server/helpers/express/controller.js';
-import { StatusCode } from '@mathemon/turbo-server/http.js';
-import { UserData } from '@mathemon/turbo-server/middleware/express/auth/user.js';
+} from '@danilupion/turbo-server/helpers/express/controller.js';
+import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { UserData } from '@danilupion/turbo-server/middleware/express/auth/user.js';
+import { GetPokedexRes, PokedexFilterQuery } from '@mathemon/common/models/api/me.js';
 import config from 'config';
 
 import Pokedex, { PokedexDocument } from '../../../../models/pokedex.js';

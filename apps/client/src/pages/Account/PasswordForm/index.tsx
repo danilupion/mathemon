@@ -1,4 +1,4 @@
-import { password } from '@mathemon/turbo-client/regex';
+import { password } from '@danilupion/turbo-client/regex';
 import { useCallback, useState } from 'react';
 
 import { updatePassword } from '../../../api/me';

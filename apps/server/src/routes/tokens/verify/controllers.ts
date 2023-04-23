@@ -1,6 +1,6 @@
 import controller, {
   RequestWithParams,
-} from '@mathemon/turbo-server/helpers/express/controller.js';
+} from '@danilupion/turbo-server/helpers/express/controller.js';
 import config from 'config';
 
 import SingleUseTokenModel, { SingleUseTokenType } from '../../../models/singleUseToken.js';

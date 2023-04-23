@@ -146,7 +146,7 @@ export default {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: '@mathemon/turbo-server/test-utils/NodeEnvironmentWithMongo',
+  testEnvironment: '@danilupion/turbo-server/test-utils/NodeEnvironmentWithMongo',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},
@@ -182,6 +182,7 @@ export default {
   //   "/node_modules/",
   //   "\\.pnp\\.[^\\/]+$"
   // ],
+  transformIgnorePatterns: ['<rootDir>/node_modules/(?!@danilupion/turbo-server)'],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
   // unmockedModulePathPatterns: undefined,

@@ -1,12 +1,12 @@
-import { UserRole } from '@mathemon/common/models/user.js';
 import {
   connectMongoose,
   disconnectMongoose,
-} from '@mathemon/turbo-server/helpers/mongoose/connection.js';
-import { Method, StatusCode } from '@mathemon/turbo-server/http.js';
-import { generateToken } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
-import routes from '@mathemon/turbo-server/test-utils/routes.js';
-import server from '@mathemon/turbo-server/test-utils/server.js';
+} from '@danilupion/turbo-server/helpers/mongoose/connection.js';
+import { Method, StatusCode } from '@danilupion/turbo-server/http.js';
+import { generateToken } from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
+import routes from '@danilupion/turbo-server/test-utils/routes.js';
+import server from '@danilupion/turbo-server/test-utils/server.js';
+import { UserRole } from '@mathemon/common/models/user.js';
 import jwtDecode from 'jwt-decode';
 
 import UserModel from '../../../../models/user.js';

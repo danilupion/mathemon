@@ -1,5 +1,5 @@
-import { Jwt } from '@mathemon/turbo-server/middleware/express/auth/jwt.js';
-import user from '@mathemon/turbo-server/middleware/express/auth/user.js';
+import { Jwt } from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
+import user from '@danilupion/turbo-server/middleware/express/auth/user.js';
 
 import UserModel from '../models/user.js';
 

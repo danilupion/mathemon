@@ -1,11 +1,11 @@
+import { PageQuery } from '@danilupion/turbo-client/api/pagination';
+import { getRequest, patchRequest, urlWithQuery } from '@danilupion/turbo-client/rest/request';
 import {
   AccountRes,
   GetPokedexRes,
   PatchAccountReq,
   PokedexFilterQuery,
 } from '@mathemon/common/models/api/me';
-import { PageQuery } from '@mathemon/turbo-client/api/pagination';
-import { getRequest, patchRequest, urlWithQuery } from '@mathemon/turbo-client/rest/request';
 
 const basePath = '/api/me';
 

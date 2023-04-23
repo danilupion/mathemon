@@ -21,9 +21,9 @@
     "command": "ts-node --esm --project tsconfig.json ./src/commands/index.ts"
   },
   "dependencies": {
+    "@danilupion/turbo-server": "^1.0.5",
     "@mathemon/common": "1.0.0",
     "@mathemon/poke-api": "1.0.0",
-    "@mathemon/turbo-server": "1.0.0",
     "chalk": "^5.2.0",
     "config": "^3.3.8",
     "express": "^4.18.2",

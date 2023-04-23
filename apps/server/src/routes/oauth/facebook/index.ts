@@ -1,5 +1,7 @@
-import { getRoute } from '@mathemon/turbo-server/helpers/express/route.js';
-import facebookOauthMiddleware from '@mathemon/turbo-server/middleware/express/oauth/facebook.js';
+import { getRoute } from '@danilupion/turbo-server/helpers/express/route.js';
+import facebookOauthMiddleware, {
+  FacebookProfile,
+} from '@danilupion/turbo-server/middleware/express/oauth/facebook.js';
 import config from 'config';
 import { Router } from 'express';
 
@@ -13,7 +15,7 @@ const url = config.get<string>('url');
 
 initialize({
   callbackURL: `${url}/oauth/facebook/callback`,
-  userFromProfile: userFromProfile(
+  userFromProfile: userFromProfile<FacebookProfile>(
     'facebook',
     (profile) => profile.emails && profile.emails[0] && profile.emails[0].value,
   ),

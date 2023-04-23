@@ -1,12 +1,12 @@
-import { AccountRes, PatchAccountReq } from '@mathemon/common/models/api/me.js';
 import controller, {
   RequestWithBody,
   RequestWithFields,
   ResponseWithBody,
-} from '@mathemon/turbo-server/helpers/express/controller.js';
-import { ClientErrorConflict } from '@mathemon/turbo-server/helpers/httpError.js';
-import { StatusCode } from '@mathemon/turbo-server/http.js';
-import { UserData } from '@mathemon/turbo-server/middleware/express/auth/user.js';
+} from '@danilupion/turbo-server/helpers/express/controller.js';
+import { ClientErrorConflict } from '@danilupion/turbo-server/helpers/httpError.js';
+import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { UserData } from '@danilupion/turbo-server/middleware/express/auth/user.js';
+import { AccountRes, PatchAccountReq } from '@mathemon/common/models/api/me.js';
 
 import UserModel, { UserDocument } from '../../../../models/user.js';
 

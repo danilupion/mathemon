@@ -1,7 +1,7 @@
 import {
   connectMongoose,
   disconnectMongoose,
-} from '@mathemon/turbo-server/helpers/mongoose/connection.js';
+} from '@danilupion/turbo-server/helpers/mongoose/connection.js';
 import chalk from 'chalk';
 import { BuilderCallback } from 'yargs';
 

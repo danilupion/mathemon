@@ -1,4 +1,4 @@
-import { password } from '@mathemon/turbo-server/regex.js';
+import { password } from '@danilupion/turbo-server/regex.js';
 import { body } from 'express-validator';
 
 export const validateTokenCreation = [

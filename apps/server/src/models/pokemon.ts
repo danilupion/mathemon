@@ -1,3 +1,5 @@
+import normalizeJson from '@danilupion/turbo-server/middleware/mongoose/normalizeJson.js';
+import timestamps from '@danilupion/turbo-server/middleware/mongoose/timestamps.js';
 import {
   PokedexCapturedPokemon,
   PokedexFoundPokemon,
@@ -5,8 +7,6 @@ import {
   Pokemon,
   PokemonType,
 } from '@mathemon/common/models/pokemon.js';
-import normalizeJson from '@mathemon/turbo-server/middleware/mongoose/normalizeJson.js';
-import timestamps from '@mathemon/turbo-server/middleware/mongoose/timestamps.js';
 import config from 'config';
 import { Document, Model, QueryWithHelpers, Schema, model } from 'mongoose';
 

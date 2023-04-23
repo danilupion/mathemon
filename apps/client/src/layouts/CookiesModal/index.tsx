@@ -1,4 +1,4 @@
-import { localStorage } from '@mathemon/turbo-client/storage/index';
+import { localStorage } from '@danilupion/turbo-client/storage/index';
 import { useCallback, useState } from 'react';
 
 import Button from '../../components/Button';

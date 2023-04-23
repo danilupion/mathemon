@@ -1,13 +1,13 @@
+import { sendEmail } from '@danilupion/turbo-server/helpers/email.js';
+import controller, {
+  RequestWithBody,
+  ResponseWithBody,
+} from '@danilupion/turbo-server/helpers/express/controller.js';
+import { StatusCode } from '@danilupion/turbo-server/http.js';
 import {
   ChangePasswordReq,
   CreatePasswordResetTokenReq,
 } from '@mathemon/common/models/api/profiles.js';
-import { sendEmail } from '@mathemon/turbo-server/helpers/email.js';
-import controller, {
-  RequestWithBody,
-  ResponseWithBody,
-} from '@mathemon/turbo-server/helpers/express/controller.js';
-import { StatusCode } from '@mathemon/turbo-server/http.js';
 import config from 'config';
 
 import SingleUseTokenModel, { SingleUseTokenType } from '../../../../models/singleUseToken.js';
