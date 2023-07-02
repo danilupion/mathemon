@@ -29,7 +29,7 @@ interface ActionProps {
   onClick?: () => void;
   item?: Item;
   challengeTime?: number;
-  updateItemValue: (value: number | undefined) => void;
+  updateItemValue: (value: string | undefined) => void;
   onSendChallengeResult: () => void;
 }
 
@@ -129,7 +129,7 @@ const LoggedInExplore = () => {
   const challengeResultAction = useRef<(result: number) => void>();
 
   const updateItemValueHandler = useCallback(
-    (value: number | undefined) => {
+    (value: string | undefined) => {
       setItem({
         ...item,
         solution: {
@@ -142,7 +142,10 @@ const LoggedInExplore = () => {
   );
 
   const sendChallengeResultHandler = useCallback(() => {
-    challengeResultAction.current!(item!.solution.value!);
+    const value = Number(item!.solution.value);
+    if (!Number.isNaN(value)) {
+      challengeResultAction.current!(value);
+    }
   }, [item]);
 
   useEffect(() => {

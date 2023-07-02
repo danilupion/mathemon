@@ -3,7 +3,7 @@ import {
   CreateRealQuizReq,
   QuizMode,
 } from '@mathemon/common/models/api/quizzes';
-import { Operator, Score, Solution } from '@mathemon/common/models/operation';
+import { Operator, Score } from '@mathemon/common/models/operation';
 import { Pokemon } from '@mathemon/common/models/pokemon';
 import { observer } from 'mobx-react-lite';
 import { useCallback, useEffect, useState } from 'react';
@@ -98,7 +98,7 @@ const Quiz = observer(({ operator, mode = QuizMode.Real }: QuizProps) => {
   }, [init]);
 
   const handleSetValue = useCallback(
-    (index: number) => (value: number | undefined) => {
+    (index: number) => (value: string | undefined) => {
       setItems((prev) => {
         const newResults = [...prev];
         newResults[index] = {
@@ -117,10 +117,15 @@ const Quiz = observer(({ operator, mode = QuizMode.Real }: QuizProps) => {
   const handleReview = useCallback(async () => {
     const result = await createEvaluation({
       quiz: createQuizReq(),
-      solutions: items.map((item) => item.solution as Solution),
+      solutions: items.map((item) => ({ ...item.solution, value: Number(item.solution.value) })),
     });
 
-    setItems(result.evaluations);
+    setItems(
+      result.evaluations.map((evaluation) => ({
+        solution: { ...evaluation.solution, value: evaluation.solution.value.toString() },
+        correct: evaluation.correct,
+      })),
+    );
     setEvaluation({
       score: result.score,
       success: result.success,

@@ -12,7 +12,7 @@ import styles from './index.module.scss';
 
 export type Item = Omit<Evaluation, 'solution' | 'correct'> & {
   solution: Omit<Solution, 'value'> & {
-    value?: number;
+    value?: string;
   };
   correct?: boolean;
 };
@@ -20,8 +20,7 @@ export type Item = Omit<Evaluation, 'solution' | 'correct'> & {
 interface QuizItemProps {
   item: Item;
   editable: boolean;
-
-  onSetValue: (result: number | undefined) => void;
+  onSetValue: (result: string | undefined) => void;
 }
 
 const QuizItem = ({ item, editable, onSetValue }: QuizItemProps) => {
@@ -47,7 +46,7 @@ const QuizItem = ({ item, editable, onSetValue }: QuizItemProps) => {
         const newValue = Number(inputValue);
 
         if (!Number.isNaN(newValue)) {
-          onSetValue(newValue);
+          onSetValue(inputValue);
         }
       }
     },
