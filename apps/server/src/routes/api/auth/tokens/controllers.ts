@@ -4,7 +4,7 @@ import controller, {
   ResponseWithBody,
 } from '@danilupion/turbo-server/helpers/express/controller.js';
 import { ClientErrorUnauthorized } from '@danilupion/turbo-server/helpers/httpError.js';
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { SuccessStatusCode } from '@danilupion/turbo-server/http.js';
 import { JwtData, generateToken } from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
 import { CreateTokenReq, CreateTokenRes } from '@mathemon/common/models/api/auth.js';
 
@@ -26,7 +26,7 @@ export const createToken = controller<
     throw new ClientErrorUnauthorized();
   }
 
-  return res.status(StatusCode.SuccessCreated).send({
+  return res.status(SuccessStatusCode.SuccessCreated).send({
     token: await generateToken(getTokenPayload(user)),
   });
 });
@@ -40,7 +40,7 @@ export const renewToken = controller<RequestWithFields<JwtData>, ResponseWithBod
     }
 
     return res
-      .status(StatusCode.SuccessOK)
+      .status(SuccessStatusCode.SuccessOK)
       .send({ token: await generateToken(getTokenPayload(user)) });
   },
 );

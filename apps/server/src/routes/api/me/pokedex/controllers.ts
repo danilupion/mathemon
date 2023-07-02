@@ -4,7 +4,7 @@ import controller, {
   RequestWithFields,
   ResponseWithBody,
 } from '@danilupion/turbo-server/helpers/express/controller.js';
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { SuccessStatusCode } from '@danilupion/turbo-server/http.js';
 import { UserData } from '@danilupion/turbo-server/middleware/express/auth/user.js';
 import { GetPokedexRes, PokedexFilterQuery } from '@mathemon/common/models/api/me.js';
 import config from 'config';
@@ -42,7 +42,7 @@ export const getPokedex = controller<
     PokemonModel.inUsedGenerations().countDocuments(),
   ]);
 
-  return res.status(StatusCode.SuccessOK).send({
+  return res.status(SuccessStatusCode.SuccessOK).send({
     data: pokemons.map((pokemon) => {
       return pokedexPokemons.has(pokemon.number.toString())
         ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion

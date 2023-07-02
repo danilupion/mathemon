@@ -4,7 +4,7 @@ import controller, {
   ResponseWithBody,
 } from '@danilupion/turbo-server/helpers/express/controller.js';
 import { ServerErrorInternalServerError } from '@danilupion/turbo-server/helpers/httpError.js';
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { SuccessStatusCode } from '@danilupion/turbo-server/http.js';
 import { JwtData } from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
 import {
   CreateEvaluationReq,
@@ -75,7 +75,7 @@ export const createEvaluation = controller<
     await pokedex.save();
   }
 
-  return res.status(StatusCode.SuccessOK).send({
+  return res.status(SuccessStatusCode.SuccessOK).send({
     evaluations,
     score: {
       total: evaluations.length,

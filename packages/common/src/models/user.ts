@@ -1,5 +1,5 @@
-import { WithEmail } from './common/email.js';
-import { WithTimestamps } from './common/timestamps.js';
+import { WithEmail } from '@danilupion/turbo-common/model/email.js';
+import { WithTimestamps } from '@danilupion/turbo-common/model/timestamps.js';
 
 export enum UserRole {
   user = 'user',

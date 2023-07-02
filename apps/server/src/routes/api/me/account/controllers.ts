@@ -4,7 +4,7 @@ import controller, {
   ResponseWithBody,
 } from '@danilupion/turbo-server/helpers/express/controller.js';
 import { ClientErrorConflict } from '@danilupion/turbo-server/helpers/httpError.js';
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { SuccessStatusCode } from '@danilupion/turbo-server/http.js';
 import { UserData } from '@danilupion/turbo-server/middleware/express/auth/user.js';
 import { AccountRes, PatchAccountReq } from '@mathemon/common/models/api/me.js';
 
@@ -14,7 +14,7 @@ export const getAccount = controller<
   RequestWithFields<UserData<UserDocument>>,
   ResponseWithBody<AccountRes>
 >(async (req, res) => {
-  return res.status(StatusCode.SuccessOK).send({
+  return res.status(SuccessStatusCode.SuccessOK).send({
     email: req.user.email,
     username: req.user.username,
   });
@@ -48,7 +48,7 @@ export const patchAccount = controller<
 
   await req.user.save();
 
-  return res.status(StatusCode.SuccessOK).send({
+  return res.status(SuccessStatusCode.SuccessOK).send({
     email: req.user.email,
     username: req.user.username,
   });

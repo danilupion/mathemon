@@ -1,9 +1,9 @@
 import { Operator } from '@mathemon/common/models/operation.js';
-import { body } from 'express-validator';
+import { ValidationChain, body } from 'express-validator';
 
 import { quizCreationValidatorFactory } from '../quizzes/validators.js';
 
-export const evaluationCreationValidator = [
+export const evaluationCreationValidator: ValidationChain[] = [
   quizCreationValidatorFactory('quiz'),
   body('solutions').isArray().notEmpty(),
   body('solutions.*.operation.operator').isString().trim().isIn(Object.values(Operator)).notEmpty(),

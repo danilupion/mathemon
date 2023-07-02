@@ -2,7 +2,7 @@ import controller, {
   RequestWithBody,
   ResponseWithBody,
 } from '@danilupion/turbo-server/helpers/express/controller.js';
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { SuccessStatusCode } from '@danilupion/turbo-server/http.js';
 import {
   CreatePracticeQuizReq,
   CreateQuizReq,
@@ -65,8 +65,8 @@ export const createQuiz = controller<
 >(async (req, res) => {
   switch (req.body.mode) {
     case QuizMode.Real:
-      return res.status(StatusCode.SuccessOK).send(createRealQuiz(req.body));
+      return res.status(SuccessStatusCode.SuccessOK).send(createRealQuiz(req.body));
     case QuizMode.Practice:
-      return res.status(StatusCode.SuccessOK).send(createPracticeQuiz(req.body));
+      return res.status(SuccessStatusCode.SuccessOK).send(createPracticeQuiz(req.body));
   }
 });

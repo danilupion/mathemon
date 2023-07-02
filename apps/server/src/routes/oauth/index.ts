@@ -1,4 +1,4 @@
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { ServerErrorStatusCode } from '@danilupion/turbo-server/http.js';
 import { Router } from 'express';
 
 import facebook from './facebook/index.js';
@@ -10,7 +10,7 @@ router.use('/facebook', facebook);
 router.use('/google', google);
 
 router.use('*', (_, res) => {
-  res.sendStatus(StatusCode.ServerErrorNotImplemented);
+  res.sendStatus(ServerErrorStatusCode.ServerErrorNotImplemented);
 });
 
 export default router;

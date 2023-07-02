@@ -2,7 +2,7 @@ import {
   connectMongoose,
   disconnectMongoose,
 } from '@danilupion/turbo-server/helpers/mongoose/connection.js';
-import { Method, StatusCode } from '@danilupion/turbo-server/http.js';
+import { ClientErrorStatusCode, Method, SuccessStatusCode } from '@danilupion/turbo-server/http.js';
 import { generateToken } from '@danilupion/turbo-server/middleware/express/auth/jwt.js';
 import routes from '@danilupion/turbo-server/test-utils/routes.js';
 import server from '@danilupion/turbo-server/test-utils/server.js';
@@ -42,7 +42,7 @@ describe('/api/auth/tokens', () => {
 
         const response = await server(router).post('/').send({ email: 'test@email.com' });
 
-        expect(response.statusCode).toBe(StatusCode.ClientErrorBadRequest);
+        expect(response.statusCode).toBe(ClientErrorStatusCode.ClientErrorBadRequest);
         expect(response.body).toStrictEqual({});
         expect.hasAssertions();
       });
@@ -59,7 +59,7 @@ describe('/api/auth/tokens', () => {
           .post('/')
           .send({ email: 'doesNotMatch@email.com', password: 'testTest1.' });
 
-        expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
+        expect(response.statusCode).toBe(ClientErrorStatusCode.ClientErrorUnauthorized);
         expect(response.body).toStrictEqual({});
         expect.hasAssertions();
       });
@@ -76,7 +76,7 @@ describe('/api/auth/tokens', () => {
           .post('/')
           .send({ email: 'test@email.com', password: 'doesNotMatch1.' });
 
-        expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
+        expect(response.statusCode).toBe(ClientErrorStatusCode.ClientErrorUnauthorized);
         expect.hasAssertions();
       });
 
@@ -94,7 +94,7 @@ describe('/api/auth/tokens', () => {
           password: 'testTest1.',
         });
 
-        expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
+        expect(response.statusCode).toBe(ClientErrorStatusCode.ClientErrorUnauthorized);
         expect.hasAssertions();
       });
     });
@@ -115,7 +115,7 @@ describe('/api/auth/tokens', () => {
         });
         const decodedValues = jwtDecode.default(response.body.token);
 
-        expect(response.statusCode).toBe(StatusCode.SuccessCreated);
+        expect(response.statusCode).toBe(SuccessStatusCode.SuccessCreated);
         expect(response.type).toBe('application/json');
         expect(decodedValues).toMatchObject({
           username: 'test',
@@ -139,7 +139,7 @@ describe('/api/auth/tokens', () => {
         const token = await generateToken(getTokenPayload(user), { expiresIn: -50 });
         const response = await server(router).put('/').set('Authorization', `bearer ${token}`);
 
-        expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
+        expect(response.statusCode).toBe(ClientErrorStatusCode.ClientErrorUnauthorized);
         expect(response.body).toStrictEqual({});
         expect.hasAssertions();
       });
@@ -155,7 +155,7 @@ describe('/api/auth/tokens', () => {
         await UserModel.deleteMany({ _id: user._id }).exec();
         const response = await server(router).put('/').set('Authorization', `bearer ${token}`);
 
-        expect(response.statusCode).toBe(StatusCode.ClientErrorUnauthorized);
+        expect(response.statusCode).toBe(ClientErrorStatusCode.ClientErrorUnauthorized);
         expect(response.body).toStrictEqual({});
         expect.hasAssertions();
       });
@@ -174,7 +174,7 @@ describe('/api/auth/tokens', () => {
 
         const decodedValues = jwtDecode.default(response.body.token);
 
-        expect(response.statusCode).toBe(StatusCode.SuccessOK);
+        expect(response.statusCode).toBe(SuccessStatusCode.SuccessOK);
         expect(response.type).toBe('application/json');
         expect(decodedValues).toMatchObject({
           username: 'putTestOk',

@@ -1,8 +1,8 @@
 import { QuizMode } from '@mathemon/common/models/api/quizzes.js';
 import { Operator } from '@mathemon/common/models/operation.js';
-import { body, oneOf } from 'express-validator';
+import { ValidationChain, body, oneOf } from 'express-validator';
 
-export const quizCreationValidatorFactory = (propertyPath = '') => {
+export const quizCreationValidatorFactory = (propertyPath = ''): ValidationChain => {
   const prefix = propertyPath ? `${propertyPath}.` : '';
 
   return oneOf([
@@ -17,7 +17,7 @@ export const quizCreationValidatorFactory = (propertyPath = '') => {
       body(`${prefix}operator`).isString().trim().isIn([Operator.multiplication]).notEmpty(),
       body(`${prefix}operand`).isInt().notEmpty(),
     ],
-  ]);
+  ]) as ValidationChain;
 };
 
 export const quizCreationValidator = quizCreationValidatorFactory();

@@ -1,4 +1,4 @@
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { ServerErrorStatusCode } from '@danilupion/turbo-server/http.js';
 import { Router } from 'express';
 
 import auth from './auth/index.js';
@@ -16,7 +16,7 @@ router.use('/profiles', profiles);
 router.use('/quizzes', quizzes);
 
 router.use('*', (_, res) => {
-  res.sendStatus(StatusCode.ServerErrorNotImplemented);
+  res.sendStatus(ServerErrorStatusCode.ServerErrorNotImplemented);
 });
 
 export default router;

@@ -3,7 +3,7 @@ import controller, {
   RequestWithBody,
   ResponseWithBody,
 } from '@danilupion/turbo-server/helpers/express/controller.js';
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { ClientErrorStatusCode } from '@danilupion/turbo-server/http.js';
 import {
   ChangePasswordReq,
   CreatePasswordResetTokenReq,
@@ -54,7 +54,7 @@ export const changePassword = controller<
   }).populate('user');
 
   if (!tokenToUse || !tokenToUse.user) {
-    return res.status(StatusCode.ClientErrorNotFound).send();
+    return res.status(ClientErrorStatusCode.ClientErrorNotFound).send();
   }
 
   const user = tokenToUse.user as UserDocument;

@@ -1,4 +1,5 @@
-import { WithTimestamps } from './common/timestamps.js';
+import { WithTimestamps } from '@danilupion/turbo-common/model/timestamps.js';
+
 import { Operator } from './operation.js';
 
 export enum PokemonType {

@@ -4,7 +4,7 @@ import controller, {
   ResponseWithBody,
 } from '@danilupion/turbo-server/helpers/express/controller.js';
 import { ClientErrorConflict } from '@danilupion/turbo-server/helpers/httpError.js';
-import { StatusCode } from '@danilupion/turbo-server/http.js';
+import { SuccessStatusCode } from '@danilupion/turbo-server/http.js';
 import { CreateProfileReq, CreateProfileRes } from '@mathemon/common/models/api/profiles.js';
 import config from 'config';
 
@@ -42,7 +42,7 @@ export const createProfile = controller<
     text: `Pincha aquí para comprobar tu email: ${url}/tokens/verify/${token.token}`,
   });
 
-  return res.status(StatusCode.SuccessCreated).send({
+  return res.status(SuccessStatusCode.SuccessCreated).send({
     success: !!user,
   });
 });
