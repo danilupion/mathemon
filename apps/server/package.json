@@ -1,7 +1,6 @@
 {
   "name": "@mathemon/server",
   "version": "1.0.0",
-  "private": true,
   "author": {
     "name": "Dani Lupión",
     "email": "danilupion@gmail.com"
@@ -9,68 +8,28 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start:dev": "nodemon --watch src --watch config -e ts,json --exec 'ts-node --esm --project tsconfig.dev.json ./src/server.ts'",
-    "start:prod": "ts-node --esm --project tsconfig.json ./src/server.ts",
-    "build": "tsc -p tsconfig.json",
-    "build:check": "tsc -p tsconfig.json --noEmit",
-    "test": "jest --passWithNoTests",
-    "test:watch": "jest --watch",
-    "lint:fix": "eslint -c .eslintrc.json 'src/**/*.ts' --fix",
-    "lint": "eslint -c .eslintrc.json 'src/**/*.ts'",
-    "prettify": "prettier --write  \"./src/**/*.{ts,tsx,json}\"",
-    "command": "ts-node --esm --project tsconfig.json ./src/commands/index.ts"
+    "start:dev": "NODE_ENV=development tsx --tsconfig tsconfig.dev.json ./src/server.ts",
+    "start:prod": "tsx --tsconfig tsconfig.json ./src/server.ts",
+    "build": "rm -rf ./dist && tsc",
+    "build:watch": "rm -rf ./dist && tsc --watch",
+    "build:check": "tsc --noEmit",
+    "lint": "eslint . --max-warnings 0",
+    "lint:fix": "eslint . --fix --max-warnings 0"
   },
   "dependencies": {
-    "@danilupion/turbo-server": "^1.1.0",
-    "@mathemon/common": "1.0.0",
-    "@mathemon/poke-api": "1.0.0",
+    "@slangy/express": "file:../../../slangy/packages/express",
     "chalk": "^5.3.0",
-    "config": "^3.3.8",
-    "express": "^4.18.2",
-    "express-validator": "^7.0.1",
-    "helmet": "^7.0.0",
-    "mongoose": "^7.3.1",
-    "morgan": "^1.10.0",
-    "socket.io": "^4.7.1",
-    "ts-node": "^10.9.1",
-    "yargs": "^17.7.2"
+    "config": "^3.3.11"
+  },
+  "peerDependencies": {
+    "eslint": "^8.57.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.22.5",
-    "@babel/preset-env": "^7.22.5",
-    "@babel/preset-typescript": "^7.22.5",
-    "@types/config": "^3.3.0",
-    "@types/express": "^4.17.17",
-    "@types/jest": "^29.5.2",
-    "@types/morgan": "^1.9.4",
-    "@types/node": "^20.3.3",
-    "@types/supertest": "^2.0.12",
-    "@types/yargs": "^17.0.24",
-    "@typescript-eslint/eslint-plugin": "^5.59.0",
-    "@typescript-eslint/parser": "^5.59.0",
-    "babel-jest": "^29.5.0",
-    "eslint": "^8.44.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-import-resolver-typescript": "^3.5.5",
-    "eslint-plugin-eslint-comments": "^3.2.0",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-jest": "^27.2.2",
-    "jest": "^29.5.0",
-    "jwt-decode": "^3.1.2",
-    "lint-staged": "^13.2.3",
-    "nodemon": "^2.0.22",
-    "prettier": "^2.8.8",
-    "supertest": "^6.3.3",
-    "typescript": "^5.1.6"
-  },
-  "lint-staged": {
-    "src/**/*.{js,cjs}": [
-      "yarn prettify"
-    ],
-    "src/**/*.{ts,json}": [
-      "yarn prettify",
-      "yarn lint:fix --max-warnings=0",
-      "yarn test"
-    ]
+    "@slangy-config/eslint": "file:../../../slangy/config-packages/eslint",
+    "@slangy-config/lint-staged": "file:../../../slangy/config-packages/lint-staged",
+    "@slangy-config/typescript": "file:../../../slangy/config-packages/typescript",
+    "@types/config": "^3.3.4",
+    "@types/node": "^20.12.11",
+    "tsx": "^4.10.0"
   }
 }

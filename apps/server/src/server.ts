@@ -1,65 +1,32 @@
-import { createServer } from 'http';
-import { dirname, join, resolve } from 'path';
-import { fileURLToPath } from 'url';
+import { dirname, join, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-import { isDev } from '@danilupion/turbo-server/helpers/env.js';
-import { connectMongoose } from '@danilupion/turbo-server/helpers/mongoose/connection.js';
-import errorHandler from '@danilupion/turbo-server/middleware/express/errorHandler.js';
-import notFoundHandler from '@danilupion/turbo-server/middleware/express/notFoundHandler.js';
+// import { connectMongoose } from '@slangy/mongo/helpers/mongoose/connection.js';
+import server from '@slangy/express/server.js';
+import chalk from 'chalk';
 import config from 'config';
-import express, { json, static as staticMiddleware } from 'express';
-import helmet from 'helmet';
-import morgan from 'morgan';
 
-import routes from './routes/index.js';
-import socketServer from './socket/index.js';
+// import api from './routes/api/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const app = express();
-const port = config.get<number>('server.port');
-
-const startServer = async () => {
-  // Configure some security headers
-  if (isDev) {
-    app.use(helmet({ contentSecurityPolicy: false }));
-  } else {
-    app.use(helmet());
-  }
-
-  // Register HTTP request logger
-  app.use(morgan('dev'));
-
-  // Configure body parser to accept json
-  app.use(json({ limit: config.get<string>('server.bodyParserLimits.json') }));
-
-  // Register handler for static assets
-  app.use(staticMiddleware(resolve(__dirname, 'public')));
-
-  // Register routes
-  app.use('/', routes);
-
-  // Serve public/index.html
-  app.get('*', (_, res) => {
-    res.sendFile(join(__dirname, 'public', 'index.html'));
+try {
+  await server({
+    port: config.get<number>('server.port'),
+    acceptJson: true,
+    jsonBodyParserLimits: config.get<string>('server.bodyParserLimits.json'),
+    staticsPath: resolve(__dirname, 'public'),
+    spaFilePath: join(__dirname, 'public', 'index.html'),
+    // routes: [['/api', api]],
+    // init: async () => {
+    //   await connectMongoose();
+    // },
   });
-
-  // Register custom not found handler
-  app.use(notFoundHandler);
-
-  // Register custom error handler (should registered the last)
-  app.use(errorHandler);
-
-  await connectMongoose();
-  const httpServer = createServer(app);
-  socketServer(httpServer);
-
-  httpServer.listen(port);
-  console.error(`Listening in port ${port}`, isDev);
-};
-
-startServer().catch((e) => console.log('Error while creating the server', e));
+  console.log(chalk.green(`${chalk.bold('[Init::]')} Server initialized`));
+} catch (e) {
+  console.log(chalk.red(`${chalk.bold('[Init::]')} Error while creating the server`, e));
+}
 
 process.on('unhandledRejection', (reason, p) => {
   console.error('Unhandled Rejection at:', p, 'reason:', reason);

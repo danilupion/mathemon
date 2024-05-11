@@ -1,9 +1,0 @@
-@use 'nes.css/css/nes.css';
-
-.select {
-  @extend .nes-select;
-
-  select {
-    border-image-repeat: stretch;
-  }
-}

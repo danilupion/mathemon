@@ -1,9 +1,0 @@
-@use 'nes.css/css/nes.css';
-
-.input {
-  @extend .nes-input;
-  border-image-repeat: stretch;
-  width: 100%;
-  max-width: 400px;
-  margin: 0 auto;
-}

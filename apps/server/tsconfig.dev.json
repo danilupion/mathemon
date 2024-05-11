@@ -1,5 +1,5 @@
 {
-  "extends": "./tsconfig.json",
+  "extends": "@slangy-config/typescript/base.json",
   "compilerOptions": {
     "strict": false,
     "noUnusedLocals": false,
