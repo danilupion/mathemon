@@ -20,12 +20,12 @@
     "typescript": "^5.4.5"
   },
   "devDependencies": {
-    "@slangy-config/eslint": "file:../slangy/config-packages/eslint",
-    "@slangy-config/lint-staged": "file:../slangy/config-packages/lint-staged",
-    "@slangy-config/prettier": "file:../slangy/config-packages/prettier",
-    "@slangy-config/typescript": "file:../slangy/config-packages/typescript",
+    "@slangy-config/eslint": "link:../slangy/config-packages/eslint",
+    "@slangy-config/lint-staged": "link:../slangy/config-packages/lint-staged",
+    "@slangy-config/prettier": "link:../slangy/config-packages/prettier",
+    "@slangy-config/typescript": "link:../slangy/config-packages/typescript",
     "husky": "^9.0.11",
-    "turbo": "latest"
+    "turbo": "^2.0.3"
   },
   "engines": {
     "node": ">=20"

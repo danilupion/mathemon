@@ -1,0 +1,6 @@
+{
+  mode: 'test',
+  server: {
+    port: 5000,
+  },
+}

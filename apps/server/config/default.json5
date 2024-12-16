@@ -1,0 +1,6 @@
+{
+  mode: 'development',
+  server: {
+    port: 4000,
+  },
+}
