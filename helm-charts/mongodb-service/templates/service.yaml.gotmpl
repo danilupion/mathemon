@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "mongodb-service.fullname" . }}
+  labels:
+    {{- include "mongodb-service.labels" . | nindent 4 }}
+spec:
+{{- if eq .Values.type "endpoint" }}
+  clusterIP: None
+  ports:
+    - port: {{ .Values.port }}
+      targetPort: {{ .Values.port }}
+      protocol: TCP
+      name: mongodb
+{{- else if eq .Values.type "external" }}
+  type: ExternalName
+  externalName: host.docker.internal
+  ports:                 # port block is optional but nice for documentation
+    - port: {{ .Values.port }}
+{{- end -}}

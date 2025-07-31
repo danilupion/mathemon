@@ -1,10 +1,9 @@
 #!/bin/bash
 
-yarn;
-yarn clean:build;
+pnpm;
+pnpm clean:build;
 
-yarn build:libs;
-yarn build:apps;
+pnpm build
 
 SERVER_PUBLIC="./apps/server/dist/public";
 CLIENT_BUILD="../../client/build";

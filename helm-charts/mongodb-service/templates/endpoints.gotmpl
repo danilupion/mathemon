@@ -1,0 +1,13 @@
+{{- if eq .Values.type "endpoint" -}}
+apiVersion: v1
+kind: Endpoints
+metadata:
+  name: {{ include "mongodb-service.fullname" . }}
+  labels:
+    {{- include "mongodb-service.labels" . | nindent 4 }}
+subsets:
+  - addresses:
+    - ip: {{ .Values.ip }}
+    ports:
+    - port: {{ .Values.port }}
+{{- end -}}

@@ -1,8 +1,7 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-yarn build:check
-yarn workspace @mathemon/client lint-staged
-yarn workspace @mathemon/server lint-staged
-yarn workspace @mathemon/common lint-staged
-yarn workspace @mathemon/poke-api lint-staged
+pnpm -C apps/client exec lint-staged
+pnpm -C apps/server exec lint-staged
+pnpm -C packages/common exec lint-staged
+pnpm -C packages/poke-api exec lint-staged

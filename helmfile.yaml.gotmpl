@@ -1,0 +1,36 @@
+environments:
+  {{ .Environment.Name }}:
+    values:
+      - environments/{{ .Environment.Name }}/values.yaml
+
+---
+releases:
+  - name: mongodb-service
+    namespace: mathemon
+    chart: ./helm-charts/mongodb-service
+    installed: {{ hasKey .Values "mongodb-service" }}
+    values:
+      - {{ toYaml (index .Values "mongodb-service") | nindent 8 }}
+
+  - name: mathemon-web
+    namespace: mathemon
+    chart: ./apps/client/helm-chart
+    values:
+    {{ if hasKey .Values "web" }}
+      - {{ toYaml .Values.web | nindent 8 }}
+    {{ end }}
+    {{ if hasKey .Values "common" }}
+      - {{ toYaml .Values.common | nindent 8 }}
+    {{ end }}
+
+
+  - name: mathemon-server
+    namespace: mathemon
+    chart: ./apps/server/helm-chart
+    values:
+    {{ if hasKey .Values "server" }}
+      - {{ toYaml .Values.server | nindent 8 }}
+    {{ end }}
+    {{ if hasKey .Values "common" }}
+      - {{ toYaml .Values.common | nindent 8 }}
+    {{ end }}

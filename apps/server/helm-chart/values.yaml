@@ -1,0 +1,71 @@
+# Server service values
+replicaCount: 1
+image:
+  repository: mathemon/server
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  type: ClusterIP
+  port: 3200
+
+config: |
+  {
+    "environment": "development",
+    "url": "http://localhost:3200",
+    "server": {
+      "bodyParserLimits": {
+        "json": "5mb"
+      },
+      "port": 3200
+    },
+    "smtp": {
+      "host": "smtp.ethereal.email",
+      "port": 587,
+      "secure": false,
+      "auth": {
+        "user": "giuseppe.denesik0@ethereal.email",
+        "pass": "tNamhcx3PpNyvWzd5U"
+      }
+    },
+    "settings": {
+      "singleUseToken": {
+        "expiresIn": 7200
+      },
+      "pokemon": {
+        "generations": [ 1 ]
+      },
+      "quiz": {
+        "size": 20
+      },
+      "pokedex": {
+        "pageSize": 30
+      }
+    },
+    "auth": {
+      "jwt": {
+        "secret": "RANDOM STRING, CHANGE ME",
+        "expiration": "7d"
+      },
+      "google": {
+        "clientId": "CLIENT ID",
+        "clientSecret": "CLIENT SECRET"
+      },
+      "facebook": {
+        "clientId": "CLIENT ID",
+        "clientSecret": "CLIENT SECRET"
+      }
+    },
+    "mongodb": {
+      "host": "127.0.0.1",
+      "port": 27017,
+      "database": "mathemon"
+    }
+  }
+
+# Ingress values
+ingress:
+  ingressClassName: nginx
+  annotations: []
+    # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+    # nginx.ingress.kubernetes.io/rewrite-target: /
+  host: mathemon-server.local

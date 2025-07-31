@@ -17,46 +17,24 @@
     ]
   },
   "scripts": {
-    "start:dev:client": "yarn workspace @mathemon/client start:dev",
-    "start:dev:server": "yarn workspace @mathemon/server start:dev",
-    "start:dev": "yarn run:parallel 'yarn start:dev:client' 'yarn start:dev:server'",
-    "start:prod:server": "yarn workspace @mathemon/server start:prod",
-    "test:poke-api": "yarn workspace @mathemon/common test",
-    "test:common": "yarn workspace @mathemon/common test:",
-    "test:client": "yarn workspace @mathemon/client test",
-    "test:server": "yarn workspace @mathemon/server test",
-    "test:watch:poke-api": "yarn workspace @mathemon/common test:watch",
-    "test:watch:common": "yarn workspace @mathemon/common test:watch",
-    "test:watch:client": "yarn workspace @mathemon/client test:watch",
-    "test:watch:server": "yarn workspace @mathemon/server test:watch",
-    "build:watch:poke-api": "yarn workspace @mathemon/poke-api build:watch",
-    "build:watch:common": "yarn workspace @mathemon/common build:watch",
-    "build:watch:libs": "yarn run:parallel 'yarn build:watch:common' 'yarn build:watch:poke-api'",
-    "build:check:poke-api": "yarn workspace @mathemon/poke-api build:check",
-    "build:check:common": "yarn workspace @mathemon/common build:check",
-    "build:check:client": "yarn workspace @mathemon/client build:check",
-    "build:check:server": "yarn workspace @mathemon/server build:check",
-    "build:poke-api": "yarn workspace @mathemon/poke-api build",
-    "build:common": "yarn workspace @mathemon/common build",
-    "build:client": "yarn workspace @mathemon/client build",
-    "build:server": "yarn workspace @mathemon/server build",
-    "build:libs": "yarn run:parallel 'yarn build:common' 'yarn build:poke-api'",
-    "build:apps": "yarn run:parallel 'yarn build:client' 'yarn build:server'",
-    "build": "./scripts/build.sh",
-    "build:check": "yarn build:check:poke-api && yarn build:check:common && yarn build:check:client && yarn build:check:server",
-    "command": "yarn workspace @mathemon/server command",
+    "start:dev": "turbo start:dev build:watch",
+    "build": "turbo build",
+    "build:check": "turbo build:check",
+    "test": "turbo test",
+    "command": "pnpm workspace @mathemon/server command",
     "run:parallel": "./scripts/run-parallel.sh",
     "clean:install": "./scripts/clean-install.sh",
     "clean:build": "./scripts/clean-build.sh",
-    "clean": "yarn run:parallel 'yarn clean:install' 'yarn clean:build'",
-    "prepare": "husky install"
+    "clean": "pnpm run:parallel 'pnpm clean:install' 'pnpm clean:build'",
+    "prepare": "[ \"$PACKAGED\" = true ] && echo 'Skipping prepare for packaged production dependencies install' || husky"
   },
   "devDependencies": {
-    "husky": "^8.0.3"
+    "husky": "8.0.3",
+    "turbo": "2.5.5"
   },
   "engines": {
-    "node": "=22.12.0",
-    "yarn": "=1.22.22"
+    "node": "=22.17.1",
+    "pnpm": "=10.13.1"
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "pnpm@10.13.1"
 }

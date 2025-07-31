@@ -1,0 +1,8 @@
+# Default values for mongodb-endpoint.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+port: 27017
+type: # external or endpoint
+ip: #mandatory for type=endpoint
+externalName: # mandatory for type=external

@@ -2,18 +2,18 @@
 
 In the project directory, you can run:
 
-### `yarn start:dev`
+### `pnpm start:dev`
 
 Runs the app in the development mode.\
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
 
-### `yarn test:watch`
+### `pnpm test:watch`
 
 Launches the test runner in the interactive watch mode.\
 
-### `yarn run build`
+### `pnpm run build`
 
 Builds the app for production to the `build` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.

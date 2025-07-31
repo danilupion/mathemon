@@ -1,0 +1,11 @@
+packages:
+  - apps/*
+  - packages/*
+
+injectWorkspacePackages: true
+
+onlyBuiltDependencies:
+  - bcrypt
+  - core-js
+  - core-js-pure
+  - mongodb-memory-server

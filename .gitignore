@@ -8,6 +8,8 @@
 *.sublime-workspace
 .vscode
 
+.turbo
+
 # Logs
 logs
 *.log
