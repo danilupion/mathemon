@@ -29,7 +29,14 @@ spec:
               protocol: TCP
       volumes:
         - name: config
+          {{- if .Values.existingConfigSecret }}
+          # Config carries credentials (jwt secret, google oauth) - mount it
+          # from a Secret managed outside the chart instead of the ConfigMap
+          secret:
+            secretName: {{ .Values.existingConfigSecret }}
+          {{- else }}
           configMap:
             name: {{ include "mathemon-server.fullname" . }}
+          {{- end }}
 
 

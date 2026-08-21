@@ -64,8 +64,25 @@ config: |
 
 # Ingress values
 ingress:
+  enabled: true
   ingressClassName: nginx
   annotations: []
     # nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     # nginx.ingress.kubernetes.io/rewrite-target: /
   host: mathemon-server.local
+
+# Gateway API HTTPRoute - successor to the Ingress (same routing, declared
+# in the chart). ingress and route are independent during a migration window.
+route:
+  enabled: false
+  # Gateway(s) to attach to, e.g.:
+  #   - name: gateway-public
+  #     namespace: gateway-public
+  parentRefs: []
+  hostnames: []
+  annotations: {}
+
+# When set, mount the server config (production.json) from this pre-existing
+# Secret instead of rendering .Values.config into a ConfigMap - use for
+# deployments whose config carries credentials.
+existingConfigSecret: ''
